@@ -1,18 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Realtime;
 
 public class RoomListing : MonoBehaviour
 {
-    [SerializeField] private Text _text;
+    [SerializeField] private Text text;
 
     public RoomInfo RoomInfo { get; private set; }
     
     public void SetRoomInfo(RoomInfo roomInfo)
     {
         RoomInfo = roomInfo;
-        _text.text = roomInfo.MaxPlayers + ", " + roomInfo.Name;
+        text.text = roomInfo.MaxPlayers + ", " + roomInfo.Name;
     }
 }

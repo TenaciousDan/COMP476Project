@@ -28,6 +28,6 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        print("Room creation failed: " + message);
+        print($"Room creation failed: {message}");
     }
 }

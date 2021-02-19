@@ -2,11 +2,12 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 public class RoomListingsMenu : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private Transform _content;
-    [SerializeField] private RoomListing _roomListing;
+    [SerializeField] private Transform content;
+    [SerializeField] private RoomListing roomListing;
 
     private List<RoomListing> _listings = new List<RoomListing>();
     
@@ -29,15 +30,13 @@ public class RoomListingsMenu : MonoBehaviourPunCallbacks
             // Added to Rooms List
             else
             {
-                
-            }
-            
-            RoomListing listing = Instantiate(_roomListing, _content);
+                RoomListing listing = Instantiate(roomListing, content);
 
-            if (listing != null)
-            {
-                listing.SetRoomInfo(info);
-                _listings.Add(listing);
+                if (listing != null)
+                {
+                    listing.SetRoomInfo(info);
+                    _listings.Add(listing);
+                }
             }
         }
     }

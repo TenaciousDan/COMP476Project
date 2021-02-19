@@ -20,7 +20,7 @@ public abstract class SingletonScriptableObject<T> : ScriptableObject where T: S
 
             if (results.Length > 1)
             {   
-                Debug.LogError(("SingletonScriptableObject -> Instance -> results length is greater than 1 for type " + typeof(T) + "."));
+                Debug.LogError($"SingletonScriptableObject -> Instance -> results length is greater than 1 for type " + typeof(T) + ".");
                 return null;
             }
 

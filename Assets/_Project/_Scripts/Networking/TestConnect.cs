@@ -1,3 +1,4 @@
+using System;
 using Photon.Pun;
 using Photon.Realtime;
 
@@ -25,6 +26,6 @@ public class TestConnect : MonoBehaviourPunCallbacks
     // Called When Disconnected from Server
     public override void OnDisconnected(DisconnectCause cause)
     {
-        print("Disconnected from Server. Cause: " + cause);
+        Console.WriteLine($"Disconnected from Server. Cause: {cause}");
     }
 }
