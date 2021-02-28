@@ -26,6 +26,11 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         print("Created room successfully");
     }
 
+    public override void OnJoinedRoom()
+    {
+        print($"Room {_roomName.text} joined!");
+    }
+
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         print($"Room creation failed: {message}");

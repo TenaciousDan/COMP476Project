@@ -664,4 +664,7 @@ InitTestScene*.unity
 # ignore any folder named `gitignore`
 gitignore/
 
+# ignore any gitignore meta files
+*gitignore.meta
+
 # End of COMP 476 Project
