@@ -106,6 +106,7 @@ namespace TenaciousEditor.Collections
 
                     if (edgeWeightIsDistance)
                     {
+                        target.mbGraph.graph.isDirty = true;
                         edge.Weight = (selectedNodes[0].transform.position - selectedNodes[1].transform.position).magnitude;
                         EditorSceneManager.MarkSceneDirty(target.gameObject.scene);
                         EditorUtility.SetDirty(target);

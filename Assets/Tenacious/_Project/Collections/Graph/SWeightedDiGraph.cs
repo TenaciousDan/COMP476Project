@@ -16,6 +16,8 @@ namespace Tenacious.Collections
         [SerializeField, HideInInspector] bool[] nodeIdCollisions;
         [SerializeField, HideInInspector] WeightedDiGraph<N, E> digraph = new WeightedDiGraph<N, E>();
 
+        [HideInInspector] public bool isDirty = true;
+
         [Serializable]
         struct SNode
         {
@@ -46,35 +48,39 @@ namespace Tenacious.Collections
 
         public void OnBeforeSerialize()
         {
-            nodes.Clear();
-            edges.Clear();
-
-            // first pass, store node data
-            foreach (GraphNode<N> graphNode in digraph.Nodes())
+            if (isDirty)
             {
-                SNode snode = new SNode(graphNode.Id, graphNode.Data);
-                if (!nodes.Contains(snode))
+                isDirty = false;
+                nodes.Clear();
+                edges.Clear();
+
+                // first pass, store node data
+                foreach (GraphNode<N> graphNode in digraph.Nodes())
                 {
-                    nodes.Add(snode);
+                    SNode snode = new SNode(graphNode.Id, graphNode.Data);
+                    if (!nodes.Contains(snode))
+                    {
+                        nodes.Add(snode);
+                    }
                 }
-            }
 
-            // second pass, store edge data
-            foreach (GraphEdge<E> graphEdge in digraph.Edges())
-            {
-                SEdge sedge = new SEdge(graphEdge.FromId, graphEdge.ToId, graphEdge.Weight, (int)graphEdge.Directionality);
-                if (!edges.Contains(sedge))
+                // second pass, store edge data
+                foreach (GraphEdge<E> graphEdge in digraph.Edges())
                 {
-                    edges.Add(sedge);
+                    SEdge sedge = new SEdge(graphEdge.FromId, graphEdge.ToId, graphEdge.Weight, (int)graphEdge.Directionality);
+                    if (!edges.Contains(sedge))
+                    {
+                        edges.Add(sedge);
+                    }
                 }
-            }
 
-            Type nType = typeof(N);
-            Type eType = typeof(E);
-            if (nodeTypeName == null || (!nodeTypeName.Equals(nType) || !edgeTypeName.Equals(eType)))
-            {
-                nodeTypeName = nType.IsPrimitive || nType.Equals(typeof(string)) ? nType.Name.ToLower() : nType.Name;
-                edgeTypeName = eType.IsPrimitive || eType.Equals(typeof(string)) ? eType.Name.ToLower() : eType.Name;
+                Type nType = typeof(N);
+                Type eType = typeof(E);
+                if (nodeTypeName == null || (!nodeTypeName.Equals(nType) || !edgeTypeName.Equals(eType)))
+                {
+                    nodeTypeName = nType.IsPrimitive || nType.Equals(typeof(string)) ? nType.Name.ToLower() : nType.Name;
+                    edgeTypeName = eType.IsPrimitive || eType.Equals(typeof(string)) ? eType.Name.ToLower() : eType.Name;
+                }
             }
         }
 
@@ -151,26 +157,32 @@ namespace Tenacious.Collections
 
         public GraphNode<N> AddNode(N data)
         {
+            isDirty = true;
             return digraph.AddNode(data);
         }
         public GraphNode<N> AddNode(string uniqueId, N data)
         {
+            isDirty = true;
             return digraph.AddNode(uniqueId, data);
         }
         public GraphNode<N> AddNode(N data, GraphNode<N> from, E edgeWeight = default, EdgeDirectionality edgeDirectionality = EdgeDirectionality.BiDirectional)
         {
+            isDirty = true;
             return digraph.AddNode(data, from, edgeWeight, edgeDirectionality);
         }
         public GraphNode<N> AddNode(N data, string fromId, E edgeWeight = default, EdgeDirectionality edgeDirectionality = EdgeDirectionality.BiDirectional)
         {
+            isDirty = true;
             return digraph.AddNode(data, fromId, edgeWeight, edgeDirectionality);
         }
         public GraphNode<N> AddNode(string uniqueId, N data, GraphNode<N> from, E edgeWeight = default, EdgeDirectionality edgeDirectionality = EdgeDirectionality.BiDirectional)
         {
+            isDirty = true;
             return digraph.AddNode(uniqueId, data, from, edgeWeight, edgeDirectionality);
         }
         public GraphNode<N> AddNode(string uniqueId, N data, string fromId, E edgeWeight = default, EdgeDirectionality edgeDirectionality = EdgeDirectionality.BiDirectional)
         {
+            isDirty = true;
             return digraph.AddNode(uniqueId, data, fromId, edgeWeight, edgeDirectionality);
         }
 
@@ -194,28 +206,34 @@ namespace Tenacious.Collections
 
         public void RemoveEdge(GraphNode<N> from, GraphNode<N> to)
         {
+            isDirty = true;
             digraph.RemoveEdge(from, to);
         }
         public void RemoveEdge(string fromId, string toId)
         {
+            isDirty = true;
             digraph.RemoveEdge(fromId, toId);
         }
 
         public void RemoveNode(GraphNode<N> node)
         {
+            isDirty = true;
             digraph.RemoveNode(node);
         }
         public void RemoveNode(string nodeId)
         {
+            isDirty = true;
             digraph.RemoveNode(nodeId);
         }
 
         public void SetEdge(GraphNode<N> from, GraphNode<N> to, E weight = default, EdgeDirectionality directionality = EdgeDirectionality.BiDirectional)
         {
+            isDirty = true;
             digraph.SetEdge(from, to, weight, directionality);
         }
         public void SetEdge(string fromId, string toId, E weight = default, EdgeDirectionality directionality = EdgeDirectionality.BiDirectional)
         {
+            isDirty = true;
             digraph.SetEdge(fromId, toId, weight, directionality);
         }
     }

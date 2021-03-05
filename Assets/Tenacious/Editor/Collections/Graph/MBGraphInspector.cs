@@ -63,6 +63,7 @@ namespace TenaciousEditor.Collections
 
         private void SetAllWeightsToDistancesClick(MBGraph target)
         {
+            target.graph.isDirty = true;
             foreach (GraphEdge<float> edge in target.graph.Edges())
             {
                 edge.Weight = (target.graph[edge.FromId].Data.transform.position - target.graph[edge.ToId].Data.transform.position).magnitude;
