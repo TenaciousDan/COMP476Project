@@ -10,31 +10,35 @@ public class Player : MonoBehaviour
         get { return currentActionPoints; }
         private set { currentActionPoints = value; }
     }
-    private int gasTankSize;
-    public int gasAvailable
-    {
-        get { return gasAvailable; }
-        private set { gasAvailable = value; }
-    }
 
-    // incomplete, position will not be an int
+    // incomplete, position will not be an int. should probably rename to something else so it's not confused with transform.position
     public int position
     {
         get { return position; }
         private set { position = value; }
     }
 
+    // offset so multiple players can be on the same tile
+    public Vector3 positionOffset
+    {
+        get { return positionOffset; }
+        private set { positionOffset = value; }
+    }
+
     // incomplete, parameter will not be an int
     public void Move(int newPosition)
     {
-
+        position = newPosition;
+        // need to get the world position of the new node
+        Vector3 newWorldPosition = Vector3.zero;
+        transform.position = newWorldPosition + positionOffset;
     }
 
     // assign values to member variables (probably called after players choose their vehicle)
-    public void InitializePlayer(int _maxActionPoints, int _gasTankSize)
+    public void InitializePlayer(int _maxActionPoints, Vector3 _positionOffset)
     {
         maxActionPoints = currentActionPoints = _maxActionPoints;
-        gasTankSize = gasAvailable = _gasTankSize;
+        positionOffset = _positionOffset;
     }
 
     public void SpendActionPoints(int numActionPoints)
@@ -50,13 +54,18 @@ public class Player : MonoBehaviour
     }
 
     // probably called at the start of a turn
-    public void ResetActionPoints()
+    public void FillActionPoints()
     {
         currentActionPoints = maxActionPoints;
     }
 
-    public void FillGasTank()
+    // in case we want to add action points
+    public void AddActionPoints(int numActionPoints, bool exceedLimit = false)
     {
-        gasAvailable = gasTankSize;
+        currentActionPoints += numActionPoints;
+        if (!exceedLimit && currentActionPoints > maxActionPoints)
+        {
+            currentActionPoints = maxActionPoints;
+        }
     }
 }
