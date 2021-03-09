@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace Tenacious.UI
 {
     [ExecuteInEditMode]
@@ -17,6 +21,18 @@ namespace Tenacious.UI
         [SerializeField] private int columns;
         [SerializeField] private bool fitX;
         [SerializeField] private bool fitY;
+
+        public FlexibleGridLayout() : base()
+        {
+            Init();
+        }
+
+        private void Init()
+        {
+#if UNITY_EDITOR
+            Undo.undoRedoPerformed += () => { LayoutRebuilder.MarkLayoutForRebuild(rectTransform); };
+#endif
+        }
 
         public override void CalculateLayoutInputHorizontal()
         {
