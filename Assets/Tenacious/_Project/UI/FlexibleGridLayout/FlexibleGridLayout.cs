@@ -30,7 +30,7 @@ namespace Tenacious.UI
         private void Init()
         {
 #if UNITY_EDITOR
-            Undo.undoRedoPerformed += () => { LayoutRebuilder.MarkLayoutForRebuild(rectTransform); };
+            Undo.undoRedoPerformed += () => { if (this != null) LayoutRebuilder.MarkLayoutForRebuild(rectTransform); };
 #endif
         }
 
