@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000004, guid: 2efb05a536aec954b9456a2aa73877c4, type: 2}
   m_LightingSettings: {fileID: 1737693718}
 --- !u!196 &4
 NavMeshSettings:
@@ -209,8 +209,36 @@ PrefabInstance:
       value: 0.06666667
       objectReference: {fileID: 0}
     - target: {fileID: 5974571912796096924, guid: 9a0b3fcf99cd2c04cbe6358e3e7cd2b9, type: 3}
+      propertyPath: m_Color.a
+      value: 0.003921569
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974571912796096924, guid: 9a0b3fcf99cd2c04cbe6358e3e7cd2b9, type: 3}
+      propertyPath: m_Color.b
+      value: 0.06666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974571912796096924, guid: 9a0b3fcf99cd2c04cbe6358e3e7cd2b9, type: 3}
+      propertyPath: m_Color.g
+      value: 0.06666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974571912796096924, guid: 9a0b3fcf99cd2c04cbe6358e3e7cd2b9, type: 3}
+      propertyPath: m_Color.r
+      value: 0.06666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974571912796096924, guid: 9a0b3fcf99cd2c04cbe6358e3e7cd2b9, type: 3}
       propertyPath: m_Material
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974571913459359337, guid: 9a0b3fcf99cd2c04cbe6358e3e7cd2b9, type: 3}
+      propertyPath: m_Color.b
+      value: 0.06666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974571913459359337, guid: 9a0b3fcf99cd2c04cbe6358e3e7cd2b9, type: 3}
+      propertyPath: m_Color.g
+      value: 0.06666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974571913459359337, guid: 9a0b3fcf99cd2c04cbe6358e3e7cd2b9, type: 3}
+      propertyPath: m_Color.r
+      value: 0.06666667
       objectReference: {fileID: 0}
     - target: {fileID: 5974571914144902445, guid: 9a0b3fcf99cd2c04cbe6358e3e7cd2b9, type: 3}
       propertyPath: m_Name
@@ -564,7 +592,7 @@ MonoBehaviour:
   eventSystem: {fileID: 65104338}
   returnNativeSelection: 1
   windowPrefabList:
-  - {fileID: 2891783041733360269, guid: f82117b9e0a7a2b4fb8317c99d233ad9, type: 3}
+  - {fileID: 387586375550940091, guid: ef636b76f5fe14745965ad61600821e3, type: 3}
 --- !u!224 &4116208024731071698
 RectTransform:
   m_ObjectHideFlags: 0
