@@ -69,8 +69,10 @@ namespace TenaciousEditor.Collections
                             {
                                 target.__collisionRadius = EditorGUILayout.FloatField("Collision Radius", target.__collisionRadius);
 
+                                target.__useTagsToIgnoreCollisions = EditorGUILayout.Toggle("Use Tags To Ignore Collisions", target.__useTagsToIgnoreCollisions);
+
                                 EditorGUI.BeginChangeCheck();
-                                EditorGUILayout.PropertyField(serializedObject.FindProperty("__ignoredCollisionTags"), new GUIContent("Ignored Collision Tags"));
+                                EditorGUILayout.PropertyField(serializedObject.FindProperty("__collisionTags"), new GUIContent("Ignored Collision Tags"));
                                 if (EditorGUI.EndChangeCheck()) serializedObject.ApplyModifiedProperties();
                             }
                         }
@@ -191,7 +193,17 @@ namespace TenaciousEditor.Collections
             List<Collider> colliderList = new List<Collider>();
             foreach (Collider c in colliders)
             {
-                if (!c.isTrigger && !target.__ignoredCollisionTags.Contains(c.tag))
+                bool collidedWithTag = target.__collisionTags.Contains(c.tag);
+                bool ignoreCollision = target.__useTagsToIgnoreCollisions ? false : true;
+                if (collidedWithTag)
+                {
+                    if (target.__useTagsToIgnoreCollisions)
+                        ignoreCollision = true;
+                    else
+                        ignoreCollision = false;
+                }
+
+                if (!c.isTrigger && !ignoreCollision)
                     colliderList.Add(c);
             }
 
@@ -203,7 +215,17 @@ namespace TenaciousEditor.Collections
             List<RaycastHit> hitList = new List<RaycastHit>();
             foreach (RaycastHit hit in hits)
             {
-                if (!hit.collider.isTrigger && !target.__ignoredCollisionTags.Contains(hit.collider.tag))
+                bool collidedWithTag = target.__collisionTags.Contains(hit.collider.tag);
+                bool ignoreCollision = target.__useTagsToIgnoreCollisions ? false : true;
+                if (collidedWithTag)
+                {
+                    if (target.__useTagsToIgnoreCollisions)
+                        ignoreCollision = true;
+                    else
+                        ignoreCollision = false;
+                }
+
+                if (!hit.collider.isTrigger && !ignoreCollision)
                     hitList.Add(hit);
             }
 

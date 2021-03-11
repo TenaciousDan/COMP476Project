@@ -66,7 +66,8 @@ namespace Tenacious.Collections
         [HideInInspector] public EGenerationType __generationType = EGenerationType.Grid;
         [HideInInspector] public bool __detectCollisions = true;
         [HideInInspector] public float __collisionRadius = 0.25f;
-        [HideInInspector] public List<string> __ignoredCollisionTags;
+        [HideInInspector] public bool __useTagsToIgnoreCollisions = false;
+        [HideInInspector] public List<string> __collisionTags;
         [HideInInspector] public Color __edgeGizmoArrowColor = Color.white;
         [HideInInspector] public float __arrowTipSize = 0.5f;
 
