@@ -4,6 +4,8 @@
 using UnityEditor;
 #endif
 
+using System.Collections.Generic;
+
 namespace Tenacious.Collections
 {
     public class MBGraph : MonoBehaviour
@@ -52,40 +54,53 @@ namespace Tenacious.Collections
         }
 
 #if UNITY_EDITOR
-        //[HideInInspector]
-        //public int __addNodeEdgeDirection = 2;
+        [Header("Gizmos")]
+        public Color __nodeGizmoColor = Color.cyan;
+        public float __nodeGizmoRadius = 0.5f;
+        public Color __edgeGizmoColor = Color.white;
+        public bool __showEdgeGizmos = true;
+        public bool __showNodeGizmos = false;
 
-        public static Color __nodeGizmoColor = Color.cyan;
-        public static float __nodeGizmoRadius = 0.5f;
-        public static Color __edgeGizmoColor = Color.white;
-        public static Color __edgeGizmoArrowColor = Color.white;
-        public static float __arrowTipSize = 0.2f;
+        // generation properties
+        public enum EGenerationType { Grid };
+        [HideInInspector] public EGenerationType __generationType = EGenerationType.Grid;
+        [HideInInspector] public bool __detectCollisions = true;
+        [HideInInspector] public float __collisionRadius = 0.25f;
+        [HideInInspector] public bool __useTagsToIgnoreCollisions = false;
+        [HideInInspector] public List<string> __collisionTags;
+        [HideInInspector] public Color __edgeGizmoArrowColor = Color.white;
+        [HideInInspector] public float __arrowTipSize = 0.5f;
+
+        // grid generation properties
+        [HideInInspector] public int __gridColumns = 1;
+        [HideInInspector] public int __gridRows = 1;
+        [HideInInspector] public float __gridCellSize = 1;
 
         private void OnDrawGizmos()
         {
-            Gizmos.color = new Color(__edgeGizmoColor.r, __edgeGizmoColor.g, __edgeGizmoColor.b, __edgeGizmoColor.a * 0.5f);
-            Handles.color = __edgeGizmoArrowColor;
-            foreach (GraphEdge<float> edge in graph.Edges())
+            if (__showEdgeGizmos)
             {
-                Gizmos.DrawLine(graph[edge.FromId].Data.transform.position, graph[edge.ToId].Data.transform.position);
-
-                Vector3 edgeVector = graph[edge.ToId].Data.transform.position - graph[edge.FromId].Data.transform.position;
-                Vector3 midpoint = graph[edge.FromId].Data.transform.position + (edgeVector.normalized * (edgeVector.magnitude / 2));
-                Vector3 arrowTipPosition = midpoint - (edgeVector.normalized * __arrowTipSize / 2);
-
-                if (edge.Directionality == EdgeDirectionality.UniDirectional)
+                Gizmos.color = new Color(__edgeGizmoColor.r, __edgeGizmoColor.g, __edgeGizmoColor.b, __edgeGizmoColor.a * 0.5f);
+                Handles.color = __edgeGizmoArrowColor;
+                foreach (GraphEdge<float> edge in graph.Edges())
                 {
-                    Handles.ConeHandleCap(
-                        0,
-                        arrowTipPosition,
-                        edgeVector == Vector3.zero ? Quaternion.identity : Quaternion.LookRotation(edgeVector),
-                        __arrowTipSize,
-                        EventType.Repaint
-                    );
-                }
+                    Gizmos.DrawLine(graph[edge.FromId].Data.transform.position, graph[edge.ToId].Data.transform.position);
 
-                // Vector3 quarterpoint = graph[edge.FromId].Data.transform.position + (edgeVector / 4);
-                // Handles.Label(quarterpoint + Vector3.up * (__arrowTipSize * 2), edge.Weight.ToString("0.###"));
+                    Vector3 edgeVector = graph[edge.ToId].Data.transform.position - graph[edge.FromId].Data.transform.position;
+                    Vector3 midpoint = graph[edge.FromId].Data.transform.position + (edgeVector.normalized * (edgeVector.magnitude / 2));
+                    Vector3 arrowTipPosition = midpoint - (edgeVector.normalized * __arrowTipSize / 2);
+
+                    if (edge.Directionality == EdgeDirectionality.UniDirectional)
+                    {
+                        Handles.ConeHandleCap(
+                            0,
+                            arrowTipPosition,
+                            edgeVector == Vector3.zero ? Quaternion.identity : Quaternion.LookRotation(edgeVector),
+                            __arrowTipSize,
+                            EventType.Repaint
+                        );
+                    }
+                }
             }
         }
 #endif

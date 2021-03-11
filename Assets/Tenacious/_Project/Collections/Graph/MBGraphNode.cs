@@ -4,8 +4,6 @@
 using UnityEditor;
 #endif
 
-using System.Collections.Generic;
-
 namespace Tenacious.Collections
 {
     [ExecuteInEditMode]
@@ -21,11 +19,10 @@ namespace Tenacious.Collections
         }
 
 #if UNITY_EDITOR
-        public static Color __nodeGizmoColor = new Color(Color.cyan.r, Color.cyan.g, Color.cyan.b, 0.5f);
-        public static float __nodeGizmoRadius = 0.5f;
-
         private void OnDrawGizmos()
         {
+            if (mbGraph == null || !mbGraph.__showNodeGizmos) return;
+
             int selectedMBGraphNodeCount = 0;
             int currentIndexInSelection = -1;
             foreach (GameObject obj in Selection.gameObjects)
@@ -39,17 +36,17 @@ namespace Tenacious.Collections
                 }
             }
 
-            Gizmos.color = __nodeGizmoColor;
+            Gizmos.color = mbGraph.__nodeGizmoColor;
             if (currentIndexInSelection != -1)
             {
-                Gizmos.DrawCube(transform.position, new Vector3(__nodeGizmoRadius * 1.5f, __nodeGizmoRadius * 1.5f, __nodeGizmoRadius * 1.5f));
+                Gizmos.DrawCube(transform.position, new Vector3(mbGraph.__nodeGizmoRadius * 1.5f, mbGraph.__nodeGizmoRadius * 1.5f, mbGraph.__nodeGizmoRadius * 1.5f));
                 if (currentIndexInSelection == 0 && selectedMBGraphNodeCount == 2)
-                    Gizmos.DrawIcon(transform.position, "PreTexA@2x", false, new Color(1 - __nodeGizmoColor.r, 1 - __nodeGizmoColor.g, 1 - __nodeGizmoColor.b));
+                    Gizmos.DrawIcon(transform.position, "PreTexA@2x", false, new Color(1 - mbGraph.__nodeGizmoColor.r, 1 - mbGraph.__nodeGizmoColor.g, 1 - mbGraph.__nodeGizmoColor.b));
                 else if (currentIndexInSelection == 1 && selectedMBGraphNodeCount == 2)
-                    Gizmos.DrawIcon(transform.position, "PreTexB@2x", false, new Color(1 - __nodeGizmoColor.r, 1 - __nodeGizmoColor.g, 1 - __nodeGizmoColor.b));
+                    Gizmos.DrawIcon(transform.position, "PreTexB@2x", false, new Color(1 - mbGraph.__nodeGizmoColor.r, 1 - mbGraph.__nodeGizmoColor.g, 1 - mbGraph.__nodeGizmoColor.b));
             }
             else
-                Gizmos.DrawSphere(transform.position, __nodeGizmoRadius);
+                Gizmos.DrawSphere(transform.position, mbGraph.__nodeGizmoRadius);
         }
 #endif
     }
