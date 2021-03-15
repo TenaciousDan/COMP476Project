@@ -33,5 +33,7 @@ namespace Tenacious.Collections
 
         List<GraphNode<N>> Neighbors(GraphNode<N> node);
         List<GraphNode<N>> Neighbors(string nodeId);
+
+        public GraphNode<N> this[string id] { get; }
     }
 }
