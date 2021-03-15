@@ -75,6 +75,8 @@ namespace Tenacious.Collections
         [HideInInspector] public int __gridColumns = 1;
         [HideInInspector] public int __gridRows = 1;
         [HideInInspector] public float __gridCellSize = 1;
+        public enum EGridType { FourWay, EightWay };
+        [HideInInspector] public EGridType __gridType = EGridType.FourWay;
 
         private void OnDrawGizmos()
         {
