@@ -27,6 +27,7 @@ namespace Game.UI.Menus
         public void PlayBtnClick()
         {
             // TODO
+            SceneLoader.Instance.LoadScene("Lobby", SceneLoader.FADE_TRANSITION);
         }
 
         public void CreditsBtnClick()
