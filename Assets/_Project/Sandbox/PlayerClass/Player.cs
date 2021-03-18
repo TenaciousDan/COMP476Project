@@ -1,37 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
+using Tenacious.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
     private int maxActionPoints;
+    
     public int currentActionPoints
     {
-        get { return currentActionPoints; }
-        private set { currentActionPoints = value; }
+        get; private set;
     }
-
-    // incomplete, position will not be an int. should probably rename to something else so it's not confused with transform.position
-    public int position
+    
+    public MBGraphNode nodePosition
     {
-        get { return position; }
-        private set { position = value; }
+        get; private set;
     }
 
     // offset so multiple players can be on the same tile
     public Vector3 positionOffset
     {
-        get { return positionOffset; }
-        private set { positionOffset = value; }
+        get; private set;
     }
 
-    // incomplete, parameter will not be an int
-    public void Move(int newPosition)
+    public void Move(List<MBGraphNode> nodes, int cost)
     {
-        position = newPosition;
-        // need to get the world position of the new node
-        Vector3 newWorldPosition = Vector3.zero;
-        transform.position = newWorldPosition + positionOffset;
+        if (SpendActionPoints(cost))
+        {
+            // need to make the movement smooth and not instant
+            foreach(MBGraphNode node in nodes)
+            {
+                nodePosition = node;
+                Vector3 newWorldPosition = node.transform.position + positionOffset;
+                newWorldPosition = new Vector3(newWorldPosition.x, transform.position.y, newWorldPosition.z);
+                transform.position = newWorldPosition;
+            }
+        }
     }
 
     // assign values to member variables (probably called after players choose their vehicle)
@@ -41,15 +45,17 @@ public class Player : MonoBehaviour
         positionOffset = _positionOffset;
     }
 
-    public void SpendActionPoints(int numActionPoints)
+    public bool SpendActionPoints(int numActionPoints)
     {
         if(numActionPoints > currentActionPoints)
         {
             Debug.LogWarning("Not enough action points for this action.");
+            return false;
         }
         else
         {
             currentActionPoints -= numActionPoints;
+            return true;
         }
     }
 
