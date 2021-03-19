@@ -84,7 +84,7 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
     {
         playerListText.text = string.Empty;
 
-        // Display all the players currrently in the lobby
+        // Display all the players currently in the lobby
         foreach (Player player in PhotonNetwork.PlayerList)
         {
             playerListText.text += $"{player.NickName}\n";
