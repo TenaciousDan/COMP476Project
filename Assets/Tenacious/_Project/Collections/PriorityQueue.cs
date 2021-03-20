@@ -20,7 +20,7 @@ namespace Tenacious.Collections
         }
     }
 
-    public class PQEntry<K, V> : IComparable, IComparable<PQEntry<K,V>> where K : IComparable<K>
+    public class PQEntry<K, V> : IComparable, IComparable<PQEntry<K, V>> where K : IComparable<K>
     {
         public PQEntry(K key, V value)
         {
@@ -55,7 +55,7 @@ namespace Tenacious.Collections
 
     public class PQTieBreakerEntry<K, V, TB> : PQEntry<K, V> where K : IComparable<K> where TB : IComparable<TB>
     {
-        public TB TieBreaker { get; set; } 
+        public TB TieBreaker { get; set; }
 
         public PQTieBreakerEntry(K key, V value, TB tieBreaker) : base(key, value)
         {

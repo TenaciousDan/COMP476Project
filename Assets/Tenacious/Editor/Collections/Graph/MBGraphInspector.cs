@@ -58,6 +58,7 @@ namespace TenaciousEditor.Collections
 
                     if (target.__generationType == MBGraph.EGenerationType.Grid)
                     {
+                        target.__gridType = (MBGraph.EGridType)EditorGUILayout.EnumPopup("Grid Type", target.__gridType);
                         target.__gridColumns = EditorGUILayout.IntField("Number of Columns", target.__gridColumns);
                         target.__gridRows = EditorGUILayout.IntField("Number of Rows", target.__gridRows);
                         target.__gridCellSize = EditorGUILayout.FloatField("Grid Cell Size", target.__gridCellSize);
@@ -166,10 +167,13 @@ namespace TenaciousEditor.Collections
                     if (r < target.__gridRows - 1 && nodeGrid[r + 1, c] != null) ConnectGridNodes(target, nodeGrid[r, c], nodeGrid[r + 1, c]);
 
                     // diagonal edges
-                    if (r > 0 && c > 0 && nodeGrid[r - 1, c - 1] != null) ConnectGridNodes(target, nodeGrid[r, c], nodeGrid[r - 1, c - 1]);
-                    if (r < target.__gridRows - 1 && c < target.__gridColumns - 1 && nodeGrid[r + 1, c + 1] != null) ConnectGridNodes(target, nodeGrid[r, c], nodeGrid[r + 1, c + 1]);
-                    if (r > 0 && c < target.__gridColumns - 1 && nodeGrid[r - 1, c + 1] != null) ConnectGridNodes(target, nodeGrid[r, c], nodeGrid[r - 1, c + 1]);
-                    if (r < target.__gridRows - 1 && c > 0 && nodeGrid[r + 1, c - 1] != null) ConnectGridNodes(target, nodeGrid[r, c], nodeGrid[r + 1, c - 1]);
+                    if (target.__gridType == MBGraph.EGridType.EightWay)
+                    {
+                        if (r > 0 && c > 0 && nodeGrid[r - 1, c - 1] != null) ConnectGridNodes(target, nodeGrid[r, c], nodeGrid[r - 1, c - 1]);
+                        if (r < target.__gridRows - 1 && c < target.__gridColumns - 1 && nodeGrid[r + 1, c + 1] != null) ConnectGridNodes(target, nodeGrid[r, c], nodeGrid[r + 1, c + 1]);
+                        if (r > 0 && c < target.__gridColumns - 1 && nodeGrid[r - 1, c + 1] != null) ConnectGridNodes(target, nodeGrid[r, c], nodeGrid[r - 1, c + 1]);
+                        if (r < target.__gridRows - 1 && c > 0 && nodeGrid[r + 1, c - 1] != null) ConnectGridNodes(target, nodeGrid[r, c], nodeGrid[r + 1, c - 1]);
+                    }
                 }
             }
         }
@@ -193,7 +197,7 @@ namespace TenaciousEditor.Collections
             List<Collider> colliderList = new List<Collider>();
             foreach (Collider c in colliders)
             {
-                bool collidedWithTag = target.__collisionTags.Contains(c.tag);
+                bool collidedWithTag = target.__collisionTags != null && target.__collisionTags.Contains(c.tag);
                 bool ignoreCollision = target.__useTagsToIgnoreCollisions ? false : true;
                 if (collidedWithTag)
                 {
@@ -215,7 +219,7 @@ namespace TenaciousEditor.Collections
             List<RaycastHit> hitList = new List<RaycastHit>();
             foreach (RaycastHit hit in hits)
             {
-                bool collidedWithTag = target.__collisionTags.Contains(hit.collider.tag);
+                bool collidedWithTag = target.__collisionTags != null && target.__collisionTags.Contains(hit.collider.tag);
                 bool ignoreCollision = target.__useTagsToIgnoreCollisions ? false : true;
                 if (collidedWithTag)
                 {

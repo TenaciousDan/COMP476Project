@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Tenacious.Collections
 {
     public enum EHeapOrderStrategy { MIN, MAX }
 
-    public class BinaryHeap<T> where T : class, IComparable<T>
+    public class BinaryHeap<T> : IEnumerable<T> where T : class, IComparable<T>
     {
         private T[] data;
         private EHeapOrderStrategy strategy;
@@ -38,7 +40,7 @@ namespace Tenacious.Collections
             if (Empty) return null;
 
             Wrapper wroot = new Wrapper(data[0]);
-            Wrapper wend = new Wrapper(data[Size-1]);
+            Wrapper wend = new Wrapper(data[Size - 1]);
             data[0] = wend.obj;
             data[Size - 1] = null;
 
@@ -79,7 +81,8 @@ namespace Tenacious.Collections
                 if (
                     GetRightChild(k) != null &&
                     ((rightToLeftComparison < 0 && strategy == EHeapOrderStrategy.MIN) || (rightToLeftComparison > 0 && strategy == EHeapOrderStrategy.MAX))
-                ) {
+                )
+                {
                     int rightChildComparison = data[k].CompareTo(GetRightChild(k));
                     if ((strategy == EHeapOrderStrategy.MAX && rightChildComparison > 0) || (strategy == EHeapOrderStrategy.MIN && rightChildComparison < 0))
                         break;
@@ -154,6 +157,64 @@ namespace Tenacious.Collections
         {
             public T obj;
             public Wrapper(T obj) { this.obj = obj; }
+        }
+
+        // IEnumerable
+        public IEnumerator<T> GetEnumerator()
+        {
+            return new BinaryHeapIterator(data);
+        }
+        private IEnumerator GetIterator() => GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetIterator();
+        private class BinaryHeapIterator : IEnumerator<T>
+        {
+            public T[] data;
+            private int iteratorIndex = -1;
+
+            public BinaryHeapIterator(T[] data)
+            {
+                this.data = data;
+            }
+
+            public bool MoveNext()
+            {
+                do ++iteratorIndex;
+                while (iteratorIndex < data.Length && Current == null);
+
+                return iteratorIndex < data.Length;
+            }
+
+            public void Reset()
+            {
+                iteratorIndex = -1;
+            }
+
+            public T Current
+            {
+                get
+                {
+                    try
+                    {
+                        return data[iteratorIndex];
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        throw new InvalidOperationException();
+                    }
+                }
+            }
+            private object GetCurrent() => Current;
+            object IEnumerator.Current => GetCurrent();
+
+            public IEnumerator<T> GetEnumerator()
+            {
+                return this;
+            }
+
+            public void Dispose()
+            {
+                // nothing to dispose
+            }
         }
     }
 }
