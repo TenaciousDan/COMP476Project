@@ -27,7 +27,6 @@ public class PlayerManager : MonoBehaviour
         testList.Add(goalNode);
         foreach (Player player in players)
         {
-            print(player.currentActionPoints);
             player.Move(testList, 1);
         }
     }

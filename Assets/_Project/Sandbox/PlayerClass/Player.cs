@@ -6,7 +6,13 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private int maxActionPoints;
-    
+    private float speed = 0.2f;
+
+    private void Update()
+    {
+        
+    }
+
     public int currentActionPoints
     {
         get; private set;
@@ -27,18 +33,11 @@ public class Player : MonoBehaviour
     {
         if (SpendActionPoints(cost))
         {
-            // need to make the movement smooth and not instant
-            foreach(MBGraphNode node in nodes)
-            {
-                nodePosition = node;
-                Vector3 newWorldPosition = node.transform.position + positionOffset;
-                newWorldPosition = new Vector3(newWorldPosition.x, transform.position.y, newWorldPosition.z);
-                transform.position = newWorldPosition;
-            }
+            StartCoroutine(SmoothMove(nodes));
         }
     }
 
-    // assign values to member variables (probably called after players choose their vehicle)
+    // assign values to member variables
     public void InitializePlayer(int _maxActionPoints, Vector3 _positionOffset)
     {
         maxActionPoints = currentActionPoints = _maxActionPoints;
@@ -58,8 +57,7 @@ public class Player : MonoBehaviour
             return true;
         }
     }
-
-    // probably called at the start of a turn
+    
     public void FillActionPoints()
     {
         currentActionPoints = maxActionPoints;
@@ -72,6 +70,23 @@ public class Player : MonoBehaviour
         if (!exceedLimit && currentActionPoints > maxActionPoints)
         {
             currentActionPoints = maxActionPoints;
+        }
+    }
+
+    private IEnumerator SmoothMove(List<MBGraphNode> nodes)
+    {
+        float step = speed * Time.deltaTime;
+
+        foreach (MBGraphNode node in nodes)
+        {
+            nodePosition = node;
+            Vector3 newWorldPosition = node.transform.position + positionOffset;
+            newWorldPosition = new Vector3(newWorldPosition.x, transform.position.y, newWorldPosition.z);
+            while(transform.position != newWorldPosition)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, newWorldPosition, step);
+                yield return null;
+            }
         }
     }
 }
