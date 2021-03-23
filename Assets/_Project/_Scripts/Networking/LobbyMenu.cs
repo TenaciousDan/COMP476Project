@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +7,8 @@ using Photon.Realtime;
 
 public class LobbyMenu : MonoBehaviourPunCallbacks
 {
-    [Header("Screens")]
+    [Header("Screens")] 
+    [SerializeField] private GameObject loginScreen;
     [SerializeField] private GameObject joinOrCreateScreen;
     [SerializeField] private GameObject lobbyScreen;
 
@@ -18,34 +18,87 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
 
     [Header("Lobby Screen")]
     [SerializeField] private TextMeshProUGUI playerListText;
+    [SerializeField] private TextMeshProUGUI roomListText;
+    [SerializeField] private TMP_InputField playerNameInputField;
     [SerializeField] private Button startGameButton;
-
-
+    
+    private Dictionary<string, RoomInfo> cachedRoomList;
+    
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        joinOrCreateScreen.SetActive(true);
+        loginScreen.SetActive(true);
+        joinOrCreateScreen.SetActive(false);
         lobbyScreen.SetActive(false);
         createRoomButton.interactable = false;
         joinRoomButton.interactable = false;
+        cachedRoomList = new Dictionary<string, RoomInfo>();
+        UpdateRoomListView();
     }
 
+    #region PUN CALLBACKS
+    
     public override void OnConnectedToMaster()
     {
+        SetScreen(joinOrCreateScreen);
         createRoomButton.interactable = true;
         joinRoomButton.interactable = true;
     }
 
-    void SetScreen(GameObject screen)
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        // Deactivate all screens
-        joinOrCreateScreen.SetActive(false);
-        lobbyScreen.SetActive(false);
-
-        // Enable requested screen
-        screen.SetActive(true);
+        UpdateCachedRoomList(roomList);
+        UpdateRoomListView();
+    }
+    
+    public override void OnJoinedLobby()
+    {
+        cachedRoomList.Clear();
+    }
+    
+    public override void OnLeftLobby()
+    {
+        cachedRoomList.Clear();
     }
 
+    public override void OnJoinedRoom()
+    {
+        cachedRoomList.Clear();
+        
+        // Change screen
+        SetScreen(lobbyScreen);
+
+        // Tell everyone to update the lobby because a new player has joined.
+        photonView.RPC("UpdateLobbyUI", RpcTarget.All);
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        // We don't need RPC because OnJoinedRoom is called for the client who just join the room
+        // OnPlayerLeftRoom gets called for all clients in the room
+        UpdateLobbyUI();
+    }
+    
+    #endregion
+    
+    #region UI CALLBACKS
+    
+    // Called when logging into the lobby
+    public void LoginBtnClick()
+    {
+        var playerName = playerNameInputField.text;
+
+        if (!playerName.Equals(""))
+        {
+            PhotonNetwork.LocalPlayer.NickName = playerName;
+            PhotonNetwork.ConnectUsingSettings();
+        }
+        else
+        {
+            Debug.LogError("Player Name is invalid.");
+        }
+    }
+    
     // Called when create room button is pressed
     public void CreateRoomBtnClick(TMP_InputField roomNameInput)
     {
@@ -63,22 +116,69 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
         PhotonNetwork.NickName = playerNameInput.text;
     }
 
-    public override void OnJoinedRoom()
+    public void LeaveLobbyBtnClick()
     {
-        // Change screen
-        SetScreen(lobbyScreen);
-
-        // Tell everyone to update the lobby because a new player has joined.
-        photonView.RPC("UpdateLobbyUI", RpcTarget.All);
+        PhotonNetwork.LeaveRoom();
+        SetScreen(joinOrCreateScreen);
     }
 
-    public override void OnPlayerLeftRoom(Player otherPlayer)
+    public void StartGameBtnClick()
     {
-        // We don't need RPC because OnJoinedRoom is called for the client who just join the room
-        // OnPlayerLeftRoom gets called for all clients in the room
-        UpdateLobbyUI();
+        // TODO
+        // Change the name of the scene to load.
+        NetworkManager.Instance.photonView.RPC("ChangeScene", RpcTarget.All, "TestGame");
     }
 
+    public void RefreshBtnClick()
+    {
+        if (!PhotonNetwork.InLobby)
+        {
+            PhotonNetwork.JoinLobby();
+        }
+        
+        PhotonNetwork.GetCustomRoomList(PhotonNetwork.CurrentLobby,null);
+    }
+    
+    #endregion
+
+    private void UpdateCachedRoomList(List<RoomInfo> roomList)
+    {
+        foreach (RoomInfo info in roomList)
+        {
+            // Remove room from cached room list if it got closed, became invisible or was marked as removed
+            if (!info.IsOpen || !info.IsVisible || info.RemovedFromList)
+            {
+                if (cachedRoomList.ContainsKey(info.Name))
+                {
+                    cachedRoomList.Remove(info.Name);
+                }
+
+                continue;
+            }
+
+            // Update cached room info
+            if (cachedRoomList.ContainsKey(info.Name))
+            {
+                cachedRoomList[info.Name] = info;
+            }
+            // Add new room info to cache
+            else
+            {
+                cachedRoomList.Add(info.Name, info);
+            }
+        }
+    }
+    
+    private void UpdateRoomListView()
+    {
+        roomListText.text = cachedRoomList.Count == 0 ? $"No open rooms." : "";
+
+        foreach (RoomInfo info in cachedRoomList.Values)
+        {
+            roomListText.text += $"{info.Name}\n";
+        }
+    }
+    
     [PunRPC]
     public void UpdateLobbyUI()
     {
@@ -101,16 +201,14 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
         }
     }
 
-    public void LeaveLobbyBtnClick()
+    void SetScreen(GameObject screen)
     {
-        PhotonNetwork.LeaveRoom();
-        SetScreen(joinOrCreateScreen);
-    }
+        // Deactivate all screens
+        loginScreen.SetActive(false);
+        joinOrCreateScreen.SetActive(false);
+        lobbyScreen.SetActive(false);
 
-    public void StartGameBtnClick()
-    {
-        // TODO
-        // Change the name of the scene to load.
-        NetworkManager.Instance.photonView.RPC("ChangeScene", RpcTarget.All, "TestGame");
+        // Enable requested screen
+        screen.SetActive(true);
     }
 }
