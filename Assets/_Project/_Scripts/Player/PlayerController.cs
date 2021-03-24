@@ -3,15 +3,10 @@ using System.Collections.Generic;
 using Tenacious.Collections;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     private int maxActionPoints;
     private float speed = 0.2f;
-
-    private void Update()
-    {
-        
-    }
 
     public int currentActionPoints
     {

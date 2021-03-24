@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    [SerializeField] List<Player> players;
+    [SerializeField] List<PlayerController> players;
 
     private Vector3[] positionOffsets = new[] {
         new Vector3(0.5f, 0.0f, 0.5f),
@@ -19,7 +19,7 @@ public class PlayerManager : MonoBehaviour
     {
         InitializePlayers();
         List<MBGraphNode> testList = new List<MBGraphNode>();
-        foreach (Player player in players)
+        foreach (PlayerController player in players)
         {
             player.Move(testList, 1);
         }
@@ -28,9 +28,9 @@ public class PlayerManager : MonoBehaviour
     private void InitializePlayers()
     {
         int offsetIndex = 0;
-        foreach(Player player in players)
+        foreach(PlayerController player in players)
         {
-            player.GetComponent<Player>().InitializePlayer(3, positionOffsets[offsetIndex]);
+            player.GetComponent<PlayerController>().InitializePlayer(3, positionOffsets[offsetIndex]);
             offsetIndex++;
         }
     }
