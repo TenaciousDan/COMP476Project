@@ -33,6 +33,7 @@ namespace TenaciousEditor
 
         public static readonly string EDITOR_DIR = ASSET_ROOT_DIR + "Editor/";
         public static readonly string EDITOR_CONFIG_DIR = EDITOR_DIR + "Configuration/";
+        public static readonly string EDITOR_GRAPHVIEW_DIR = EDITOR_DIR + "Collections/GraphView/";
 
         public static readonly string PROJECT_DIR = ASSET_ROOT_DIR + "_Project/";
         public static readonly string COMMON_DIR = PROJECT_DIR + "Common/";

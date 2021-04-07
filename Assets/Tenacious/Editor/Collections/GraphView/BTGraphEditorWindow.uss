@@ -1,0 +1,30 @@
+﻿
+BTGraphView GridBackground {
+	--grid-background-color: #212121;
+	--thick-line-color: rgba(224, 224, 224, 0.1);
+	--line-color: rgba(189, 189, 189, 0.1);
+	--spacing: 15;
+}
+
+Toolbar Label {
+	margin: 2 0;
+}
+
+BTGraphNode .title-input TextInput {
+	background-color: #2A2A2A;
+	border-color: #393939;
+	min-width: 133px;
+	margin-top: 12px;
+}
+BTGraphNode .nodetype-input {
+	background-color: #2A2A2A;
+	margin: 0;
+	padding: 1px 3px 1px 3px;
+}
+BTGraphNode .nodetype-input Label {
+	min-width: 32px;
+}
+BTGraphNode .nodetype-input TextInput {
+	border-color: #2A2A2A;
+	background-color: #111111;
+}
