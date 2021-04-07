@@ -6,12 +6,17 @@ public class PU_Boost : PU_Base
 {
     private int numExtraActionPoints = 2;
 
-    public override void OnPowerUpGet(PlayerController player)
+    protected override void OnPowerUpGet(GameObject player)
     {
         if (isActive)
         {
             isActive = false;
-            player.AddActionPoints(numExtraActionPoints, true);
+            player.GetComponent<PlayerController>().AddActionPoints(numExtraActionPoints, true);
         }
+    }
+
+    protected override void OnPowerUpUse(GameObject player)
+    {
+        throw new System.NotImplementedException();
     }
 }

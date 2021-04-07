@@ -6,12 +6,17 @@ public class PU_OilSpill : PU_Base
 {
     private int numActionPointsToRemove = 2;
 
-    public override void OnPowerUpGet(PlayerController player)
+    protected override void OnPowerUpGet(GameObject player)
     {
         if (isActive)
         {
             isActive = false;
-            player.RemoveActionPoints(numActionPointsToRemove);
+            player.GetComponent<PlayerController>().RemoveActionPoints(numActionPointsToRemove);
         }
+    }
+
+    protected override void OnPowerUpUse(GameObject player)
+    {
+        throw new System.NotImplementedException();
     }
 }

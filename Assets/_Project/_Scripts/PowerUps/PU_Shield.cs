@@ -4,12 +4,9 @@ using UnityEngine;
 
 public class PU_Shield : PU_Base
 {
-    public override void OnPowerUpGet(PlayerController player)
+    protected override void OnPowerUpUse(GameObject player)
     {
-        if (isActive)
-        {
-            isActive = false;
-            player.ActivateShield();
-        }
+        player.GetComponent<PlayerController>().ActivateShield();
+        player.GetComponent<Inventory>().RemoveItem(this);
     }
 }

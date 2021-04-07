@@ -5,13 +5,18 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     private readonly int maxInventorySize = 3;
-    // might not be a list of GameObjects
-    public List<GameObject> items
+    
+    public List<PU_Base> items
     {
-        get { return items; }
+        get; private set;
     }
 
-    public void AddItem(GameObject newItem)
+    private void Start()
+    {
+        items = new List<PU_Base>();
+    }
+
+    public void AddItem(PU_Base newItem)
     {
         // if there is no more room in the inventory, remove the first item
         if(items.Count == maxInventorySize)
@@ -21,7 +26,7 @@ public class Inventory : MonoBehaviour
         items.Add(newItem);
     }
 
-    public void RemoveItem(GameObject itemToRemove)
+    public void RemoveItem(PU_Base itemToRemove)
     {
         if (itemToRemove != null && items.Count > 0)
         {
