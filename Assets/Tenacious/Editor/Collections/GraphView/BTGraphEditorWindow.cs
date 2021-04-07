@@ -5,6 +5,8 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+using System.Collections.Generic;
+
 using TenaciousEditor;
 using TenaciousEditor.IMGUI;
 
@@ -191,8 +193,11 @@ namespace TenaciousEditor.Collections
                     });
                 }
 
-                foreach (BTGraphNode node in graphView.nodes.ToList())
+                List<Node> nodes = graphView.nodes.ToList();
+                for (int i = 0; i < nodes.Count; ++i)
                 {
+                    BTGraphNode node = (BTGraphNode)nodes[i];
+
                     data.nodes.Add(new BTGraphNodeData()
                     {
                         id = node.Id,
@@ -201,6 +206,9 @@ namespace TenaciousEditor.Collections
                         nodeType = node.NodeType,
                         position = node.GetPosition().position
                     });
+
+                    if (node.IsRootNode)
+                        data.rootNode = data.nodes[data.nodes.Count - 1];
                 }
 
                 filePath = filePath.Replace(Application.dataPath, "Assets");

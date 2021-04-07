@@ -8,6 +8,7 @@ namespace Tenacious.Data
     [Serializable]
     public class BTGraphData : ScriptableObject
     {
+        public BTGraphNodeData rootNode;
         public List<BTGraphNodeData> nodes = new List<BTGraphNodeData>();
         public List<BTGraphEdgeData> edges = new List<BTGraphEdgeData>();
     }

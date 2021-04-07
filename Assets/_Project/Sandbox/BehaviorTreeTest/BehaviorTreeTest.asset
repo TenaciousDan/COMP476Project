@@ -12,6 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e671ab75b31d5ef4a903879be283be66, type: 3}
   m_Name: BehaviorTreeTest
   m_EditorClassIdentifier: 
+  rootNode:
+    id: 24ecfb45-70f4-4bd1-a452-5ac907054b20
+    isRootNode: 1
+    title: Root
+    nodeType: 
+    position: {x: 183, y: 296}
   nodes:
   - id: 2e22db7d-009d-4b5a-ae53-7815c90791c5
     isRootNode: 0
@@ -30,12 +36,12 @@ MonoBehaviour:
     position: {x: 183, y: 296}
   - id: 5ea2fabb-2923-45fa-8f5f-9f4b3cd98cb2
     isRootNode: 0
-    title: Is Cover Available
+    title: IsItemBoxAvailable
     nodeType: Action
     position: {x: 594, y: 65}
   - id: 1181fb4e-ea55-47f8-b3ba-af0b3d4609e6
     isRootNode: 0
-    title: Get To Cover
+    title: GoToItemBox
     nodeType: Action
     position: {x: 594, y: 197}
   - id: b09b915b-f110-434b-9dd7-5436d31ca074

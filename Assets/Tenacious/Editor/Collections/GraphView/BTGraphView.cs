@@ -33,11 +33,11 @@ namespace TenaciousEditor.Collections
 
         public BTGraphNode CreateBTNode(Vector2 position, bool isRootNode = false)
         {
-            return CreateBTNode(new BTGraphNodeData() { position = position, isRootNode = isRootNode });
+            return CreateBTNode(new BTGraphNodeData() { position = position, isRootNode = isRootNode, title = "Node" });
         }
         public BTGraphNode CreateBTNode(BTGraphNodeData nodeData)
         {
-            BTGraphNode node = new BTGraphNode(nodeData.isRootNode) { title = "Node" };
+            BTGraphNode node = new BTGraphNode(nodeData.isRootNode) { title = nodeData.title };
 
             if (!nodeData.isRootNode)
             {

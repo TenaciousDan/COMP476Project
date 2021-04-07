@@ -9,10 +9,14 @@ namespace Game.AI
     {
         protected BTNode node;
 
+        public InverterBTNode() { }
+
         public InverterBTNode(BTNode node)
         {
             this.node = node;
         }
+
+        public BTNode Node { get => node; set => node = value; }
 
         public override EState Evaluate()
         {

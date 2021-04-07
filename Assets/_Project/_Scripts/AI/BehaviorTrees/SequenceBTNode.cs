@@ -9,10 +9,14 @@ namespace Game.AI
     {
         protected List<BTNode> nodes = new List<BTNode>();
 
+        public SequenceBTNode() { }
+
         public SequenceBTNode(List<BTNode> nodes)
         {
             this.nodes = nodes;
         }
+
+        public List<BTNode> Nodes { get => nodes; }
 
         public override EState Evaluate()
         {
