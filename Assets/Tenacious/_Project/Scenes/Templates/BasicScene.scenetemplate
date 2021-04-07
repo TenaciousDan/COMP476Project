@@ -18,7 +18,7 @@ MonoBehaviour:
   preview: {fileID: 656871956078959260}
   dependencies: []
   templatePipeline: {fileID: 0}
-  addToDefaults: 1
+  addToDefaults: 0
 --- !u!28 &656871956078959260
 Texture2D:
   m_ObjectHideFlags: 0

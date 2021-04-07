@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e671ab75b31d5ef4a903879be283be66, type: 3}
+  m_Name: BehaviorTreeTest
+  m_EditorClassIdentifier: 
+  nodes:
+  - id: 2e22db7d-009d-4b5a-ae53-7815c90791c5
+    isRootNode: 0
+    title: Chase
+    nodeType: Selector
+    position: {x: 344, y: 446}
+  - id: 272459be-0d8d-481f-ba17-991ec7e3590c
+    isRootNode: 0
+    title: Cover
+    nodeType: Sequence
+    position: {x: 344, y: 164}
+  - id: 24ecfb45-70f4-4bd1-a452-5ac907054b20
+    isRootNode: 1
+    title: Root
+    nodeType: 
+    position: {x: 183, y: 296}
+  - id: 5ea2fabb-2923-45fa-8f5f-9f4b3cd98cb2
+    isRootNode: 0
+    title: Is Cover Available
+    nodeType: Action
+    position: {x: 594, y: 65}
+  - id: 1181fb4e-ea55-47f8-b3ba-af0b3d4609e6
+    isRootNode: 0
+    title: Get To Cover
+    nodeType: Action
+    position: {x: 594, y: 197}
+  - id: b09b915b-f110-434b-9dd7-5436d31ca074
+    isRootNode: 0
+    title: Shoot
+    nodeType: Selector
+    position: {x: 344, y: 296}
+  edges:
+  - fromId: 24ecfb45-70f4-4bd1-a452-5ac907054b20
+    toId: b09b915b-f110-434b-9dd7-5436d31ca074
+  - fromId: 24ecfb45-70f4-4bd1-a452-5ac907054b20
+    toId: 2e22db7d-009d-4b5a-ae53-7815c90791c5
+  - fromId: 24ecfb45-70f4-4bd1-a452-5ac907054b20
+    toId: 272459be-0d8d-481f-ba17-991ec7e3590c
+  - fromId: 272459be-0d8d-481f-ba17-991ec7e3590c
+    toId: 5ea2fabb-2923-45fa-8f5f-9f4b3cd98cb2
+  - fromId: 272459be-0d8d-481f-ba17-991ec7e3590c
+    toId: 1181fb4e-ea55-47f8-b3ba-af0b3d4609e6
