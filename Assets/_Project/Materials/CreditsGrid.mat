@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WelcomeMenuGrid
+  m_Name: CreditsGrid
   m_Shader: {fileID: -6465566751694194690, guid: 0e49615338421e947ae7da8e64eb7645, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -35,12 +35,12 @@ Material:
     - Boolean_587D9F75: 0
     - Vector1_3fd8ff1fa23f4d08b2fafbebc347fcea: 1
     - Vector1_60372BD4: 0.04
-    - Vector1_6557a97ab38a426fa6ce077828944114: 0.5
+    - Vector1_6557a97ab38a426fa6ce077828944114: 0.4
     - Vector1_9c516d60be27411095a97b5e597f857e: 0
-    - Vector1_f2f2947267bd403f9570ad622bae8193: -0.5
+    - Vector1_f2f2947267bd403f9570ad622bae8193: -0.4
     m_Colors:
-    - Color_14031494: {r: 0.46031266, g: 1.0592737, b: 0.48804232, a: 1}
+    - Color_14031494: {r: 0.59607846, g: 1.372549, b: 0.627451, a: 1}
     - Color_40CBDD44: {r: 0, g: 0, b: 0, a: 1}
-    - Vector3_47C25A0: {r: 0.2, g: 0.2, b: 1, a: 0}
-    - Vector3_D2CC2B67: {r: 0, g: 0, b: 0, a: 0}
+    - Vector3_47C25A0: {r: 0.4, g: 0.4, b: 1, a: 0}
+    - Vector3_D2CC2B67: {r: 2.5, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
