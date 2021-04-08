@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class PU_Base : MonoBehaviour
 {
+    [SerializeField]
+    public Sprite inventoryImage;
     protected bool isActive;
 
     private void Start()
