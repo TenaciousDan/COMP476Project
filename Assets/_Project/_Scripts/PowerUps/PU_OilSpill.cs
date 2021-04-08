@@ -15,7 +15,7 @@ public class PU_OilSpill : PU_Base
         }
     }
 
-    protected override void OnPowerUpUse(GameObject player)
+    public override void OnPowerUpUse(GameObject player)
     {
         throw new System.NotImplementedException();
     }

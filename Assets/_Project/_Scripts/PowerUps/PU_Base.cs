@@ -23,7 +23,7 @@ public abstract class PU_Base : MonoBehaviour
         }
     }
 
-    protected abstract void OnPowerUpUse(GameObject player);
+    public abstract void OnPowerUpUse(GameObject player);
 
     private void OnTriggerEnter(Collider other)
     {
