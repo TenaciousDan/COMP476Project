@@ -15,18 +15,18 @@ MonoBehaviour:
   musicList:
   - audioClip: {fileID: 8300000, guid: ca915a03dc95f9742b01e3e36a52b27d, type: 3}
     loop: 1
-    fade: 0
+    fade: 1
     volumeScale: 1
   - audioClip: {fileID: 8300000, guid: 514b6f77b1a72684bbeea22f6675ecc2, type: 3}
     loop: 1
-    fade: 0
+    fade: 1
     volumeScale: 1
   - audioClip: {fileID: 8300000, guid: 84fa7f054aa84b94caad2db6bc91c756, type: 3}
     loop: 1
-    fade: 0
+    fade: 1
     volumeScale: 1
   - audioClip: {fileID: 8300000, guid: 4444ec54f6cc97b44be16765b1c8f85f, type: 3}
     loop: 1
-    fade: 0
+    fade: 1
     volumeScale: 1
   soundList: []
