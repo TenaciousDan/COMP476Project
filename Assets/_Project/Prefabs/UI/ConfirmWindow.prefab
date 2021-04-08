@@ -481,6 +481,34 @@ PrefabInstance:
       propertyPath: m_Text
       value: CANCEL
       objectReference: {fileID: 0}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 387586375550940091}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CancelClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Tenacious.UI.Windows.ConfirmWindow, Tenacious-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2783876646594427678, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -602,6 +630,34 @@ PrefabInstance:
     - target: {fileID: 2783876645301478518, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
       propertyPath: m_Text
       value: CONFIRM
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 387586375550940091}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ConfirmClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Tenacious.UI.Windows.ConfirmWindow, Tenacious-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2783876646594427678, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
       propertyPath: m_Pivot.x
