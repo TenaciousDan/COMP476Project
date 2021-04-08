@@ -2333,6 +2333,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36e7ce1dace921142b142528996e7e45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allowReinitialization: 0
+  destroyOnLoad: 0
 --- !u!114 &1480245419
 MonoBehaviour:
   m_ObjectHideFlags: 0
