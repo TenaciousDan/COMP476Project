@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 
 using Tenacious.Scenes;
+using Tenacious.Audio;
 
 namespace Game.Scenes
 {
@@ -13,6 +14,8 @@ namespace Game.Scenes
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = false;
+
+            AudioManager.Instance.PlayMusic("Intro");
         }
 
         public void GoToNextScene()
