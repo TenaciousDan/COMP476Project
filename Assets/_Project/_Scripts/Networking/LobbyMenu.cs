@@ -88,7 +88,7 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
     {
         var playerName = playerNameInputField.text;
 
-        if (!playerName.Equals(""))
+        if (!playerName.Equals(string.Empty))
         {
             PhotonNetwork.LocalPlayer.NickName = playerName;
             PhotonNetwork.ConnectUsingSettings();
@@ -135,8 +135,10 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.JoinLobby();
         }
-        
-        PhotonNetwork.GetCustomRoomList(PhotonNetwork.CurrentLobby,null);
+        else
+        {
+            PhotonNetwork.GetCustomRoomList(PhotonNetwork.CurrentLobby, null);
+        }
     }
     
     #endregion
@@ -171,7 +173,7 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
     
     private void UpdateRoomListView()
     {
-        roomListText.text = cachedRoomList.Count == 0 ? $"No open rooms." : "";
+        roomListText.text = cachedRoomList.Count == 0 ? $"No open rooms." : string.Empty;
 
         foreach (RoomInfo info in cachedRoomList.Values)
         {
@@ -187,7 +189,7 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
         // Display all the players currently in the lobby
         foreach (Player player in PhotonNetwork.PlayerList)
         {
-            playerListText.text += $"{player.NickName}\n";
+            playerListText.text += player.IsMasterClient ? $"-> {player.NickName}\n" : $"{player.NickName}\n";
         }
 
         // Only the host can start the game
