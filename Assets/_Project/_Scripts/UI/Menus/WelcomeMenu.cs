@@ -38,7 +38,7 @@ namespace Game.UI.Menus
         public void QuitBtnClick()
         {
             ConfirmWindow cw = (ConfirmWindow)SystemUI.Instance.WindowManager.OpenWindow("ConfirmWindow");
-            cw.SetData("Are you sure you want to quit ?", (ConfirmWindow dialog, bool result) =>
+            cw.SetData("Are you sure you want to quit ?", (ConfirmWindow self, bool result) =>
             {
                 if (result)
                 {
