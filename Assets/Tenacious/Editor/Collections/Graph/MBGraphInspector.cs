@@ -73,7 +73,9 @@ namespace TenaciousEditor.Collections
                                 target.__useTagsToIgnoreCollisions = EditorGUILayout.Toggle("Use Tags To Ignore Collisions", target.__useTagsToIgnoreCollisions);
 
                                 EditorGUI.BeginChangeCheck();
+                                EditorGUI.indentLevel++; EditorGUI.indentLevel++;
                                 EditorGUILayout.PropertyField(serializedObject.FindProperty("__collisionTags"), new GUIContent("Ignored Collision Tags"));
+                                EditorGUI.indentLevel--; EditorGUI.indentLevel--;
                                 if (EditorGUI.EndChangeCheck()) serializedObject.ApplyModifiedProperties();
                             }
                         }
