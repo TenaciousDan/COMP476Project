@@ -2,7 +2,7 @@
 
 namespace Game.AI
 {
-    public class AIPlayerTurnStrategy : MonoBehaviour, IPlayerTurnStrategy
+    public class AIAgent : MonoBehaviour
     {
         [SerializeField] private PlayerController player;
         [SerializeField] private BehaviorTree behaviorTree;
