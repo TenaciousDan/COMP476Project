@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     private int maxActionPoints;
     private float speed = 0.2f;
+    private bool hasShield = false;
 
     public int currentActionPoints
     {
@@ -57,8 +58,7 @@ public class PlayerController : MonoBehaviour
     {
         currentActionPoints = maxActionPoints;
     }
-
-    // in case we want to add action points
+    
     public void AddActionPoints(int numActionPoints, bool exceedLimit = false)
     {
         currentActionPoints += numActionPoints;
@@ -66,6 +66,23 @@ public class PlayerController : MonoBehaviour
         {
             currentActionPoints = maxActionPoints;
         }
+        print("Added action points. Player now has " + currentActionPoints + " action points.");
+    }
+    
+    public void RemoveActionPoints(int numActionPoints)
+    {
+        currentActionPoints -= numActionPoints;
+        if (currentActionPoints < 0)
+        {
+            currentActionPoints = 0;
+        }
+        print("Removed action points. Player now has " + currentActionPoints + " action points.");
+    }
+
+    public void ActivateShield()
+    {
+        hasShield = true;
+        print("shield activated");
     }
 
     private IEnumerator SmoothMove(List<MBGraphNode> nodes)
