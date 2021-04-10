@@ -9,9 +9,7 @@ namespace Game.AI
 {
     public class Pathfinding : MonoBehaviour
     {
-        [SerializeField] private MBGraph mbGraph;
-        [SerializeField] private MBGraphNode startNode;
-        [SerializeField] private MBGraphNode goalNode;
+        [SerializeField] protected MBGraph mbGraph;
 
         public delegate float Heuristic(Transform s, Transform e);
 
