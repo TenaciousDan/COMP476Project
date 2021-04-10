@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     [SerializeField] List<PlayerController> players;
+    [SerializeField] List<MBGraphNode> testList = new List<MBGraphNode>();
 
     private Vector3[] positionOffsets = new[] {
         new Vector3(0.5f, 0.0f, 0.5f),
@@ -18,10 +19,9 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         InitializePlayers();
-        List<MBGraphNode> testList = new List<MBGraphNode>();
         foreach (PlayerController player in players)
         {
-            player.Move(testList, 1);
+            player.Move(testList, 2);
         }
     }
 
