@@ -10,7 +10,7 @@ namespace Game.UI
     {
         [SerializeField] private List<PlayerUIContainer> playerContainers;
 
-        public List<PlayerController> players;
+        public List<AbstractPlayer> players;
 
         /// <summary>
         /// Call to initialize the shared player UI components.
