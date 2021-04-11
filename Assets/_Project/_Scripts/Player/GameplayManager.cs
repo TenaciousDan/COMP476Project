@@ -13,7 +13,7 @@ public class GameplayManager : MonoBehaviour
     private Pathfinding pathfinding;
     private int currentPlayer = 0;
 
-    private Vector3[] positionOffsets = new[] {
+    private Vector3[] positionOffsets = new Vector3[] {
         new Vector3(2.5f, 0.0f, 2.5f),
         new Vector3(2.5f, 0.0f, -2.5f),
         new Vector3(-2.5f, 0.0f, 2.5f),
@@ -34,7 +34,12 @@ public class GameplayManager : MonoBehaviour
 
     private void Update()
     {
-        
+        if (players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.Standby)
+            players[currentPlayer].StandbyPhase();
+        else if (players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.Main)
+            players[currentPlayer].MainPhase();
+        else if (players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.End)
+            players[currentPlayer].EndPhase();
     }
 
     private void InitializePlayers()

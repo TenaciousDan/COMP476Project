@@ -12,19 +12,10 @@ namespace Game.AI
             base.Awake();
         }
 
-        public override void StandbyPhase()
-        {
-            Phase = EPlayerPhase.Standby;
-        }
-
         public override void MainPhase()
         {
-            throw new System.NotImplementedException();
-        }
-
-        public override void EndPhase()
-        {
-            Phase = EPlayerPhase.End;
+            if (Phase != EPlayerPhase.End)
+                Phase = EPlayerPhase.Main;
         }
 
         // behavior tree methods

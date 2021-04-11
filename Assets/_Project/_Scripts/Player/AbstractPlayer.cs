@@ -3,31 +3,46 @@
 [RequireComponent(typeof(PlayerController))]
 public abstract class AbstractPlayer : MonoBehaviour
 {
-    public enum EPlayerPhase { Standby, Main, End }
+    public enum EPlayerPhase { None, Standby, Main, End }
 
     public EPlayerPhase Phase { get; set; }
 
     private PlayerController controller;
-    public PlayerController Controller { get => controller; set => controller = value; }
+    public PlayerController Controller 
+    { 
+        get
+        {
+            if (controller == null)
+                controller = GetComponent<PlayerController>();
+            return controller;
+        }
+        set => controller = value; 
+    }
 
     protected virtual void Awake()
     {
-        controller = GetComponent<PlayerController>();
-        Phase = EPlayerPhase.End;
+        //
     }
 
     public virtual void StandbyPhase()
     {
-        Phase = EPlayerPhase.Standby;
-    }
+        if (Phase != EPlayerPhase.None)
+            Phase = EPlayerPhase.Standby;
 
-    public virtual void MainPhase()
-    {
+        // TODO: do standby phase things
+
         Phase = EPlayerPhase.Main;
     }
 
+    public abstract void MainPhase();
+
     public virtual void EndPhase()
     {
-        Phase = EPlayerPhase.End;
+        if (Phase != EPlayerPhase.Main)
+            Phase = EPlayerPhase.End;
+
+        // TODO: do end phase things
+
+        Phase = EPlayerPhase.None;
     }
 }
