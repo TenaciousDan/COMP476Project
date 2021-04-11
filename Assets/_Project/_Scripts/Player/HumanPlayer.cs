@@ -11,9 +11,11 @@ public class HumanPlayer : AbstractPlayer
         base.Awake();
     }
 
+    /// <summary>
+    /// Will be called by GameManager in the Update() as long as Phase = Main
+    /// </summary>
     public override void MainPhase()
     {
-        if (Phase != EPlayerPhase.End)
-            Phase = EPlayerPhase.Main;
+        Phase = EPlayerPhase.Main;
     }
 }

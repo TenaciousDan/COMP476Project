@@ -14,8 +14,7 @@ namespace Game.AI
 
         public override void MainPhase()
         {
-            if (Phase != EPlayerPhase.End)
-                Phase = EPlayerPhase.Main;
+            Phase = EPlayerPhase.Main;
         }
 
         // behavior tree methods
