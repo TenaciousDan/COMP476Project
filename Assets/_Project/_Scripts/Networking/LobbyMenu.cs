@@ -189,7 +189,7 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
         // Display all the players currently in the lobby
         foreach (Player player in PhotonNetwork.PlayerList)
         {
-            playerListText.text += player.IsMasterClient ? $"-> {player.NickName}\n" : $"{player.NickName}\n";
+            playerListText.text += player.IsMasterClient ? $"[Host] {player.NickName}\n" : $"{player.NickName}\n";
         }
 
         // Only the host can start the game
