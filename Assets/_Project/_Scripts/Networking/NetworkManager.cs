@@ -1,10 +1,14 @@
+using System;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
+    public const int MaxRoomSize = 4;
+    
     private static NetworkManager instance;
     private static bool reinitializationPermitted = false;
     private static bool destroyed = false;
@@ -72,9 +76,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
 
     #region ROOMS
-    public void CreateRoom(string roomName)
+    public void CreateRoom(string roomName, int aiPlayerCount)
     {
-        PhotonNetwork.CreateRoom(roomName);
+        RoomOptions newRoomOptions = new RoomOptions();
+        newRoomOptions.MaxPlayers = Convert.ToByte(MaxRoomSize - aiPlayerCount);
+        
+        PhotonNetwork.CreateRoom(roomName, newRoomOptions);
     }
 
     public override void OnCreatedRoom()

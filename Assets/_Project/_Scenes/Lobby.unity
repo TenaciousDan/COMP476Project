@@ -2932,6 +2932,34 @@ PrefabInstance:
       propertyPath: m_Options.m_Options.Array.data[3].m_Text
       value: 3 AI
       objectReference: {fileID: 0}
+    - target: {fileID: 4441299852793806254, guid: 5520d1cc8a01b0949abc00bfaf8e5da4, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4441299852793806254, guid: 5520d1cc8a01b0949abc00bfaf8e5da4, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4441299852793806254, guid: 5520d1cc8a01b0949abc00bfaf8e5da4, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1884535487}
+    - target: {fileID: 4441299852793806254, guid: 5520d1cc8a01b0949abc00bfaf8e5da4, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4441299852793806254, guid: 5520d1cc8a01b0949abc00bfaf8e5da4, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HandleInputData
+      objectReference: {fileID: 0}
+    - target: {fileID: 4441299852793806254, guid: 5520d1cc8a01b0949abc00bfaf8e5da4, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: LobbyMenu, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4441299852793806254, guid: 5520d1cc8a01b0949abc00bfaf8e5da4, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5520d1cc8a01b0949abc00bfaf8e5da4, type: 3}
 --- !u!224 &1726459625 stripped
