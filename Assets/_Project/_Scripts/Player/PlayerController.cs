@@ -95,9 +95,6 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator SmoothMove(List<GraphNode<GameObject>> nodes)
     {
-        float step = moveSpeed * Time.deltaTime;
-        float rotationStep = rotationSpeed * Time.deltaTime;
-
         foreach (GraphNode<GameObject> node in nodes)
         {
             nodePosition = node.Data.GetComponent<MBGraphNode>();
