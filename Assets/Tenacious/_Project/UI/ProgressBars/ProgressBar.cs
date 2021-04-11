@@ -10,7 +10,7 @@ namespace Tenacious.UI
         [SerializeField] private Image filledImage;
         [SerializeField] private Text progressText;
         [SerializeField] private string progressUnits;
-        [SerializeField, Min(0)] private int progressPercision = 0;
+        [SerializeField, Min(0)] private int progressPrecision = 0;
 
         public float minimum = 0;
         public float maximum = 100;
@@ -30,7 +30,7 @@ namespace Tenacious.UI
                 filledImage.fillAmount = Mathf.Clamp(currentOffset / maximumOffeset, 0, 1);
 
             if (progressText != null)
-                progressText.text = MathUtil.Round(current, progressPercision) + " " + progressUnits;
+                progressText.text = MathUtil.Round(current, progressPrecision) + " " + progressUnits;
         }
     }
 }
