@@ -13,8 +13,12 @@ namespace Game.AI
 
         public delegate float Heuristic(Transform s, Transform e);
 
-        public List<GraphNode<GameObject>> FindPath(IWeightedDiGraph<GameObject, float> graph, string startId, string goalId, Heuristic heuristic = null, bool isAdmissible = true)
+        public List<GraphNode<GameObject>> FindPath(string startId, string goalId, Heuristic heuristic = null, bool isAdmissible = true)
         {
+            if (mbGraph == null) return new List<GraphNode<GameObject>>();
+
+            IWeightedDiGraph<GameObject, float> graph = mbGraph.graph;
+
             if (heuristic == null) heuristic = (Transform s, Transform e) => 0;
 
             List<GraphNode<GameObject>> path = null;
