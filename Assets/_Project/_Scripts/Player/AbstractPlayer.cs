@@ -28,7 +28,7 @@ public abstract class AbstractPlayer : MonoBehaviour
 
     public MBGraphNode PositionNode
     {
-        get; private set;
+        get; set;
     }
 
     // offset so multiple players can be on the same tile
