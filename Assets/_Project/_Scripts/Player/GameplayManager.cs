@@ -1,7 +1,11 @@
-using System.Collections.Generic;
-using Tenacious.Collections;
 using UnityEngine;
+
+using System;
+using System.Collections.Generic;
+
 using Game.AI;
+
+using Tenacious.Collections;
 
 [RequireComponent(typeof(Pathfinding))]
 public class GameplayManager : MonoBehaviour
@@ -12,6 +16,8 @@ public class GameplayManager : MonoBehaviour
 
     private Pathfinding pathfinding;
     private int currentPlayer = 0;
+
+    private bool isCRTurnUpdateRunning;
 
     private Vector3[] positionOffsets = new Vector3[] {
         new Vector3(2.5f, 0.0f, 2.5f),
