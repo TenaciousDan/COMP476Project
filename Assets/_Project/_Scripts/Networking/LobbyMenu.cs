@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -21,8 +22,9 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
     [SerializeField] private TextMeshProUGUI roomListText;
     [SerializeField] private TMP_InputField playerNameInputField;
     [SerializeField] private Button startGameButton;
-    
+
     private Dictionary<string, RoomInfo> cachedRoomList;
+    private int aiPlayerCount;
     
     // Start is called before the first frame update
     private void Start()
@@ -102,7 +104,7 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
     // Called when create room button is pressed
     public void CreateRoomBtnClick(TMP_InputField roomNameInput)
     {
-        NetworkManager.Instance.CreateRoom(roomNameInput.text);
+        NetworkManager.Instance.CreateRoom(roomNameInput.text, aiPlayerCount);
     }
 
     // Called when join room button is pressed
@@ -174,7 +176,7 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
     private void UpdateRoomListView()
     {
         roomListText.text = cachedRoomList.Count == 0 ? $"No open rooms." : string.Empty;
-
+        
         foreach (RoomInfo info in cachedRoomList.Values)
         {
             roomListText.text += $"{info.Name}\n";
@@ -189,7 +191,13 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
         // Display all the players currently in the lobby
         foreach (Player player in PhotonNetwork.PlayerList)
         {
-            playerListText.text += player.IsMasterClient ? $"-> {player.NickName}\n" : $"{player.NickName}\n";
+            playerListText.text += player.IsMasterClient ? $"[Host] {player.NickName}\n" : $"{player.NickName}\n";
+        }
+        
+        // Display all AI players if any
+        foreach (int ai in Enumerable.Range(1, aiPlayerCount))
+        {
+            playerListText.text += $"AI Player {ai}\n";
         }
 
         // Only the host can start the game
@@ -212,5 +220,10 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
 
         // Enable requested screen
         screen.SetActive(true);
+    }
+
+    public void HandleInputData(int value)
+    {
+        aiPlayerCount = value;
     }
 }

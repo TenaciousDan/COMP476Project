@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PU_Shield : PU_Base
 {
-    public override void OnPowerUpUse(GameObject player)
+    public override void OnPowerUpUse(AbstractPlayer player)
     {
-        player.GetComponent<PlayerController>().ActivateShield();
+        player.ActivateShield();
     }
 }

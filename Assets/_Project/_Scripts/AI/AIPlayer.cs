@@ -1,33 +1,64 @@
 ﻿using UnityEngine;
 
+using System.Collections;
+using System.Collections.Generic;
+
 namespace Game.AI
 {
+    [RequireComponent(typeof(Pathfinding))]
     public class AIPlayer : AbstractPlayer
     {
-        [SerializeField] private PlayerController player;
         [SerializeField] private BehaviorTree behaviorTree;
+
+        private Queue<IEnumerator> actionQueue;
+        private bool isProcessingActions;
 
         protected override void Awake()
         {
             base.Awake();
+
+            actionQueue = new Queue<IEnumerator>();
         }
 
-        public override void StandbyPhase()
+        public override void MainPhaseUpdate()
         {
-            Phase = EPlayerPhase.Standby;
+            Phase = EPlayerPhase.Main;
+
+            // Enqueue actions
+            // ...
+
+            // Process actions
+            if (!isProcessingActions)
+                StartCoroutine(ProcessActionsQueue());
         }
 
-        public override void MainPhase()
+        private void EnqueueAction(IEnumerator action)
         {
-            throw new System.NotImplementedException();
+            actionQueue.Enqueue(action);
         }
 
-        public override void EndPhase()
+        private IEnumerator ProcessActionsQueue()
         {
-            Phase = EPlayerPhase.End;
+            isProcessingActions = true;
+
+            while (true)
+            {
+                if (actionQueue.Count > 0)
+                {
+                    State = EPlayerState.Busy;
+                    yield return StartCoroutine(actionQueue.Dequeue());
+                    State = EPlayerState.Waiting;
+                }
+                else
+                    break;
+            }
+
+            isProcessingActions = false;
         }
 
-        // behavior tree methods
+        /**********************************
+         * BehaviorTree leaf node methods
+         ***********************************/
         public int IsItemBoxAvailable()
         {
             return (int)BTNode.EState.Success;

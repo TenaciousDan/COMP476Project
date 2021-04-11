@@ -14,7 +14,7 @@ public abstract class PU_Base : MonoBehaviour
         isActive = true;
     }
 
-    protected virtual void OnPowerUpGet(GameObject player)
+    protected virtual void OnPowerUpGet(AbstractPlayer player)
     {
         if (isActive)
         {
@@ -23,13 +23,13 @@ public abstract class PU_Base : MonoBehaviour
         }
     }
 
-    public abstract void OnPowerUpUse(GameObject player);
+    public abstract void OnPowerUpUse(AbstractPlayer player);
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            OnPowerUpGet(other.gameObject);
+            OnPowerUpGet(other.gameObject.GetComponent<AbstractPlayer>());
         }
     }
 }

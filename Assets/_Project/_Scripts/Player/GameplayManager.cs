@@ -1,50 +1,73 @@
-using System.Collections.Generic;
-using Tenacious.Collections;
 using UnityEngine;
+
+using System;
+using System.Collections.Generic;
+
 using Game.AI;
+
+using Tenacious.Collections;
 
 [RequireComponent(typeof(Pathfinding))]
 public class GameplayManager : MonoBehaviour
 {
-    [SerializeField] private List<AbstractPlayer> players;
-    [SerializeField] private MBGraphNode startNode;
-    [SerializeField] private MBGraphNode goalNode;
+    [Serializable]
+    public class PlayerDescriptor
+    {
+        public GameObject playerPrefab;
+        public MBGraphNode startNode;
+        public Vector3 positionOffset = new Vector3(2.5f, 0.0f, 2.5f);
+
+        private AbstractPlayer player;
+        public AbstractPlayer Player { get => player == null ? playerPrefab.GetComponent<AbstractPlayer>() : player; }
+    }
+
+    public List<PlayerDescriptor> playerDescriptors;
+
+    [SerializeField] private Transform playersParent;
 
     private Pathfinding pathfinding;
     private int currentPlayer = 0;
 
-    private Vector3[] positionOffsets = new[] {
-        new Vector3(2.5f, 0.0f, 2.5f),
-        new Vector3(2.5f, 0.0f, -2.5f),
-        new Vector3(-2.5f, 0.0f, 2.5f),
-        new Vector3(-2.5f, 0.0f, -2.5f)
-    };
+    private bool isCRTurnUpdateRunning;
 
     private void Awake()
     {
-        pathfinding = GetComponent<Pathfinding>();
-
         InitializePlayers();
     }
 
     private void Start()
     {
-        List<GraphNode<GameObject>> movePath = pathfinding.FindPath(startNode.nodeId, goalNode.nodeId);
+        //
     }
 
     private void Update()
     {
-        
+        if (currentPlayer < playerDescriptors.Count)
+        {
+            if (playerDescriptors[currentPlayer].Player.Phase == AbstractPlayer.EPlayerPhase.Standby)
+                playerDescriptors[currentPlayer].Player.StandbyPhaseUpdate();
+            else if (playerDescriptors[currentPlayer].Player.Phase == AbstractPlayer.EPlayerPhase.Main)
+                playerDescriptors[currentPlayer].Player.MainPhaseUpdate();
+            else if (playerDescriptors[currentPlayer].Player.Phase == AbstractPlayer.EPlayerPhase.End)
+                playerDescriptors[currentPlayer].Player.EndPhaseUpdate();
+        }
     }
 
     private void InitializePlayers()
     {
-        int offsetIndex = 0;
-        foreach(AbstractPlayer player in players)
+        for (int i = 0; i < playerDescriptors.Count; ++i)
         {
-            player.Controller.InitializePlayer(99, positionOffsets[offsetIndex]);
-            offsetIndex++;
-            player.Controller.Spawn(startNode);
+            playerDescriptors[i].Player.InitializePlayer(99, playerDescriptors[i].positionOffset);
+            SpawnPlayer(playerDescriptors[i].playerPrefab, playerDescriptors[i].startNode, playerDescriptors[i].positionOffset);
         }
+    }
+
+    private void SpawnPlayer(GameObject playerPrefab, MBGraphNode startingnode, Vector3 positionOffset)
+    {
+        GameObject playerObj = Instantiate(playerPrefab);
+        AbstractPlayer playerComponent = playerObj.GetComponent<AbstractPlayer>();
+        playerComponent.PositionNode = startingnode;
+        Vector3 newWorldPosition = startingnode.transform.position + positionOffset;
+        playerObj.transform.position = new Vector3(newWorldPosition.x, transform.position.y, newWorldPosition.z);
     }
 }

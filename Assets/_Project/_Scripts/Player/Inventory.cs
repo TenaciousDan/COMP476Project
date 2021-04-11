@@ -6,28 +6,37 @@ using UnityEngine.UI;
 public class Inventory : MonoBehaviour
 {
     private int maxInventorySize;
-    [SerializeField]
-    private GameObject _inventorySlots;
+    [SerializeField] public GameObject _inventorySlots;
     private List<GameObject> inventorySlots;
     private int selectedIndex;
-    
+
+    [SerializeField] private AbstractPlayer player;
+
     public List<PU_Base> items
     {
         get; private set;
     }
 
+    private void Awake()
+    {
+        //
+    }
+
     private void Start()
     {
-        items = new List<PU_Base>();
-        inventorySlots = new List<GameObject>();
-        int children = _inventorySlots.transform.childCount;
-        for (int i = 0; i < children; i++)
+        if (_inventorySlots != null)
         {
-            inventorySlots.Add(_inventorySlots.transform.GetChild(i).gameObject);
-            items.Add(null);
+            items = new List<PU_Base>();
+            inventorySlots = new List<GameObject>();
+            int children = _inventorySlots.transform.childCount;
+            for (int i = 0; i < children; i++)
+            {
+                inventorySlots.Add(_inventorySlots.transform.GetChild(i).gameObject);
+                items.Add(null);
+            }
+            maxInventorySize = inventorySlots.Count;
+            selectedIndex = 0;
         }
-        maxInventorySize = inventorySlots.Count;
-        selectedIndex = 0;
     }
     // TODO remove this hard coded way of selecting items once we decide how we want to select an item
     private void Update()
@@ -103,7 +112,7 @@ public class Inventory : MonoBehaviour
     {
         if(inventorySlots[selectedIndex].GetComponent<Image>().sprite != null)
         {
-            items[selectedIndex].OnPowerUpUse(gameObject);
+            items[selectedIndex].OnPowerUpUse(player);
             RemoveItem(selectedIndex);
         }
     }
