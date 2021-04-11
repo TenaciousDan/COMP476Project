@@ -3,7 +3,7 @@
 [RequireComponent(typeof(PlayerController))]
 public abstract class AbstractPlayer : MonoBehaviour
 {
-    public enum EPlayerPhase { None, Standby, Main, End }
+    public enum EPlayerPhase { Waiting, Standby, Main, End }
 
     public EPlayerPhase Phase { get; set; }
 
@@ -26,7 +26,7 @@ public abstract class AbstractPlayer : MonoBehaviour
 
     public virtual void StandbyPhase()
     {
-        if (Phase != EPlayerPhase.None)
+        if (Phase != EPlayerPhase.Waiting)
             Phase = EPlayerPhase.Standby;
 
         // TODO: do standby phase things
@@ -43,6 +43,6 @@ public abstract class AbstractPlayer : MonoBehaviour
 
         // TODO: do end phase things
 
-        Phase = EPlayerPhase.None;
+        Phase = EPlayerPhase.Waiting;
     }
 }
