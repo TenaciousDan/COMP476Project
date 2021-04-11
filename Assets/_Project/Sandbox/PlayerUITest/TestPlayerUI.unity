@@ -2699,7 +2699,7 @@ GameObject:
   - component: {fileID: 911619124}
   - component: {fileID: 911619123}
   m_Layer: 5
-  m_Name: Checkpoints
+  m_Name: CheckpointsText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3584,9 +3584,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1259931211}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b42bf812be44d0c4bb92be690d55a0d8, type: 3}
+  m_Script: {fileID: 11500000, guid: 88944ed74bc937e4ebb14f022317b091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  checkpointsLeft: {fileID: 911619123}
+  itemImages:
+  - {fileID: 942155925}
+  - {fileID: 743677698}
+  - {fileID: 1413284040}
+  actionPoints: {fileID: 169411369377613740}
 --- !u!4 &1259931213
 Transform:
   m_ObjectHideFlags: 0
@@ -6527,7 +6533,7 @@ MonoBehaviour:
   filledImage: {fileID: 169411369157091214}
   progressText: {fileID: 7956035925601537305}
   progressUnits: AP
-  progressPercision: 0
+  progressPrecision: 0
   minimum: 0
   maximum: 5
   current: 2

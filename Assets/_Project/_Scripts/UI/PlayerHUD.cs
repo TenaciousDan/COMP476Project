@@ -1,9 +1,17 @@
-﻿using UnityEngine;
+﻿using Tenacious.UI;
+using TMPro;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Game.UI
 {
     public class PlayerHUD : MonoBehaviour
     {
+        public TextMeshProUGUI checkpointsLeft;
+        public List<Image> itemImages;
+        public ProgressBar actionPoints;
+
         public void MoveBtnClick()
         {
             print("Time to move!");
