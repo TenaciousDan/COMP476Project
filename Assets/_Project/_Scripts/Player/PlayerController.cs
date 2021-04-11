@@ -6,7 +6,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private int maxActionPoints;
-    private float speed = 0.2f;
+    private float moveSpeed = 10.0f;
+    private float rotationSpeed = 10.0f;
     private bool hasShield = false;
 
     public int currentActionPoints
@@ -25,7 +26,7 @@ public class PlayerController : MonoBehaviour
         get; private set;
     }
 
-    public void Move(List<MBGraphNode> nodes, int cost)
+    public void Move(List<GraphNode<GameObject>> nodes, int cost)
     {
         if (SpendActionPoints(cost))
         {
@@ -38,6 +39,13 @@ public class PlayerController : MonoBehaviour
     {
         maxActionPoints = currentActionPoints = _maxActionPoints;
         positionOffset = _positionOffset;
+    }
+
+    public void Spawn(MBGraphNode node)
+    {
+        nodePosition = node;
+        Vector3 newWorldPosition = node.transform.position + positionOffset;
+        transform.position = new Vector3(newWorldPosition.x, transform.position.y, newWorldPosition.z);
     }
 
     public bool SpendActionPoints(int numActionPoints)
@@ -85,18 +93,20 @@ public class PlayerController : MonoBehaviour
         print("shield activated");
     }
 
-    private IEnumerator SmoothMove(List<MBGraphNode> nodes)
+    private IEnumerator SmoothMove(List<GraphNode<GameObject>> nodes)
     {
-        float step = speed * Time.deltaTime;
-
-        foreach (MBGraphNode node in nodes)
+        foreach (GraphNode<GameObject> node in nodes)
         {
-            nodePosition = node;
-            Vector3 newWorldPosition = node.transform.position + positionOffset;
+            nodePosition = node.Data.GetComponent<MBGraphNode>();
+            Vector3 newWorldPosition = node.Data.transform.position + positionOffset;
             newWorldPosition = new Vector3(newWorldPosition.x, transform.position.y, newWorldPosition.z);
+
+            Vector3 targetDirection = (node.Data.transform.position + positionOffset) - transform.position;
             while(transform.position != newWorldPosition)
             {
-                transform.position = Vector3.MoveTowards(transform.position, newWorldPosition, step);
+                Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, rotationSpeed * Time.deltaTime, 0.0f);
+                transform.position = Vector3.MoveTowards(transform.position, newWorldPosition, moveSpeed * Time.deltaTime);
+                transform.rotation = Quaternion.LookRotation(newDirection);
                 yield return null;
             }
         }
