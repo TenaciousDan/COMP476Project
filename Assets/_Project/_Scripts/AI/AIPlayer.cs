@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace Game.AI
 {
+    [RequireComponent(typeof(Pathfinding))]
     public class AIPlayer : AbstractPlayer
     {
         [SerializeField] private BehaviorTree behaviorTree;
