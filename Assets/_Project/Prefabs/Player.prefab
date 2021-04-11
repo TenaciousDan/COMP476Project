@@ -14,8 +14,9 @@ GameObject:
   - component: {fileID: 4662508507273230551}
   - component: {fileID: 4634274288297368358}
   - component: {fileID: 4634274288297368365}
-  - component: {fileID: 4634274288297368362}
-  - component: {fileID: 4634274288297368360}
+  - component: {fileID: 2147173957417967686}
+  - component: {fileID: 6346006916840474583}
+  - component: {fileID: 5405298471439158274}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -131,7 +132,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inventorySlots: {fileID: 0}
---- !u!114 &4634274288297368362
+  player: {fileID: 2147173957417967686}
+--- !u!114 &2147173957417967686
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,11 +142,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4635357089720670571}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee8cca0fd16b4fa4da7a3fdcabf245aa, type: 3}
+  m_Script: {fileID: 11500000, guid: cc98a7110fdc46849b5547b064621d42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hud: {fileID: 0}
---- !u!114 &4634274288297368360
+  behaviorTree: {fileID: 5405298471439158274}
+--- !u!114 &6346006916840474583
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,9 +155,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 4635357089720670571}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e93134026752b37468a75e73c4202046, type: 3}
+  m_Script: {fileID: 11500000, guid: 99dd0bfb8f6516b459fe6423966faf2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mbGraph: {fileID: 0}
+--- !u!114 &5405298471439158274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4635357089720670571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8631d0676b647143868b74391d4c2f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  behaviorTreeGraphData: {fileID: 0}
+  actions: []
 --- !u!1 &4635894109091210359
 GameObject:
   m_ObjectHideFlags: 0

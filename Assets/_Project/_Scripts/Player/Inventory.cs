@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(AbstractPlayer))]
 public class Inventory : MonoBehaviour
 {
     private int maxInventorySize;
@@ -11,7 +10,7 @@ public class Inventory : MonoBehaviour
     private List<GameObject> inventorySlots;
     private int selectedIndex;
 
-    private AbstractPlayer player;
+    [SerializeField] private AbstractPlayer player;
 
     public List<PU_Base> items
     {
@@ -20,7 +19,7 @@ public class Inventory : MonoBehaviour
 
     private void Awake()
     {
-        player = GetComponent<AbstractPlayer>();
+        //
     }
 
     private void Start()
