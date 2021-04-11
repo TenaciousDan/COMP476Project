@@ -3,17 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(AbstractPlayer))]
 public class Inventory : MonoBehaviour
 {
     private int maxInventorySize;
-    [SerializeField]
-    private GameObject _inventorySlots;
+    [SerializeField] private GameObject _inventorySlots;
     private List<GameObject> inventorySlots;
     private int selectedIndex;
-    
+
+    private AbstractPlayer player;
+
     public List<PU_Base> items
     {
         get; private set;
+    }
+
+    private void Awake()
+    {
+        player = GetComponent<AbstractPlayer>();
     }
 
     private void Start()
@@ -103,7 +110,7 @@ public class Inventory : MonoBehaviour
     {
         if(inventorySlots[selectedIndex].GetComponent<Image>().sprite != null)
         {
-            items[selectedIndex].OnPowerUpUse(gameObject);
+            items[selectedIndex].OnPowerUpUse(player);
             RemoveItem(selectedIndex);
         }
     }
