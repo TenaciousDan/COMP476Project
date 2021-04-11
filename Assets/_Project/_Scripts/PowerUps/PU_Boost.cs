@@ -6,8 +6,8 @@ public class PU_Boost : PU_Base
 {
     private int numExtraActionPoints = 2;
 
-    public override void OnPowerUpUse(GameObject player)
+    public override void OnPowerUpUse(AbstractPlayer player)
     {
-        player.GetComponent<PlayerController>().AddActionPoints(numExtraActionPoints, true);
+        player.AddActionPoints(numExtraActionPoints, true);
     }
 }

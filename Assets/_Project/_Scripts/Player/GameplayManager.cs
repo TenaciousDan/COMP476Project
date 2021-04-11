@@ -41,11 +41,11 @@ public class GameplayManager : MonoBehaviour
     private void Update()
     {
         if (players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.Standby)
-            players[currentPlayer].StandbyPhase();
+            players[currentPlayer].StandbyPhaseUpdate();
         else if (players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.Main)
-            players[currentPlayer].MainPhase();
+            players[currentPlayer].MainPhaseUpdate();
         else if (players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.End)
-            players[currentPlayer].EndPhase();
+            players[currentPlayer].EndPhaseUpdate();
     }
 
     private void InitializePlayers()
@@ -53,9 +53,9 @@ public class GameplayManager : MonoBehaviour
         int offsetIndex = 0;
         foreach(AbstractPlayer player in players)
         {
-            player.Controller.InitializePlayer(99, positionOffsets[offsetIndex]);
+            player.InitializePlayer(99, positionOffsets[offsetIndex]);
             offsetIndex++;
-            player.Controller.Spawn(startNode);
+            player.Spawn(startNode);
         }
     }
 }

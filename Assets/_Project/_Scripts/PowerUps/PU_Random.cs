@@ -6,7 +6,7 @@ public class PU_Random : PU_Base
 {
     private int randomIndex;
 
-    protected override void OnPowerUpGet(GameObject player)
+    protected override void OnPowerUpGet(AbstractPlayer player)
     {
         if (isActive)
         {
@@ -17,7 +17,7 @@ public class PU_Random : PU_Base
         }
     }
 
-    public override void OnPowerUpUse(GameObject player)
+    public override void OnPowerUpUse(AbstractPlayer player)
     {
         transform.GetChild(randomIndex).GetComponent<PU_Base>().OnPowerUpUse(player);
     }
