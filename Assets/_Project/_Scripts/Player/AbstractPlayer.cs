@@ -19,6 +19,11 @@ public abstract class AbstractPlayer : MonoBehaviour
     private bool hasShield = false;
     private float costPerMovement = 1;
 
+    public Inventory Inventory
+    {
+        get; private set;
+    }
+
     public float CurrentActionPoints
     {
         get; private set;
@@ -39,7 +44,7 @@ public abstract class AbstractPlayer : MonoBehaviour
 
     protected virtual void Awake()
     {
-        //
+        Inventory = GetComponent<Inventory>();
     }
 
     // assign values to member variables
@@ -145,8 +150,10 @@ public abstract class AbstractPlayer : MonoBehaviour
                 Vector3 targetDirection = (node.Data.transform.position + PositionOffset) - transform.position;
                 while (transform.position != newWorldPosition)
                 {
+                    Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, rotationSpeed * Time.deltaTime, 0.0f);
                     transform.position = Vector3.MoveTowards(transform.position, newWorldPosition, moveSpeed * Time.deltaTime);
                     transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(targetDirection, Vector3.up), rotationSpeed * Time.deltaTime);
+                    transform.rotation = Quaternion.LookRotation(newDirection);
                     yield return null;
                 }
             }
