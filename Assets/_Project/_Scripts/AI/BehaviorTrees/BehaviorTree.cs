@@ -12,17 +12,10 @@ namespace Game.AI
         [Serializable]
         public class ActionCallback : SerializableCallback<int> { }
 
-        [Serializable]
-        public class ActionDescriptor
-        {
-            public string key;
-            public ActionCallback action;
-        }
-
         [SerializeField] private BTGraphData behaviorTreeGraphData;
-        [SerializeField] private List<ActionDescriptor> actions;
+        [SerializeField] private List<ActionCallback> actions;
 
-        private Dictionary<string, ActionDescriptor> actionDict;
+        private Dictionary<string, ActionCallback> actionDict;
 
         protected BTNode rootNode;
         public BTNode RootNode
@@ -33,9 +26,11 @@ namespace Game.AI
 
         public void Awake()
         {
-            actionDict = new Dictionary<string, ActionDescriptor>();
-            foreach (ActionDescriptor ad in actions)
-                actionDict.Add(ad.key, ad);
+            actionDict = new Dictionary<string, ActionCallback>();
+            foreach (ActionCallback ac in actions)
+            {
+                actionDict.Add(ac.methodName, ac);
+            }
 
             if (behaviorTreeGraphData != null)
                 ConstructFromBTGraphData(behaviorTreeGraphData);
@@ -62,7 +57,7 @@ namespace Game.AI
                     else if ("Inverter".Equals(nodeData.nodeType))
                         nodeDict.Add(nodeData.id, new InverterBTNode());
                     else if ("Action".Equals(nodeData.nodeType) && actionDict.ContainsKey(nodeData.title))
-                        nodeDict.Add(nodeData.id, new ActionBTNode(() => { return (BTNode.EState) actionDict[nodeData.title].action.Invoke(); }));
+                        nodeDict.Add(nodeData.id, new ActionBTNode(() => { return (BTNode.EState) actionDict[nodeData.title].Invoke(); }));
                 }
             }
 
@@ -87,6 +82,18 @@ namespace Game.AI
                     }
                 }
             }
+
+            rootNode = nodeDict[rootId];
+        }
+
+        /// <summary>
+        /// Process and Evaluate the behavior tree. <br />
+        /// See <see cref="BTNode.Evaluate"/>
+        /// </summary>
+        /// <returns>Success if one of the branches evalluated successfully, Failure otherwise.</returns>
+        public BTNode.EState Evaluate()
+        {
+            return RootNode.Evaluate();
         }
     }
 }

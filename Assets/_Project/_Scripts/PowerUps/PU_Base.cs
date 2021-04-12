@@ -19,7 +19,7 @@ public abstract class PU_Base : MonoBehaviour
         if (isActive)
         {
             isActive = false;
-            player.GetComponent<Inventory>().AddItem(this);
+            player.Inventory.AddItem(this);
         }
     }
 
