@@ -16,14 +16,14 @@ public class GameplayManager : MonoBehaviour
         public GameObject playerPrefab;
         public MBGraphNode startNode;
         public Vector3 positionOffset = new Vector3(2.5f, 0.0f, 2.5f);
-
-        private AbstractPlayer player;
-        public AbstractPlayer Player { get => player == null ? playerPrefab.GetComponent<AbstractPlayer>() : player; }
     }
 
     public List<PlayerDescriptor> playerDescriptors;
 
     [SerializeField] private Transform playersParent;
+
+    private List<AbstractPlayer> players = new List<AbstractPlayer>();
+    public List<AbstractPlayer> Players { get => players; }
 
     private Pathfinding pathfinding;
     private int currentPlayer = 0;
@@ -42,14 +42,19 @@ public class GameplayManager : MonoBehaviour
 
     private void Update()
     {
-        if (currentPlayer < playerDescriptors.Count)
+        if (currentPlayer < Players.Count)
         {
-            if (playerDescriptors[currentPlayer].Player.Phase == AbstractPlayer.EPlayerPhase.Standby)
-                playerDescriptors[currentPlayer].Player.StandbyPhaseUpdate();
-            else if (playerDescriptors[currentPlayer].Player.Phase == AbstractPlayer.EPlayerPhase.Main)
-                playerDescriptors[currentPlayer].Player.MainPhaseUpdate();
-            else if (playerDescriptors[currentPlayer].Player.Phase == AbstractPlayer.EPlayerPhase.End)
-                playerDescriptors[currentPlayer].Player.EndPhaseUpdate();
+            if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.Standby || Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.None)
+                Players[currentPlayer].StandbyPhaseUpdate();
+            else if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.Main)
+                Players[currentPlayer].MainPhaseUpdate();
+            else if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.End)
+                Players[currentPlayer].EndPhaseUpdate();
+            else if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.PassTurn)
+            {
+                Players[currentPlayer].Phase = AbstractPlayer.EPlayerPhase.None;
+                ++currentPlayer;
+            }
         }
     }
 
@@ -57,17 +62,20 @@ public class GameplayManager : MonoBehaviour
     {
         for (int i = 0; i < playerDescriptors.Count; ++i)
         {
-            playerDescriptors[i].Player.InitializePlayer(99, playerDescriptors[i].positionOffset);
-            SpawnPlayer(playerDescriptors[i].playerPrefab, playerDescriptors[i].startNode, playerDescriptors[i].positionOffset);
+            AbstractPlayer player = SpawnPlayer(playerDescriptors[i].playerPrefab, playerDescriptors[i].startNode, playerDescriptors[i].positionOffset);
+            player.InitializePlayer(99, playerDescriptors[i].positionOffset);
+            Players.Add(player);
         }
     }
 
-    private void SpawnPlayer(GameObject playerPrefab, MBGraphNode startingnode, Vector3 positionOffset)
+    private AbstractPlayer SpawnPlayer(GameObject playerPrefab, MBGraphNode startingnode, Vector3 positionOffset)
     {
         GameObject playerObj = Instantiate(playerPrefab);
         AbstractPlayer playerComponent = playerObj.GetComponent<AbstractPlayer>();
         playerComponent.PositionNode = startingnode;
         Vector3 newWorldPosition = startingnode.transform.position + positionOffset;
         playerObj.transform.position = new Vector3(newWorldPosition.x, transform.position.y, newWorldPosition.z);
+
+        return playerComponent;
     }
 }
