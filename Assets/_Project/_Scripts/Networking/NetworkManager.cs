@@ -4,10 +4,10 @@ using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
     public const int MaxRoomSize = 4;
+    private int playersInGame = 0;
     
     private static NetworkManager instance;
     private static bool reinitializationPermitted = false;
@@ -19,6 +19,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [Tooltip("Destroy this object when a new scene is loaded.")]
     [SerializeField] private bool destroyOnLoad = false;
 
+    [SerializeField]
+    private NetworkPrefabPool networkPrefabPool;
+    
     // Instance
     public static NetworkManager Instance
     {
@@ -46,6 +49,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
+        networkPrefabPool = GetComponent<NetworkPrefabPool>();
+        
         if(instance == null)
         {
             if (destroyed && !allowReinitialization)
@@ -54,7 +59,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                 return;
             }
             else
-                CreateInstance(this.gameObject);
+            {
+                CreateInstance(this.gameObject); 
+                PhotonNetwork.PrefabPool = networkPrefabPool;
+            }
         }
         else
         {
@@ -153,5 +161,37 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         instance = null;
         destroyed = true;
     }
+    #endregion
+
+    #region GAMEPLAY
+
+    public void LoadedIntoGame()
+    {
+        photonView.RPC("UpdatePlayerCount", RpcTarget.AllBuffered);
+    }
+    
+    [PunRPC]
+    public void UpdatePlayerCount()
+    {
+        playersInGame++;
+
+        // After all players are loaded in, spawn them
+        if (playersInGame == PhotonNetwork.PlayerList.Length)
+        {
+            SpawnHumanPlayer();
+            
+            //TODO: Spawn in AI Player's Properly
+        }
+    }
+
+    public void SpawnHumanPlayer()
+    {
+        // TODO: Get the correct node to spawn the player in
+        GameObject playerObj = networkPrefabPool.Instantiate("HumanPlayer", Vector3.up, Quaternion.identity);
+
+        HumanPlayer playerScript = playerObj.GetComponent<HumanPlayer>();
+    }
+
+
     #endregion
 }

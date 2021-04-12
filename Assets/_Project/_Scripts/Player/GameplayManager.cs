@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 
 using Game.AI;
-
 using Tenacious.Collections;
 
 [RequireComponent(typeof(Pathfinding))]
@@ -37,7 +36,8 @@ public class GameplayManager : MonoBehaviour
 
     private void Start()
     {
-        //
+        // Inform all players after loading into scene
+        NetworkManager.Instance.LoadedIntoGame();
     }
 
     private void Update()

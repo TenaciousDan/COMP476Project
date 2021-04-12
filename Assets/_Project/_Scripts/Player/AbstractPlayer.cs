@@ -12,13 +12,11 @@ public abstract class AbstractPlayer : MonoBehaviour
 
     public EPlayerPhase Phase { get; set; }
     public EPlayerState State { get; set; }
-
     private float maxActionPoints;
     private float moveSpeed = 10;
     private float rotationSpeed = 10;
     private bool hasShield = false;
     private float costPerMovement = 1;
-
     public float CurrentActionPoints
     {
         get; private set;
