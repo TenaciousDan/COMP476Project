@@ -63,7 +63,6 @@ public class GameplayManager : MonoBehaviour
         for (int i = 0; i < playerDescriptors.Count; ++i)
         {
             AbstractPlayer player = SpawnPlayer(playerDescriptors[i].playerPrefab, playerDescriptors[i].startNode, playerDescriptors[i].positionOffset);
-            player.InitializePlayer(99, playerDescriptors[i].positionOffset);
             Players.Add(player);
         }
     }
@@ -71,10 +70,10 @@ public class GameplayManager : MonoBehaviour
     private AbstractPlayer SpawnPlayer(GameObject playerPrefab, MBGraphNode startingnode, Vector3 positionOffset)
     {
         GameObject playerObj = Instantiate(playerPrefab);
+        playerObj.transform.parent = playersParent;
         AbstractPlayer playerComponent = playerObj.GetComponent<AbstractPlayer>();
-        playerComponent.PositionNode = startingnode;
-        Vector3 newWorldPosition = startingnode.transform.position + positionOffset;
-        playerObj.transform.position = new Vector3(newWorldPosition.x, transform.position.y, newWorldPosition.z);
+        playerComponent.InitializePlayer(99, positionOffset);
+        playerComponent.Spawn(startingnode);
 
         return playerComponent;
     }

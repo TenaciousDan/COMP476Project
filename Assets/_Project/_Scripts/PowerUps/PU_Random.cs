@@ -6,14 +6,15 @@ public class PU_Random : PU_Base
 {
     private int randomIndex;
 
+    [SerializeField] private List<PU_Base> powerUps;
+
     protected override void OnPowerUpGet(AbstractPlayer player)
     {
         if (isActive)
         {
             isActive = false;
-            int maxIndexRange = transform.childCount;
-            randomIndex = Random.Range(0, maxIndexRange);
-            player.GetComponent<Inventory>().AddItem(transform.GetChild(randomIndex).GetComponent<PU_Base>());
+            randomIndex = Random.Range(0, powerUps.Count);
+            player.Inventory.AddItem(powerUps[randomIndex]);
         }
     }
 
