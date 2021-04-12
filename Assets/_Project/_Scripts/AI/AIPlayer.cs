@@ -58,7 +58,47 @@ namespace Game.AI
         /**********************************
          * BehaviorTree leaf node methods
          ***********************************/
-        public int IsItemBoxAvailable()
+        public int HasItem()
+        {
+            return (int)BTNode.EState.Success;
+        }
+
+        public int ShouldUseItem()
+        {
+            return (int)BTNode.EState.Success;
+        }
+
+        public int UseItem()
+        {
+            return (int)BTNode.EState.Success;
+        }
+
+        public int ShouldTakeCover()
+        {
+            return (int)BTNode.EState.Success;
+        }
+
+        public int MoveToCover()
+        {
+            return (int)BTNode.EState.Success;
+        }
+
+        public int IsItemInRange()
+        {
+            return (int)BTNode.EState.Success;
+        }
+
+        public int ShouldGetItem()
+        {
+            return (int)BTNode.EState.Success;
+        }
+
+        public int MoveToItem()
+        {
+            return (int)BTNode.EState.Success;
+        }
+
+        public int MoveToBestSpot()
         {
             return (int)BTNode.EState.Success;
         }
