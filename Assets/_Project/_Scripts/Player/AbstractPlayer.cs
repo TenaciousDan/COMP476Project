@@ -7,7 +7,7 @@ using Tenacious.Collections;
 
 public abstract class AbstractPlayer : MonoBehaviour
 {
-    public enum EPlayerPhase { None, Standby, Main, End }
+    public enum EPlayerPhase { None, Standby, Main, End, PassTurn }
     public enum EPlayerState { Waiting, Busy }
 
     public EPlayerPhase Phase { get; set; }
@@ -82,7 +82,7 @@ public abstract class AbstractPlayer : MonoBehaviour
 
         // TODO: do end phase things
 
-        Phase = EPlayerPhase.None;
+        Phase = EPlayerPhase.PassTurn;
     }
 
     public bool SpendActionPoints(float numActionPoints)

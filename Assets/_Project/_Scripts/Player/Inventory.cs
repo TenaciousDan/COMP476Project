@@ -41,22 +41,22 @@ public class Inventory : MonoBehaviour
     // TODO remove this hard coded way of selecting items once we decide how we want to select an item
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            UseItem();
-        }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            ChangeSelectedIndex(0);
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            ChangeSelectedIndex(1);
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            ChangeSelectedIndex(2);
-        }
+        //if (Input.GetKeyDown(KeyCode.F))
+        //{
+        //    UseItem();
+        //}
+        //if (Input.GetKeyDown(KeyCode.Q))
+        //{
+        //    ChangeSelectedIndex(0);
+        //}
+        //if (Input.GetKeyDown(KeyCode.W))
+        //{
+        //    ChangeSelectedIndex(1);
+        //}
+        //if (Input.GetKeyDown(KeyCode.E))
+        //{
+        //    ChangeSelectedIndex(2);
+        //}
     }
 
     public void AddItem(PU_Base newItem)

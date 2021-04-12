@@ -23,7 +23,6 @@ namespace Game.AI
         public override void MainPhaseUpdate()
         {
             Phase = EPlayerPhase.Main;
-
             // Enqueue actions
             // ...
 
