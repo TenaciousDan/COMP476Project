@@ -3,12 +3,10 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 
-using Game.AI;
-
+using Tenacious;
 using Tenacious.Collections;
 
-[RequireComponent(typeof(Pathfinding))]
-public class GameplayManager : MonoBehaviour
+public class GameplayManager : MBSingleton<GameplayManager>
 {
     [Serializable]
     public class PlayerDescriptor
@@ -25,7 +23,6 @@ public class GameplayManager : MonoBehaviour
     private List<AbstractPlayer> players = new List<AbstractPlayer>();
     public List<AbstractPlayer> Players { get => players; }
 
-    private Pathfinding pathfinding;
     private int currentPlayer = 0;
 
     private bool isCRTurnUpdateRunning;
