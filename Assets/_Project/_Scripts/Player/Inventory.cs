@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
-    private const int maxInventorySize = 3;
+    public const int maxInventorySize = 3;
 
     [SerializeField] private AbstractPlayer player;
 

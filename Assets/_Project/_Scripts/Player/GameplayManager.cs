@@ -33,10 +33,14 @@ public class GameplayManager : MBSingleton<GameplayManager>
 
         InitializePlayers();
     }
-
+    [SerializeField]
+    private MBGraphNode temp;
+    private Game.AI.Pathfinding pathfinding;
     private void Start()
     {
-        //
+        pathfinding = GetComponent<Game.AI.Pathfinding>();
+        List<GraphNode<GameObject>> list = pathfinding.FindPath(Players[0].PositionNode.nodeId, temp.nodeId);
+        Players[0].GetComponent<HumanPlayer>().Move(list);
     }
 
     private void Update()
