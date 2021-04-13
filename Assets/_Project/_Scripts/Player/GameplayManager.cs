@@ -27,8 +27,10 @@ public class GameplayManager : MBSingleton<GameplayManager>
 
     private bool isCRTurnUpdateRunning;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         InitializePlayers();
     }
 
