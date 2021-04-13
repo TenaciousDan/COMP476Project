@@ -9,6 +9,8 @@ public abstract class PU_Base : MonoBehaviour
     public Sprite inventoryImage;
     protected bool isActive;
 
+
+
     private void Start()
     {
         isActive = true;
