@@ -5,10 +5,7 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
-    private int maxInventorySize;
-    [SerializeField] public GameObject _inventorySlots;
-    private List<GameObject> inventorySlots;
-    private int selectedIndex;
+    private const int maxInventorySize = 3;
 
     [SerializeField] private AbstractPlayer player;
 
@@ -19,23 +16,15 @@ public class Inventory : MonoBehaviour
 
     private void Awake()
     {
-        //
+        player = GetComponent<AbstractPlayer>();
     }
 
     private void Start()
     {
-        if (_inventorySlots != null)
+        items = new List<PU_Base>();
+        for (int i = 0; i < maxInventorySize; i++)
         {
-            items = new List<PU_Base>();
-            inventorySlots = new List<GameObject>();
-            int children = _inventorySlots.transform.childCount;
-            for (int i = 0; i < children; i++)
-            {
-                inventorySlots.Add(_inventorySlots.transform.GetChild(i).gameObject);
-                items.Add(null);
-            }
-            maxInventorySize = inventorySlots.Count;
-            selectedIndex = 0;
+            items.Add(null);
         }
     }
     // TODO remove this hard coded way of selecting items once we decide how we want to select an item
@@ -65,63 +54,39 @@ public class Inventory : MonoBehaviour
         // if there is no more room in the inventory, remove the first item
         if (InventoryIsFull())
         {
-            availableSlotIndex = inventorySlots.Count - 1;
+            availableSlotIndex = maxInventorySize - 1;
             ShiftItems(newItem);
         }
         items[availableSlotIndex] = newItem;
-        AddSlotImage(newItem, availableSlotIndex);
     }
 
     public void RemoveItem(int itemIndex)
     {
         items[itemIndex] = null;
-        RemoveSlotImage(itemIndex);
-    }
-
-    private void AddSlotImage(PU_Base newItem, int index)
-    {
-        if(newItem.inventoryImage != null)
-        {
-            inventorySlots[index].GetComponent<Image>().sprite = newItem.inventoryImage;
-        }
-    }
-
-    private void RemoveSlotImage(int index)
-    {
-        inventorySlots[index].GetComponent<Image>().sprite = null;
     }
 
     private void ShiftItems(PU_Base newItem)
     {
-        for(int i = 0; i < inventorySlots.Count; i++)
+        for(int i = 0; i < items.Count; i++)
         {
-            if(i + 1 != inventorySlots.Count)
+            // shift items to the left unless it is the last index, in which case place the newItem there
+            if(i + 1 != items.Count)
             {
-                inventorySlots[i].GetComponent<Image>().sprite = inventorySlots[i + 1].GetComponent<Image>().sprite;
                 items[i] = items[i + 1];
             }
             else
             {
-                inventorySlots[i].GetComponent<Image>().sprite = newItem.inventoryImage;
                 items[i] = newItem;
             }
         }
     }
 
-    private void UseItem()
+    private void UseItem(int itemIndex)
     {
-        if(inventorySlots[selectedIndex].GetComponent<Image>().sprite != null)
+        if(items[itemIndex] != null)
         {
-            items[selectedIndex].OnPowerUpUse(player);
-            RemoveItem(selectedIndex);
-        }
-    }
-
-    private void ChangeSelectedIndex(int newIndex)
-    {
-        if(newIndex > -1 && newIndex < inventorySlots.Count)
-        {
-            selectedIndex = newIndex;
+            items[itemIndex].OnPowerUpUse(player);
+            RemoveItem(itemIndex);
         }
     }
 

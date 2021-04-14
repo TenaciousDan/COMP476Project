@@ -1,0 +1,125 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e671ab75b31d5ef4a903879be283be66, type: 3}
+  m_Name: AIBehaviorTree
+  m_EditorClassIdentifier: 
+  rootNode:
+    id: 58722153-d929-4817-ab5b-dd9db9fb941b
+    isRootNode: 1
+    title: Root
+    nodeType: 
+    position: {x: 150, y: 150}
+  nodes:
+  - id: 58722153-d929-4817-ab5b-dd9db9fb941b
+    isRootNode: 1
+    title: Root
+    nodeType: 
+    position: {x: 150, y: 150}
+  - id: 10f64f87-3fd7-4dfe-964f-dee55e33a476
+    isRootNode: 0
+    title: ShouldUseItem
+    nodeType: Action
+    position: {x: 574, y: -123}
+  - id: efa1e1ab-a416-4342-a574-f8896f6c1a39
+    isRootNode: 0
+    title: UseItem
+    nodeType: Action
+    position: {x: 574, y: 9}
+  - id: be8a3465-4002-44cb-9e13-9fe72bcbc0d8
+    isRootNode: 0
+    title: Item
+    nodeType: Sequence
+    position: {x: 312, y: -123}
+  - id: 6d86f49e-00c6-4611-acaa-6fac391b8328
+    isRootNode: 0
+    title: HasItem
+    nodeType: Action
+    position: {x: 574, y: -263}
+  - id: 9d3076cd-0a77-486b-b74b-228be3e1ba98
+    isRootNode: 0
+    title: Move
+    nodeType: Selector
+    position: {x: 312, y: 703}
+  - id: 5880a04f-9679-4150-9b83-5d13bf404fdc
+    isRootNode: 0
+    title: Item
+    nodeType: Sequence
+    position: {x: 574, y: 703}
+  - id: 575cbc9c-1c2c-4422-90c6-90f2b3f2f6db
+    isRootNode: 0
+    title: Cover
+    nodeType: Sequence
+    position: {x: 574, y: 325}
+  - id: 569b1c51-fd1e-4b5d-83b3-5a0ff156d697
+    isRootNode: 0
+    title: ShouldTakeCover
+    nodeType: Action
+    position: {x: 887, y: 253}
+  - id: 3f078ce5-ca8f-4bdf-94f4-544d6db24ef6
+    isRootNode: 0
+    title: MoveToCover
+    nodeType: Action
+    position: {x: 887, y: 399}
+  - id: a4ead10e-37f1-4d23-bffc-03d83d7afc0d
+    isRootNode: 0
+    title: IsItemInRange
+    nodeType: Action
+    position: {x: 887, y: 578}
+  - id: 50159157-3cc4-439c-8a5d-3c92f660417d
+    isRootNode: 0
+    title: ShouldGetItem
+    nodeType: Action
+    position: {x: 887, y: 703}
+  - id: e5cc2413-70f6-4346-8c0a-9e266df1a86d
+    isRootNode: 0
+    title: MoveToItem
+    nodeType: Action
+    position: {x: 887, y: 831}
+  - id: 9acdd212-d3bd-4931-9994-b6c098946e07
+    isRootNode: 0
+    title: EndTurn
+    nodeType: Action
+    position: {x: 574, y: 1142}
+  - id: a3c49ad3-4835-4dd8-b673-5380e31842a0
+    isRootNode: 0
+    title: MoveToBestSpot
+    nodeType: Action
+    position: {x: 574, y: 930}
+  edges:
+  - fromId: 58722153-d929-4817-ab5b-dd9db9fb941b
+    toId: be8a3465-4002-44cb-9e13-9fe72bcbc0d8
+  - fromId: 58722153-d929-4817-ab5b-dd9db9fb941b
+    toId: 9d3076cd-0a77-486b-b74b-228be3e1ba98
+  - fromId: be8a3465-4002-44cb-9e13-9fe72bcbc0d8
+    toId: 6d86f49e-00c6-4611-acaa-6fac391b8328
+  - fromId: be8a3465-4002-44cb-9e13-9fe72bcbc0d8
+    toId: 10f64f87-3fd7-4dfe-964f-dee55e33a476
+  - fromId: be8a3465-4002-44cb-9e13-9fe72bcbc0d8
+    toId: efa1e1ab-a416-4342-a574-f8896f6c1a39
+  - fromId: 9d3076cd-0a77-486b-b74b-228be3e1ba98
+    toId: 575cbc9c-1c2c-4422-90c6-90f2b3f2f6db
+  - fromId: 575cbc9c-1c2c-4422-90c6-90f2b3f2f6db
+    toId: 569b1c51-fd1e-4b5d-83b3-5a0ff156d697
+  - fromId: 575cbc9c-1c2c-4422-90c6-90f2b3f2f6db
+    toId: 3f078ce5-ca8f-4bdf-94f4-544d6db24ef6
+  - fromId: 9d3076cd-0a77-486b-b74b-228be3e1ba98
+    toId: a3c49ad3-4835-4dd8-b673-5380e31842a0
+  - fromId: 9d3076cd-0a77-486b-b74b-228be3e1ba98
+    toId: 5880a04f-9679-4150-9b83-5d13bf404fdc
+  - fromId: 5880a04f-9679-4150-9b83-5d13bf404fdc
+    toId: a4ead10e-37f1-4d23-bffc-03d83d7afc0d
+  - fromId: 5880a04f-9679-4150-9b83-5d13bf404fdc
+    toId: e5cc2413-70f6-4346-8c0a-9e266df1a86d
+  - fromId: 5880a04f-9679-4150-9b83-5d13bf404fdc
+    toId: 50159157-3cc4-439c-8a5d-3c92f660417d
+  - fromId: 9d3076cd-0a77-486b-b74b-228be3e1ba98
+    toId: 9acdd212-d3bd-4931-9994-b6c098946e07

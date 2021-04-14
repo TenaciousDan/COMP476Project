@@ -28,3 +28,11 @@ There should be a preload scene already included and located at `Assets/_Scenes/
 In Unity, navigate to `Edit > Project Settings...`. In the *Project Settings* window, click on `Player` in the left hand menu. Change the `Company Name`, `Product Name`, and any other properties of your choosing.  
 
 Open the included Splash scene located at `Assets/_Scenes/Splash.unity` and press the play button. At this point you are free to edit and add scenes and start making a game!
+
+
+### Icon Sources
+missile: https://game-icons.net/1x1/lorc/rocket.html (Lorc)
+oil spill: https://game-icons.net/1x1/delapouite/leak.html (Delapouite)
+random: https://game-icons.net/1x1/lorc/uncertainty.html (Lorc)
+shield: https://game-icons.net/1x1/lorc/bordered-shield.html (Lorc)
+speed: https://game-icons.net/1x1/delapouite/speedometer.html (Delapouite)

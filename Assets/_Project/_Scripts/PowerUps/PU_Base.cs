@@ -9,6 +9,8 @@ public abstract class PU_Base : MonoBehaviour
     public Sprite inventoryImage;
     protected bool isActive;
 
+
+
     private void Start()
     {
         isActive = true;
@@ -19,7 +21,7 @@ public abstract class PU_Base : MonoBehaviour
         if (isActive)
         {
             isActive = false;
-            player.GetComponent<Inventory>().AddItem(this);
+            player.Inventory.AddItem(this);
         }
     }
 
