@@ -28,8 +28,7 @@ public class GameplayManager : MBSingleton<GameplayManager>
     private int currentPlayer = 0;
 
     private bool isCRTurnUpdateRunning;
-
-
+    
     private bool isLoadingPlayers = true;
 
     protected override void Awake()
