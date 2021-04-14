@@ -29,6 +29,14 @@ public abstract class AbstractPlayer : MonoBehaviour
         get; private set;
     }
 
+    public float MaxActionPoints
+    {
+        get
+        {
+            return maxActionPoints;
+        }
+    }
+
     public float CostPerMovement { get => costPerMovement; set => costPerMovement = value; }
 
     public MBGraphNode PositionNode

@@ -81,10 +81,11 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    private void UseItem(int itemIndex)
+    public void UseItem(int itemIndex)
     {
         if(items[itemIndex] != null)
         {
+            print($"Used {items[itemIndex].name}");
             items[itemIndex].OnPowerUpUse(player);
             RemoveItem(itemIndex);
         }

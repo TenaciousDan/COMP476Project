@@ -26,29 +26,67 @@ namespace Game.UI
 
         private void Update()
         {
-            actionPoints.current = player.CurrentActionPoints;
-
+            UpdateAP();
             ToggleBtns(player.Phase == AbstractPlayer.EPlayerPhase.Main);
+            UpdateItems();
 
             // Can only move if the button is clicked.
             if (moveBtnClicked)
             {
-                CheckMove();
+                ClickMove();
+            }
+        }
+
+        private void UpdateAP()
+        {
+            actionPoints.current = player.CurrentActionPoints;
+            actionPoints.maximum = player.MaxActionPoints;
+        }
+
+        /// <summary>
+        /// Update item sprites and button interactibility for items.
+        /// </summary>
+        private void UpdateItems()
+        {
+            for(int i = 0; i < 3; i++)
+            {
+                var btnImage = btns[i].transform.GetChild(0).GetComponent<Image>();
+                bool hasItem = player.Inventory.items[i]?.inventoryImage != null;
+                btns[i].interactable = hasItem;
+                btnImage.enabled = hasItem;
+                btnImage.sprite = player.Inventory.items[i]?.inventoryImage;
             }
         }
 
         private void ToggleBtns(bool toggle)
         {
-            foreach (var btn in btns)
+            ToggleItemBtns(toggle);
+            ToggleMoveBtn(toggle);
+            ToggleEndTurnBtn(toggle);
+        }
+
+        private void ToggleItemBtns(bool toggle)
+        {
+            for(int i = 0; i < 3; i++)
             {
-                btn.interactable = toggle;
+                btns[i].interactable = toggle;
             }
+        }
+
+        private void ToggleMoveBtn(bool toggle)
+        {
+            btns[3].interactable = toggle;
+        }
+
+        private void ToggleEndTurnBtn(bool toggle)
+        {
+            btns[4].interactable = toggle;
         }
 
         /// <summary>
         /// Check whether the player can move in the selected tiles.
         /// </summary>
-        private void CheckMove()
+        private void ClickMove()
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -59,10 +97,14 @@ namespace Game.UI
                 {
                     if (hit.transform.name.Equals("GridSquare(Clone)"))
                     {
-                        MoveBtnClick(); // Reset the button
                         var node = hit.transform.parent.GetComponent<MBGraphNode>();
-                        var graphNodes = node.mbGraph.graph.Nodes().Where(x => x.Id == node.nodeId);
-                        player.Move(graphNodes.ToList());
+
+                        if(node != player.PositionNode)
+                        {
+                            MoveBtnClick(); // Reset the button
+                            var graphNodes = node.mbGraph.graph.Nodes().Where(x => x.Id == node.nodeId);
+                            player.Move(graphNodes.ToList());
+                        }
                     }
                 }
             }
@@ -70,40 +112,30 @@ namespace Game.UI
 
         public void MoveBtnClick()
         {
-            var currentNode = player.PositionNode;
-            var neighbors = currentNode.mbGraph.graph.Neighbors(currentNode.nodeId);
-            
-            foreach (var node in neighbors)
-            {
-                node.Data.transform.GetChild(0).gameObject.SetActive(!moveBtnClicked);
-            }
-
+            ShowMovementTiles(!moveBtnClicked);
             moveBtnClicked = !moveBtnClicked;
         }
 
-        public void FirstItemBtnClick()
+        private void ShowMovementTiles(bool show)
         {
-            print("Using item1");
-            // TODO - Use item1
+            var currentNode = player.PositionNode;
+            var neighbors = currentNode.mbGraph.graph.Neighbors(currentNode.nodeId);
+
+            foreach (var node in neighbors)
+            {
+                node.Data.transform.GetChild(0).gameObject.SetActive(show);
+            }
         }
 
-        public void SecondItemBtnClick()
+        public void ItemBtnClick(int itemIndex)
         {
-            print("Using item2");
-            // TODO - Use item2
-        }
-
-        public void ThirdItemBtnClick()
-        {
-            print("Using item3");
-            // TODO - Use item3
+            player.Inventory.UseItem(itemIndex);
         }
 
         public void EndTurnBtnClick()
         {
             print("Ending turn!");
             player.Phase = AbstractPlayer.EPlayerPhase.End; // GameplayManager ends turn instead?
-            // TODO - End current turn.
         }
     }
 }

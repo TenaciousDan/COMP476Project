@@ -19,6 +19,7 @@ public class GameplayManager : MBSingleton<GameplayManager>
     public List<PlayerDescriptor> playerDescriptors;
 
     [SerializeField] private Transform playersParent;
+    [SerializeField] private float maxActionPoints;
 
     private List<AbstractPlayer> players = new List<AbstractPlayer>();
     public List<AbstractPlayer> Players { get => players; }
@@ -71,7 +72,7 @@ public class GameplayManager : MBSingleton<GameplayManager>
         GameObject playerObj = Instantiate(playerPrefab);
         playerObj.transform.parent = playersParent;
         AbstractPlayer playerComponent = playerObj.GetComponent<AbstractPlayer>();
-        playerComponent.InitializePlayer(99, positionOffset);
+        playerComponent.InitializePlayer(maxActionPoints, positionOffset);
         playerComponent.Spawn(startingnode);
 
         return playerComponent;

@@ -108,4 +108,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e02c0e4cef09c840ab8601bce17e16e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryImage: {fileID: 21300000, guid: 068f0de7ac23eb84c93079c83e3153ef, type: 3}
+  inventoryImage: {fileID: 21300000, guid: c003575ed37515c4687ceceae554d394, type: 3}

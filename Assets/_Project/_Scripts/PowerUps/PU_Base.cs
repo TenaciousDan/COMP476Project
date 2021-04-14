@@ -22,6 +22,7 @@ public abstract class PU_Base : MonoBehaviour
         {
             isActive = false;
             player.Inventory.AddItem(this);
+            print($"Added {this.name}");
         }
     }
 
