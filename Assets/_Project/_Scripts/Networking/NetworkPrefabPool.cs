@@ -23,6 +23,7 @@ public class NetworkPrefabPool : MonoBehaviour, IPunPrefabPool
 
     public GameObject Instantiate(string prefabId, Vector3 position, Quaternion rotation)
     {
+
         if (!poolDict.ContainsKey(prefabId))
         {
             Debug.LogError("Missing prefab '" + prefabId + "' in NetworkPrefabPool.");

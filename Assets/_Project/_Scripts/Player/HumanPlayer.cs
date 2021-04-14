@@ -3,6 +3,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+using Photon.Pun;
 using Photon.Realtime;
 
 using Tenacious.Collections;
@@ -37,18 +38,22 @@ public class HumanPlayer : AbstractPlayer
     {
         StartCoroutine(CRMove(path));
     }
+    
+    #region NETWORK
 
-    public void InitializePlayer(Player player, float _maxActionPoints, Vector3 _positionOffset)
+    [PunRPC]
+    public void InitializePlayerOnNetwork(Player player)
     {
-        // Initialize Networking Variables
         photonPlayer = player;
         ID = player.ActorNumber;
-        
-        base.InitializePlayer(_maxActionPoints, _positionOffset);
-        
-        // TODO: Ensure game manager knows that player is initialized
-        // GameManager.instance.players[id - 1] = this;
-        
-        // Need to figure out how to make this a PUN RPC? Send call back to network manager?
+        NetworkManager.Instance.humanPlayers[ID - 1] = this;
+
+        // Only track lock physics
+        if (!photonView.IsMine)
+        {
+            GetComponent<Rigidbody>().isKinematic = true;
+        }
     }
+    
+    #endregion
 }

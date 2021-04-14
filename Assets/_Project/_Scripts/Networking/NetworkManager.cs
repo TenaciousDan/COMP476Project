@@ -1,4 +1,5 @@
 using System;
+
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -7,8 +8,10 @@ using UnityEngine.SceneManagement;
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
     public const int MaxRoomSize = 4;
-    private int playersInGame = 0;
+    public int humanPlayersInGame = 0;
     
+    public HumanPlayer[] humanPlayers;
+
     private static NetworkManager instance;
     private static bool reinitializationPermitted = false;
     private static bool destroyed = false;
@@ -50,7 +53,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     private void Awake()
     {
         networkPrefabPool = GetComponent<NetworkPrefabPool>();
-        
+
         if(instance == null)
         {
             if (destroyed && !allowReinitialization)
@@ -167,31 +170,32 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public void LoadedIntoGame()
     {
-        photonView.RPC("UpdatePlayerCount", RpcTarget.AllBuffered);
+        photonView.RPC("UpdateHumanPlayerCount", RpcTarget.AllBuffered);
     }
     
     [PunRPC]
-    public void UpdatePlayerCount()
+    public void UpdateHumanPlayerCount()
     {
-        playersInGame++;
+        humanPlayersInGame++;
 
-        // After all players are loaded in, spawn them
-        if (playersInGame == PhotonNetwork.PlayerList.Length)
+        // After all players are loaded in, set their networking parameters
+        if (humanPlayersInGame == PhotonNetwork.PlayerList.Length)
         {
             SpawnHumanPlayer();
-            
-            //TODO: Spawn in AI Player's Properly
         }
+        
+        //TODO: Spawn in AI Player's Properly
     }
 
     public void SpawnHumanPlayer()
     {
-        // TODO: Get the correct node to spawn the player in
-        GameObject playerObj = networkPrefabPool.Instantiate("HumanPlayer", Vector3.up, Quaternion.identity);
-
+        GameObject playerObj = PhotonNetwork.Instantiate("HumanPlayer", new Vector3(0,0,0), Quaternion.identity);
+        playerObj.SetActive(true);
+        
         HumanPlayer playerScript = playerObj.GetComponent<HumanPlayer>();
-    }
 
+        playerScript.photonView.RPC("InitializePlayerOnNetwork", RpcTarget.All, PhotonNetwork.LocalPlayer);
+    }
 
     #endregion
 }

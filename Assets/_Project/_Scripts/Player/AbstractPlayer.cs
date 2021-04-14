@@ -2,10 +2,10 @@
 
 using System.Collections;
 using System.Collections.Generic;
-
+using Photon.Pun;
 using Tenacious.Collections;
 
-public abstract class AbstractPlayer : MonoBehaviour
+public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
 {
     public enum EPlayerPhase { None, Standby, Main, End, PassTurn }
     public enum EPlayerState { Waiting, Busy }
@@ -41,16 +41,14 @@ public abstract class AbstractPlayer : MonoBehaviour
     }
 
     // assign values to member variables
-    public void InitializePlayer(float _maxActionPoints, Vector3 _positionOffset)
+    [PunRPC]
+    public void InitializePlayer(float _maxActionPoints, Vector3 _positionOffset, MBGraphNode _startingNode)
     {
+        PositionNode = _startingNode;
         maxActionPoints = CurrentActionPoints = _maxActionPoints;
         PositionOffset = _positionOffset;
-    }
 
-    public void Spawn(MBGraphNode node)
-    {
-        PositionNode = node;
-        Vector3 newWorldPosition = node.transform.position + PositionOffset;
+        Vector3 newWorldPosition = _startingNode.transform.position + _positionOffset;
         transform.position = new Vector3(newWorldPosition.x, transform.position.y, newWorldPosition.z);
     }
 
