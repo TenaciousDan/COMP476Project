@@ -1762,6 +1762,12 @@ MonoBehaviour:
   - {fileID: 108733007998519965}
   actionPoints: {fileID: 277977045547047398}
   player: {fileID: 0}
+  btns:
+  - {fileID: 108733007486030373}
+  - {fileID: 108733008779575971}
+  - {fileID: 108733008856387051}
+  - {fileID: 108733007998519964}
+  - {fileID: 108733007578345523}
 --- !u!1 &108733009037440729
 GameObject:
   m_ObjectHideFlags: 0

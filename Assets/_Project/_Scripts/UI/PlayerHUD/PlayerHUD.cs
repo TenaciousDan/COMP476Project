@@ -14,6 +14,9 @@ namespace Game.UI
         public List<Image> itemImages;
         public ProgressBar actionPoints;
         public HumanPlayer player;
+
+        [SerializeField] private List<Button> btns;
+
         private bool moveBtnClicked = false;
 
         private void Start()
@@ -25,12 +28,26 @@ namespace Game.UI
         {
             actionPoints.current = player.CurrentActionPoints;
 
+            ToggleBtns(player.Phase == AbstractPlayer.EPlayerPhase.Main);
+
+            // Can only move if the button is clicked.
             if (moveBtnClicked)
             {
                 CheckMove();
             }
         }
 
+        private void ToggleBtns(bool toggle)
+        {
+            foreach (var btn in btns)
+            {
+                btn.interactable = toggle;
+            }
+        }
+
+        /// <summary>
+        /// Check whether the player can move in the selected tiles.
+        /// </summary>
         private void CheckMove()
         {
             if (Input.GetMouseButtonDown(0))
@@ -85,6 +102,7 @@ namespace Game.UI
         public void EndTurnBtnClick()
         {
             print("Ending turn!");
+            player.Phase = AbstractPlayer.EPlayerPhase.End; // GameplayManager ends turn instead?
             // TODO - End current turn.
         }
     }
