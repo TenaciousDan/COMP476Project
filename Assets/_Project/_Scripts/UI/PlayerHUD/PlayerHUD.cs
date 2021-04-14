@@ -3,6 +3,8 @@ using TMPro;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Tenacious.Collections;
+using System.Linq;
 
 namespace Game.UI
 {
@@ -11,11 +13,55 @@ namespace Game.UI
         public TextMeshProUGUI checkpointsLeft;
         public List<Image> itemImages;
         public ProgressBar actionPoints;
+        public HumanPlayer player;
+        private bool moveBtnClicked = false;
+
+        private void Start()
+        {
+            //player = GetComponent<HumanPlayer>();
+        }
+
+        private void Update()
+        {
+            actionPoints.current = player.CurrentActionPoints;
+
+            if (moveBtnClicked)
+            {
+                CheckMove();
+            }
+        }
+
+        private void CheckMove()
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                RaycastHit[] hits;
+                hits = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition));
+
+                foreach (var hit in hits)
+                {
+                    if (hit.transform.name.Equals("GridSquare(Clone)"))
+                    {
+                        MoveBtnClick(); // Reset the button
+                        var node = hit.transform.parent.GetComponent<MBGraphNode>();
+                        var graphNodes = node.mbGraph.graph.Nodes().Where(x => x.Id == node.nodeId);
+                        player.Move(graphNodes.ToList());
+                    }
+                }
+            }
+        }
 
         public void MoveBtnClick()
         {
-            print("Time to move!");
-            // TODO - Call move for player
+            var currentNode = player.PositionNode;
+            var neighbors = currentNode.mbGraph.graph.Neighbors(currentNode.nodeId);
+            
+            foreach (var node in neighbors)
+            {
+                node.Data.transform.GetChild(0).gameObject.SetActive(!moveBtnClicked);
+            }
+
+            moveBtnClicked = !moveBtnClicked;
         }
 
         public void FirstItemBtnClick()

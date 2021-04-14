@@ -25,6 +25,7 @@ public class HumanPlayer : AbstractPlayer
         //print(hudObj.transform.position);
         //hudObj.SetActive(true);
         hud = hudObj.GetComponent<PlayerHUD>();
+        hud.player = this;
     }
 
     /// <summary>
