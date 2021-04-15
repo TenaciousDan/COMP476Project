@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Tenacious.Collections;
 using System.Linq;
+using System;
 
 namespace Game.UI
 {
@@ -19,6 +20,14 @@ namespace Game.UI
 
         private bool moveBtnClicked = false;
 
+        private enum Direction
+        {
+            Left,
+            Right,
+            Up,
+            Down,
+        }
+
         private void Start()
         {
             //player = GetComponent<HumanPlayer>();
@@ -28,7 +37,8 @@ namespace Game.UI
         {
             UpdateAP();
             ToggleBtns(player.Phase == AbstractPlayer.EPlayerPhase.Main);
-            UpdateItems();
+            UpdateItems(player.Phase == AbstractPlayer.EPlayerPhase.Main);
+            ToggleMoveBtn(player.CurrentActionPoints != 0);
 
             // Can only move if the button is clicked.
             if (moveBtnClicked)
@@ -46,13 +56,13 @@ namespace Game.UI
         /// <summary>
         /// Update item sprites and button interactibility for items.
         /// </summary>
-        private void UpdateItems()
+        private void UpdateItems(bool isTurn)
         {
             for(int i = 0; i < 3; i++)
             {
                 var btnImage = btns[i].transform.GetChild(0).GetComponent<Image>();
                 bool hasItem = player.Inventory.items[i]?.inventoryImage != null;
-                btns[i].interactable = hasItem;
+                btns[i].interactable = hasItem && isTurn;
                 btnImage.enabled = hasItem;
                 btnImage.sprite = player.Inventory.items[i]?.inventoryImage;
             }
@@ -112,18 +122,46 @@ namespace Game.UI
 
         public void MoveBtnClick()
         {
-            ShowMovementTiles(!moveBtnClicked);
+            foreach (var direction in (Direction[])Enum.GetValues(typeof(Direction)))
+            {
+                ShowMovementTiles(!moveBtnClicked, player.PositionNode, (int)player.CurrentActionPoints + 1, direction);
+            }
+
             moveBtnClicked = !moveBtnClicked;
         }
-
-        private void ShowMovementTiles(bool show)
+        
+        /// <summary>
+        /// Show the available neighbors to travel to.
+        /// </summary>
+        /// <param name="show"></param> Whether to show the tiles or not.
+        /// <param name="startNode"></param> Which node to start from.
+        /// <param name="times"></param> Number of levels to find the neighbors.
+        /// <param name="direction"></param> Which direction the neighbors are in.
+        private void ShowMovementTiles(bool show, MBGraphNode startNode, int times, Direction direction)
         {
-            var currentNode = player.PositionNode;
-            var neighbors = currentNode.mbGraph.graph.Neighbors(currentNode.nodeId);
+            if (times <= 0)
+                return;
 
-            foreach (var node in neighbors)
+            startNode.transform.GetChild(0).gameObject.SetActive(show);
+            var nodeNeighbors = startNode.mbGraph.graph.Neighbors(startNode.nodeId);
+            foreach (var node in nodeNeighbors)
             {
-                node.Data.transform.GetChild(0).gameObject.SetActive(show);
+                if (node.Data.transform.position.x > startNode.transform.position.x && direction == Direction.Right)
+                {
+                    ShowMovementTiles(show, node.Data.GetComponent<MBGraphNode>(), times - 1, Direction.Right);
+                }
+                if (node.Data.transform.position.x < startNode.transform.position.x && direction == Direction.Left)
+                {
+                    ShowMovementTiles(show, node.Data.GetComponent<MBGraphNode>(), times - 1, Direction.Left);
+                }
+                if (node.Data.transform.position.z > startNode.transform.position.z && direction == Direction.Down)
+                {
+                    ShowMovementTiles(show, node.Data.GetComponent<MBGraphNode>(), times - 1, Direction.Down);
+                }
+                if (node.Data.transform.position.z < startNode.transform.position.z && direction == Direction.Up)
+                {
+                    ShowMovementTiles(show, node.Data.GetComponent<MBGraphNode>(), times - 1, Direction.Up);
+                }
             }
         }
 
