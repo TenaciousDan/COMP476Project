@@ -3,6 +3,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
+using Photon.Pun;
+using Photon.Realtime;
+
 using Tenacious.Collections;
 
 using Game.UI;
@@ -11,6 +14,13 @@ public class HumanPlayer : AbstractPlayer
 {
     [SerializeField] private PlayerHUD hud;
 
+    public Player photonPlayer;
+    [HideInInspector]
+    public int ID
+    {
+        get; private set;
+    }
+    
     protected override void Awake()
     {
         base.Awake();
@@ -28,4 +38,22 @@ public class HumanPlayer : AbstractPlayer
     {
         StartCoroutine(CRMove(path));
     }
+    
+    #region NETWORK
+
+    [PunRPC]
+    public void InitializePlayerOnNetwork(Player player)
+    {
+        photonPlayer = player;
+        ID = player.ActorNumber;
+        NetworkManager.Instance.humanPlayers[ID - 1] = this;
+
+        // Only track lock physics
+        if (!photonView.IsMine)
+        {
+            GetComponent<Rigidbody>().isKinematic = true;
+        }
+    }
+    
+    #endregion
 }

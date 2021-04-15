@@ -3,6 +3,9 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 
+
+using Game.AI;
+using Photon.Pun;
 using Tenacious;
 using Tenacious.Collections;
 
@@ -11,7 +14,6 @@ public class GameplayManager : MBSingleton<GameplayManager>
     [Serializable]
     public class PlayerDescriptor
     {
-        public GameObject playerPrefab;
         public MBGraphNode startNode;
         public Vector3 positionOffset = new Vector3(2.5f, 0.0f, 2.5f);
     }
@@ -26,21 +28,38 @@ public class GameplayManager : MBSingleton<GameplayManager>
     private int currentPlayer = 0;
 
     private bool isCRTurnUpdateRunning;
+    
+    private bool isLoadingPlayers = true;
 
     protected override void Awake()
     {
         base.Awake();
-
-        InitializePlayers();
     }
 
     private void Start()
     {
-        //
+        // Inform all players after loading into scene
+        NetworkManager.Instance.humanPlayers = new HumanPlayer[PhotonNetwork.PlayerList.Length];
+        NetworkManager.Instance.LoadedIntoGame();
     }
 
     private void Update()
     {
+        // Only run when all players are loaded, pass player list to Gameplay Manager and initialize all players
+        if (NetworkManager.Instance.humanPlayers.Length == NetworkManager.Instance.humanPlayersInGame && isLoadingPlayers)
+        {
+            isLoadingPlayers = false;
+
+            var index = 0;
+            
+            foreach (var player in NetworkManager.Instance.humanPlayers)
+            {
+                player.InitializePlayer(99, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode);
+                players.Add(player);
+                index++;
+            }
+        }
+        
         if (currentPlayer < Players.Count)
         {
             if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.Standby || Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.None)
@@ -55,25 +74,5 @@ public class GameplayManager : MBSingleton<GameplayManager>
                 ++currentPlayer;
             }
         }
-    }
-
-    private void InitializePlayers()
-    {
-        for (int i = 0; i < playerDescriptors.Count; ++i)
-        {
-            AbstractPlayer player = SpawnPlayer(playerDescriptors[i].playerPrefab, playerDescriptors[i].startNode, playerDescriptors[i].positionOffset);
-            Players.Add(player);
-        }
-    }
-
-    private AbstractPlayer SpawnPlayer(GameObject playerPrefab, MBGraphNode startingnode, Vector3 positionOffset)
-    {
-        GameObject playerObj = Instantiate(playerPrefab);
-        playerObj.transform.parent = playersParent;
-        AbstractPlayer playerComponent = playerObj.GetComponent<AbstractPlayer>();
-        playerComponent.InitializePlayer(99, positionOffset);
-        playerComponent.Spawn(startingnode);
-
-        return playerComponent;
     }
 }

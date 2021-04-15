@@ -126,9 +126,7 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
 
     public void StartGameBtnClick()
     {
-        // TODO
-        // Change the name of the scene to load.
-        NetworkManager.Instance.photonView.RPC("ChangeScene", RpcTarget.All, "TestGame");
+        NetworkManager.Instance.photonView.RPC("ChangeScene", RpcTarget.All, "MainLevel");
     }
 
     public void RefreshBtnClick()

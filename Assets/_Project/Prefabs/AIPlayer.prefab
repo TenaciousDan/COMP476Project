@@ -17,6 +17,8 @@ GameObject:
   - component: {fileID: 2147173957417967686}
   - component: {fileID: 6346006916840474583}
   - component: {fileID: 5405298471439158274}
+  - component: {fileID: 3159258380239132939}
+  - component: {fileID: -5261961871991303457}
   m_Layer: 0
   m_Name: AIPlayer
   m_TagString: Player
@@ -242,7 +244,6 @@ MonoBehaviour:
     _typeName: Game.AI.BehaviorTree+ActionCallback, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     dirty: 0
---- !u!1 &4635894109091210359
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
