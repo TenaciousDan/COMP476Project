@@ -2,8 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PU_Boost : PU_Base
+[CreateAssetMenu(fileName = "PU_Boost_Script", menuName = "ScriptableBase/PU_Boost", order = 1)]
+public class PU_Boost : Scriptable_Base
 {
+    public override string PowerUpName
+    {
+        get { return "Boost"; }
+    }
+
     private int numExtraActionPoints = 2;
 
     public override void OnPowerUpUse(AbstractPlayer player)

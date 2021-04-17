@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2882390859509882541}
   - component: {fileID: 2882390859509882540}
   - component: {fileID: 2882390859509882543}
-  - component: {fileID: 2882390859509882538}
+  - component: {fileID: 7394682441485282535}
   m_Layer: 0
   m_Name: Shield
   m_TagString: Untagged
@@ -96,7 +96,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2882390859509882538
+--- !u!114 &7394682441485282535
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -105,7 +105,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 2882390859509882577}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e02c0e4cef09c840ab8601bce17e16e, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f76bfdd98812ef4eb3a76e318793ca1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryImage: {fileID: 21300000, guid: c003575ed37515c4687ceceae554d394, type: 3}
+  inventoryImage: {fileID: 0}
+  powerUpScript: {fileID: 11400000, guid: b02e5cac003143e42af8a7703aa8d441, type: 2}

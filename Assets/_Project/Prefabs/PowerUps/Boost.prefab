@@ -12,8 +12,7 @@ GameObject:
   - component: {fileID: 4581904335914262767}
   - component: {fileID: 4581904335914262766}
   - component: {fileID: 4581904335914262765}
-  - component: {fileID: 4581904335914262764}
-  - component: {fileID: 6878101917487690970}
+  - component: {fileID: 2547273398371353132}
   m_Layer: 0
   m_Name: Boost
   m_TagString: Untagged
@@ -102,7 +101,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4581904335914262764
+--- !u!114 &2547273398371353132
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -111,15 +110,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 4581904335914262738}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23d226cf026500e47869db4ca470bb01, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f76bfdd98812ef4eb3a76e318793ca1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryImage: {fileID: 21300000, guid: 1d733cb5ba747c4449032aec351a1360, type: 3}
---- !u!222 &6878101917487690970
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4581904335914262738}
-  m_CullTransparentMesh: 1
+  inventoryImage: {fileID: 0}
+  powerUpScript: {fileID: 11400000, guid: ae55485fb7e1b59429735b989740f12f, type: 2}

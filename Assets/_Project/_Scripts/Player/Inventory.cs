@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
-    private const int maxInventorySize = 3;
+    public const int maxInventorySize = 3;
 
     [SerializeField] private AbstractPlayer player;
 
-    public List<PU_Base> items
+    public List<Scriptable_Base> items
     {
         get; private set;
     }
@@ -21,34 +21,37 @@ public class Inventory : MonoBehaviour
 
     private void Start()
     {
-        items = new List<PU_Base>();
+        items = new List<Scriptable_Base>();
         for (int i = 0; i < maxInventorySize; i++)
         {
             items.Add(null);
         }
     }
     // TODO remove this hard coded way of selecting items once we decide how we want to select an item
+    private int tempIndex = 0;
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.F))
-        //{
-        //    UseItem();
-        //}
-        //if (Input.GetKeyDown(KeyCode.Q))
-        //{
-        //    ChangeSelectedIndex(0);
-        //}
-        //if (Input.GetKeyDown(KeyCode.W))
-        //{
-        //    ChangeSelectedIndex(1);
-        //}
-        //if (Input.GetKeyDown(KeyCode.E))
-        //{
-        //    ChangeSelectedIndex(2);
-        //}
+		/*
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            UseItem(tempIndex);
+        }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            tempIndex = 0;
+        }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            tempIndex = 1;
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            tempIndex = 2;
+        }
+		*/
     }
 
-    public void AddItem(PU_Base newItem)
+    public void AddItem(Scriptable_Base newItem)
     {
         int availableSlotIndex = items.IndexOf(null);
         // if there is no more room in the inventory, remove the first item
@@ -65,7 +68,7 @@ public class Inventory : MonoBehaviour
         items[itemIndex] = null;
     }
 
-    private void ShiftItems(PU_Base newItem)
+    private void ShiftItems(Scriptable_Base newItem)
     {
         for(int i = 0; i < items.Count; i++)
         {
@@ -93,7 +96,7 @@ public class Inventory : MonoBehaviour
 
     private bool InventoryIsFull()
     {
-        foreach(PU_Base item in items)
+        foreach(Scriptable_Base item in items)
         {
             if(item == null)
             {

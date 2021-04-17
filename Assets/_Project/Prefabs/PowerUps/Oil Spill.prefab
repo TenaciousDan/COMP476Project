@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9065655637417024532}
   - component: {fileID: 9065655637417024533}
   - component: {fileID: 9065655637417024530}
-  - component: {fileID: 9065655637417024531}
+  - component: {fileID: 6866252310259288747}
   m_Layer: 0
   m_Name: Oil Spill
   m_TagString: Untagged
@@ -96,7 +96,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &9065655637417024531
+--- !u!114 &6866252310259288747
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -105,7 +105,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 9065655637417024529}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19bb26a50a00a404a8057939b78c72ea, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f76bfdd98812ef4eb3a76e318793ca1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryImage: {fileID: 21300000, guid: 4d23472b2ad604a4a8be30e90272ede9, type: 3}
+  inventoryImage: {fileID: 0}
+  powerUpScript: {fileID: 11400000, guid: 9a80a61eb8b679d4fa94c9e082c94f9d, type: 2}

@@ -144,7 +144,7 @@ namespace Game.AI
             //       and add the CRMove() coroutine to the queue (see below) and return success
             //       else if there is no cover available then return failure
 
-            // actionQueue.Enqueue(CRMove(path));
+            //actionQueue.Enqueue(CRMove(path));
 
             return (int)BTNode.EState.Success;
         }
