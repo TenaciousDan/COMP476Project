@@ -35,7 +35,7 @@ public class GameplayManager : MBSingleton<GameplayManager>
     {
         base.Awake();
     }
-
+	
     private void Start()
     {
         // Inform all players after loading into scene
@@ -72,6 +72,10 @@ public class GameplayManager : MBSingleton<GameplayManager>
             {
                 Players[currentPlayer].Phase = AbstractPlayer.EPlayerPhase.None;
                 ++currentPlayer;
+            }
+            else
+            {
+                currentPlayer = 0;
             }
         }
     }
