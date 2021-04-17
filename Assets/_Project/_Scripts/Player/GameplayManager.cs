@@ -22,6 +22,7 @@ public class GameplayManager : MBSingleton<GameplayManager>
     [SerializeField] private float maxActionPoints;
 
     private List<AbstractPlayer> players = new List<AbstractPlayer>();
+
     public List<AbstractPlayer> Players { get => players; }
 
     private int currentPlayer = 0;
