@@ -1,37 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
+using Tenacious.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class PU_Base : MonoBehaviour
+public class PU_Base : MonoBehaviour
 {
     [SerializeField]
     public Sprite inventoryImage;
-    protected bool isActive;
 
+    [SerializeField]
+    private Scriptable_Base powerUpScript;
 
+    [SerializeField]
+    private MBGraphNode positionNode;
 
     private void Start()
     {
-        isActive = true;
+        powerUpScript.PositionNode = positionNode;
+        transform.position = new Vector3(positionNode.transform.position.x, transform.position.y, positionNode.transform.position.z);
     }
-
-    protected virtual void OnPowerUpGet(AbstractPlayer player)
-    {
-        if (isActive)
-        {
-            isActive = false;
-            player.Inventory.AddItem(this);
-        }
-    }
-
-    public abstract void OnPowerUpUse(AbstractPlayer player);
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            OnPowerUpGet(other.gameObject.GetComponent<AbstractPlayer>());
+            powerUpScript.OnPowerUpGet(other.gameObject.GetComponent<AbstractPlayer>());
+            Destroy(gameObject);
         }
     }
 }
