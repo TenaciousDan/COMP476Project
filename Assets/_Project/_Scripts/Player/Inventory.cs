@@ -31,6 +31,7 @@ public class Inventory : MonoBehaviour
     private int tempIndex = 0;
     private void Update()
     {
+		/*
         if (Input.GetKeyDown(KeyCode.F))
         {
             UseItem(tempIndex);
@@ -47,6 +48,7 @@ public class Inventory : MonoBehaviour
         {
             tempIndex = 2;
         }
+		*/
     }
 
     public void AddItem(Scriptable_Base newItem)
