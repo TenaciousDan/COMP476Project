@@ -9,7 +9,6 @@ public abstract class AbstractPlayer : MonoBehaviour
 {
     public enum EPlayerPhase { None, Standby, Main, End, PassTurn }
     public enum EPlayerState { Waiting, Busy }
-
     public EPlayerPhase Phase { get; set; }
     public EPlayerState State { get; set; }
 
@@ -77,6 +76,7 @@ public abstract class AbstractPlayer : MonoBehaviour
         Phase = EPlayerPhase.Standby;
 
         // TODO: do standby phase things
+        AddActionPoints(1, false);
 
         Phase = EPlayerPhase.Main;
     }

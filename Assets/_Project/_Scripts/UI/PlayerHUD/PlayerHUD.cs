@@ -29,16 +29,9 @@ namespace Game.UI
             Down,
         }
 
-        private void Start()
-        {
-            //player = GetComponent<HumanPlayer>();
-        }
-
         private void Update()
         {
-            //print(player.Phase);
             UpdateAP();
-            //ToggleBtns(player.Phase == AbstractPlayer.EPlayerPhase.Main || player.Phase == AbstractPlayer.EPlayerPhase.Standby);
             UpdateItems(player.Phase == AbstractPlayer.EPlayerPhase.Main);
             ToggleMoveBtn(player.CurrentActionPoints != 0);
 
