@@ -17,6 +17,7 @@ namespace Game.UI
         public HumanPlayer player;
 
         [SerializeField] private List<Button> btns;
+        [SerializeField] private float distanceBetweenNodes = 10.0f;
 
         private bool moveBtnClicked = false;
 
@@ -114,6 +115,7 @@ namespace Game.UI
                         {
                             MoveBtnClick(); // Reset the button
                             var graphNodes = node.mbGraph.graph.Nodes().Where(x => x.Id == node.nodeId);
+                            player.CostPerMovement = Vector3.Distance(player.PositionNode.transform.position, graphNodes.First().Data.transform.position) / distanceBetweenNodes; // Really dumb hack but it works...
                             player.Move(graphNodes.ToList());
                         }
                     }
@@ -147,21 +149,23 @@ namespace Game.UI
             var nodeNeighbors = startNode.mbGraph.graph.Neighbors(startNode.nodeId);
             foreach (var node in nodeNeighbors)
             {
+                var mbNode = node.Data.GetComponent<MBGraphNode>();
+
                 if (node.Data.transform.position.x > startNode.transform.position.x && direction == Direction.Right)
                 {
-                    ShowMovementTiles(show, node.Data.GetComponent<MBGraphNode>(), times - 1, Direction.Right);
+                    ShowMovementTiles(show, mbNode, times - 1, Direction.Right);
                 }
                 if (node.Data.transform.position.x < startNode.transform.position.x && direction == Direction.Left)
                 {
-                    ShowMovementTiles(show, node.Data.GetComponent<MBGraphNode>(), times - 1, Direction.Left);
+                    ShowMovementTiles(show, mbNode, times - 1, Direction.Left);
                 }
                 if (node.Data.transform.position.z > startNode.transform.position.z && direction == Direction.Down)
                 {
-                    ShowMovementTiles(show, node.Data.GetComponent<MBGraphNode>(), times - 1, Direction.Down);
+                    ShowMovementTiles(show, mbNode, times - 1, Direction.Down);
                 }
                 if (node.Data.transform.position.z < startNode.transform.position.z && direction == Direction.Up)
                 {
-                    ShowMovementTiles(show, node.Data.GetComponent<MBGraphNode>(), times - 1, Direction.Up);
+                    ShowMovementTiles(show, mbNode, times - 1, Direction.Up);
                 }
             }
         }

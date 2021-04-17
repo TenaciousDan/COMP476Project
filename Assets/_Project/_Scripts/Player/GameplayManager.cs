@@ -24,7 +24,7 @@ public class GameplayManager : MBSingleton<GameplayManager>
     private List<AbstractPlayer> players = new List<AbstractPlayer>();
     public List<AbstractPlayer> Players { get => players; }
 
-    public int currentPlayer = 0;
+    private int currentPlayer = 0;
 
     private bool isCRTurnUpdateRunning;
 

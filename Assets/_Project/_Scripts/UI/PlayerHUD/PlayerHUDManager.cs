@@ -24,7 +24,6 @@ public class PlayerHUDManager : MBSingleton<PlayerHUDManager>
         var hudObj = Instantiate(hudPrefab, playerHudParent);
         player.hud = hudObj.GetComponent<PlayerHUD>();
         huds.Add(player.hud);
-        print(huds.Count);
         player.hud.player = player;
     }
 }

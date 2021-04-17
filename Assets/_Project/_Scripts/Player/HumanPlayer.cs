@@ -20,7 +20,7 @@ public class HumanPlayer : AbstractPlayer
 
     private void Start()
     {
-        hud.gameObject.SetActive(false);   
+        hud.gameObject.SetActive(false);
     }
 
     /// <summary>
