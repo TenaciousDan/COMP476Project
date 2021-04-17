@@ -73,10 +73,10 @@ public class GameplayManager : MBSingleton<GameplayManager>
                 Players[currentPlayer].Phase = AbstractPlayer.EPlayerPhase.None;
                 ++currentPlayer;
             }
-            else
-            {
-                currentPlayer = 0;
-            }
+        }
+        else
+        {
+            currentPlayer = 0;
         }
     }
 }
