@@ -48,7 +48,7 @@ public class HumanPlayer : AbstractPlayer
         ID = player.ActorNumber;
         NetworkManager.Instance.humanPlayers[ID - 1] = this;
 
-        // Only track lock physics
+        // Only track local physics
         if (!photonView.IsMine)
         {
             GetComponent<Rigidbody>().isKinematic = true;

@@ -31,6 +31,13 @@ public class GameplayManager : MBSingleton<GameplayManager>
     
     private bool isLoadingPlayers = true;
 
+    [Header("Debug Settings")] 
+    [SerializeField] private bool usingNetwork = true;
+    [SerializeField] private int debugHumanCount;
+    [SerializeField] private int debugAICount;
+    [SerializeField] private GameObject HumanPlayerPrefab;
+    [SerializeField] private GameObject AIPlayerPrefab;
+    
     protected override void Awake()
     {
         base.Awake();
@@ -39,14 +46,39 @@ public class GameplayManager : MBSingleton<GameplayManager>
     private void Start()
     {
         // Inform all players after loading into scene
-        NetworkManager.Instance.humanPlayers = new HumanPlayer[PhotonNetwork.PlayerList.Length];
-        NetworkManager.Instance.LoadedIntoGame();
+        if (usingNetwork)
+        {
+            NetworkManager.Instance.humanPlayers = new HumanPlayer[PhotonNetwork.PlayerList.Length];
+            NetworkManager.Instance.LoadedIntoGame();
+        }
+        // Instantiate all players on local machine
+        else
+        {
+            // Initialize Human Players
+            for (var i = 0; i < debugHumanCount; i++)
+            {
+                GameObject playerObj = Instantiate(HumanPlayerPrefab);
+                HumanPlayer player = playerObj.GetComponent<HumanPlayer>();
+                player.InitializePlayer(99, playerDescriptors[i].positionOffset, playerDescriptors[i].startNode);
+                players.Add(player);
+            }
+
+            // Initialize AI Players
+            for (var i = 0 + debugHumanCount; i < debugAICount + debugHumanCount; i++)
+            {
+                GameObject aiObj = Instantiate(AIPlayerPrefab);
+                AIPlayer player = aiObj.GetComponent<AIPlayer>();
+                player.InitializePlayer(99, playerDescriptors[i].positionOffset, playerDescriptors[i].startNode);
+                players.Add(player);
+            }
+            
+        }
     }
 
     private void Update()
     {
-        // Only run when all players are loaded, pass player list to Gameplay Manager and initialize all players
-        if (NetworkManager.Instance.humanPlayers.Length == NetworkManager.Instance.humanPlayersInGame && isLoadingPlayers)
+        // Initialize all players through the network and pass player list to game manager
+        if (usingNetwork && isLoadingPlayers && NetworkManager.Instance.humanPlayers.Length == NetworkManager.Instance.humanPlayersInGame)
         {
             isLoadingPlayers = false;
 
@@ -58,6 +90,8 @@ public class GameplayManager : MBSingleton<GameplayManager>
                 players.Add(player);
                 index++;
             }
+            
+            // TODO: Instantiate AI Players
         }
         
         if (currentPlayer < Players.Count)
