@@ -24,7 +24,7 @@ public class GameplayManager : MBSingleton<GameplayManager>
     private List<AbstractPlayer> players = new List<AbstractPlayer>();
     public List<AbstractPlayer> Players { get => players; }
 
-    private int currentPlayer = 0;
+    public int currentPlayer = 0;
 
     private bool isCRTurnUpdateRunning;
 
@@ -56,6 +56,10 @@ public class GameplayManager : MBSingleton<GameplayManager>
                 ++currentPlayer;
             }
         }
+        else
+        {
+            currentPlayer = 0;
+        }
     }
 
     private void InitializePlayers()
@@ -64,6 +68,11 @@ public class GameplayManager : MBSingleton<GameplayManager>
         {
             AbstractPlayer player = SpawnPlayer(playerDescriptors[i].playerPrefab, playerDescriptors[i].startNode, playerDescriptors[i].positionOffset);
             Players.Add(player);
+
+            if (player is HumanPlayer humanPlayer)
+            {
+                PlayerHUDManager.Instance.InitializeUI(humanPlayer);
+            }
         }
     }
 

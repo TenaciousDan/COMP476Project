@@ -91,6 +91,8 @@ public abstract class AbstractPlayer : MonoBehaviour
     /// </summary>
     public virtual void EndPhaseUpdate()
     {
+        //GameplayManager.Instance.currentPlayer++;
+        print(GameplayManager.Instance.currentPlayer);
         Phase = EPlayerPhase.End;
 
         // TODO: do end phase things

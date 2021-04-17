@@ -6,18 +6,25 @@ using UnityEngine;
 
 public class PlayerHUDManager : MBSingleton<PlayerHUDManager>
 {
-    [SerializeField] private List<PlayerHUD> huds;
+    public List<PlayerHUD> huds = new List<PlayerHUD>();
     public Transform playerHudParent;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private GameObject hudPrefab;
 
     // Update is called once per frame
     void Update()
     {
-        
+        foreach (var hud in huds)
+        {
+            hud.gameObject.SetActive(hud.player.Phase == AbstractPlayer.EPlayerPhase.Main);
+        }
+    }
+
+    public void InitializeUI(HumanPlayer player)
+    {
+        var hudObj = Instantiate(hudPrefab, playerHudParent);
+        player.hud = hudObj.GetComponent<PlayerHUD>();
+        huds.Add(player.hud);
+        print(huds.Count);
+        player.hud.player = player;
     }
 }
