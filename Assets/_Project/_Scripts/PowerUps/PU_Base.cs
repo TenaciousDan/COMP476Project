@@ -7,9 +7,6 @@ using UnityEngine.UI;
 public class PU_Base : MonoBehaviour
 {
     [SerializeField]
-    public Sprite inventoryImage;
-
-    [SerializeField]
     private Scriptable_Base powerUpScript;
 
     [SerializeField]

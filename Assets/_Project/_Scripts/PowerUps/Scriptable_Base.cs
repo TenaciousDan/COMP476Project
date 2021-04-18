@@ -11,10 +11,15 @@ public class Scriptable_Base : ScriptableObject
         get; set;
     }
 
-    public virtual string PowerUpName
-    {
-        get { return null; }
-    }
+    //public virtual string PowerUpName
+    //{
+    //    get { return null; }
+    //}
+
+    public string powerUpName;
+
+    [SerializeField]
+    public Sprite inventoryImage;
 
     public virtual void OnPowerUpGet(AbstractPlayer player)
     {

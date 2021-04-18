@@ -61,7 +61,7 @@ public class GameplayManager : MBSingleton<GameplayManager>
             {
                 GameObject playerObj = Instantiate(HumanPlayerPrefab);
                 HumanPlayer player = playerObj.GetComponent<HumanPlayer>();
-                player.InitializePlayer(99, playerDescriptors[i].positionOffset, playerDescriptors[i].startNode);
+                player.InitializePlayer(maxActionPoints, playerDescriptors[i].positionOffset, playerDescriptors[i].startNode);
                 players.Add(player);
             }
 
@@ -70,7 +70,7 @@ public class GameplayManager : MBSingleton<GameplayManager>
             {
                 GameObject aiObj = Instantiate(AIPlayerPrefab);
                 AIPlayer player = aiObj.GetComponent<AIPlayer>();
-                player.InitializePlayer(99, playerDescriptors[i].positionOffset, playerDescriptors[i].startNode);
+                player.InitializePlayer(maxActionPoints, playerDescriptors[i].positionOffset, playerDescriptors[i].startNode);
                 players.Add(player);
             }
             
@@ -115,29 +115,4 @@ public class GameplayManager : MBSingleton<GameplayManager>
             currentPlayer = 0;
         }
     }
-
-    //private void InitializePlayers()
-    //{
-    //    for (int i = 0; i < playerDescriptors.Count; ++i)
-    //    {
-    //        AbstractPlayer player = SpawnPlayer(playerDescriptors[i].playerPrefab, playerDescriptors[i].startNode, playerDescriptors[i].positionOffset);
-    //        Players.Add(player);
-
-    //        if (player is HumanPlayer humanPlayer)
-    //        {
-    //            PlayerHUDManager.Instance.InitializeUI(humanPlayer);
-    //        }
-    //    }
-    //}
-
-    //private AbstractPlayer SpawnPlayer(GameObject playerPrefab, MBGraphNode startingnode, Vector3 positionOffset)
-    //{
-    //    GameObject playerObj = Instantiate(playerPrefab);
-    //    playerObj.transform.parent = playersParent;
-    //    AbstractPlayer playerComponent = playerObj.GetComponent<AbstractPlayer>();
-    //    playerComponent.InitializePlayer(maxActionPoints, positionOffset);
-    //    playerComponent.Spawn(startingnode);
-
-    //    return playerComponent;
-    //}
 }

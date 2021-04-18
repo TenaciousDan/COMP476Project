@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39ae58ecf25e1c84980efbe389109a73, type: 3}
   m_Name: PU_Rocket_Script
   m_EditorClassIdentifier: 
+  powerUpName: Rocket
+  inventoryImage: {fileID: 21300000, guid: fe1e195f4d67c2647a919543422a0a9a, type: 3}

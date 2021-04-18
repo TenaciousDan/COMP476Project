@@ -55,7 +55,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
 
     // assign values to member variables
     [PunRPC]
-    public void InitializePlayer(float _maxActionPoints, Vector3 _positionOffset, MBGraphNode _startingNode)
+    public virtual void InitializePlayer(float _maxActionPoints, Vector3 _positionOffset, MBGraphNode _startingNode)
     {
         maxActionPoints = CurrentActionPoints = _maxActionPoints;
         PositionOffset = _positionOffset;
@@ -63,6 +63,8 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
 
         Vector3 newWorldPosition = _startingNode.transform.position + _positionOffset;
         transform.position = new Vector3(newWorldPosition.x, transform.position.y, newWorldPosition.z);
+
+        
     }
 
     /// <summary>

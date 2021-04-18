@@ -53,7 +53,7 @@ namespace Game.UI
         /// </summary>
         private void UpdateItems(bool isTurn)
         {
-            for(int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)
             {
                 var btnImage = btns[i].transform.GetChild(0).GetComponent<Image>();
                 bool hasItem = player.Inventory.items[i]?.inventoryImage != null;

@@ -5,10 +5,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PU_OilSpill_Script", menuName = "ScriptableBase/PU_OilSpill", order = 1)]
 public class PU_OilSpill : Scriptable_Base
 {
-    public override string PowerUpName
-    {
-        get { return "OilSpill"; }
-    }
+    //public override string PowerUpName
+    //{
+    //    get { return "OilSpill"; }
+    //}
 
     private int numActionPointsToRemove = 2;
 
