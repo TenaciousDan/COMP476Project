@@ -1,10 +1,17 @@
+using System;
+
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
+    public const int MaxRoomSize = 4;
+    public int humanPlayersInGame = 0;
+    
+    public HumanPlayer[] humanPlayers;
+
     private static NetworkManager instance;
     private static bool reinitializationPermitted = false;
     private static bool destroyed = false;
@@ -15,6 +22,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [Tooltip("Destroy this object when a new scene is loaded.")]
     [SerializeField] private bool destroyOnLoad = false;
 
+    [SerializeField]
+    private NetworkPrefabPool networkPrefabPool;
+    
     // Instance
     public static NetworkManager Instance
     {
@@ -42,6 +52,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
+        networkPrefabPool = GetComponent<NetworkPrefabPool>();
+
         if(instance == null)
         {
             if (destroyed && !allowReinitialization)
@@ -50,7 +62,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                 return;
             }
             else
-                CreateInstance(this.gameObject);
+            {
+                CreateInstance(this.gameObject); 
+                PhotonNetwork.PrefabPool = networkPrefabPool;
+            }
         }
         else
         {
@@ -72,9 +87,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
 
     #region ROOMS
-    public void CreateRoom(string roomName)
+    public void CreateRoom(string roomName, int aiPlayerCount)
     {
-        PhotonNetwork.CreateRoom(roomName);
+        RoomOptions newRoomOptions = new RoomOptions();
+        newRoomOptions.MaxPlayers = Convert.ToByte(MaxRoomSize - aiPlayerCount);
+        
+        PhotonNetwork.CreateRoom(roomName, newRoomOptions);
     }
 
     public override void OnCreatedRoom()
@@ -146,5 +164,38 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         instance = null;
         destroyed = true;
     }
+    #endregion
+
+    #region GAMEPLAY
+
+    public void LoadedIntoGame()
+    {
+        photonView.RPC("UpdateHumanPlayerCount", RpcTarget.AllBuffered);
+    }
+    
+    [PunRPC]
+    public void UpdateHumanPlayerCount()
+    {
+        humanPlayersInGame++;
+
+        // After all players are loaded in, set their networking parameters
+        if (humanPlayersInGame == PhotonNetwork.PlayerList.Length)
+        {
+            SpawnHumanPlayer();
+        }
+        
+        //TODO: Spawn in AI Player's Properly
+    }
+
+    public void SpawnHumanPlayer()
+    {
+        GameObject playerObj = PhotonNetwork.Instantiate("HumanPlayer", new Vector3(0,0,0), Quaternion.identity);
+        playerObj.SetActive(true);
+        
+        HumanPlayer playerScript = playerObj.GetComponent<HumanPlayer>();
+
+        playerScript.photonView.RPC("InitializePlayerOnNetwork", RpcTarget.All, PhotonNetwork.LocalPlayer);
+    }
+
     #endregion
 }

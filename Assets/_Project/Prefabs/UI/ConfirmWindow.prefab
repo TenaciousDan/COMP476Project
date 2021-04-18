@@ -468,8 +468,8 @@ MonoBehaviour:
     hideWindowsUnderneath: 0
   rootPanelTransform: {fileID: 387717316135715205}
   txtMessage: {fileID: 7759457667657418335}
-  txtConfirm: {fileID: 43017712862712306}
-  txtCancel: {fileID: 43017712944526513}
+  txtConfirm: {fileID: 0}
+  txtCancel: {fileID: 0}
 --- !u!1001 &2754660833453199559
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -477,9 +477,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2312462941856637385}
     m_Modifications:
+    - target: {fileID: 312254038481507989, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_text
+      value: CANCEL
+      objectReference: {fileID: 0}
     - target: {fileID: 2783876645301478518, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
       propertyPath: m_Text
       value: CANCEL
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 387586375550940091}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CancelClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Tenacious.UI.Windows.ConfirmWindow, Tenacious-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2783876646594427678, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
       propertyPath: m_Pivot.x
@@ -581,17 +613,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2783876646594427678, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
   m_PrefabInstance: {fileID: 2754660833453199559}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &43017712944526513 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2783876645301478518, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
-  m_PrefabInstance: {fileID: 2754660833453199559}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2754660833534948740
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -599,9 +620,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2312462941856637385}
     m_Modifications:
+    - target: {fileID: 312254038481507989, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_text
+      value: CONFIRM
+      objectReference: {fileID: 0}
     - target: {fileID: 2783876645301478518, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
       propertyPath: m_Text
       value: CONFIRM
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 387586375550940091}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ConfirmClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Tenacious.UI.Windows.ConfirmWindow, Tenacious-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783876646594427677, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2783876646594427678, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
       propertyPath: m_Pivot.x
@@ -698,14 +751,3 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2783876646594427678, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
   m_PrefabInstance: {fileID: 2754660833534948740}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &43017712862712306 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2783876645301478518, guid: 157cd7639509d394d89cf18e3e046214, type: 3}
-  m_PrefabInstance: {fileID: 2754660833534948740}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

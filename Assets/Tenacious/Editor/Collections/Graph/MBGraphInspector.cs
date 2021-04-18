@@ -16,6 +16,8 @@ namespace TenaciousEditor.Collections
     [CustomEditor(typeof(MBGraph))]
     public class MBGraphInspector : InspectorBase
     {
+        private float weightOverrideValue = 0;
+
         [MenuItem("GameObject/Tenacious/General/DiGraph", false)]
         static void MenuItem()
         {
@@ -43,6 +45,15 @@ namespace TenaciousEditor.Collections
 
                 if (GUILayout.Button("Set All Weights == Distances"))
                     SetAllWeightsToDistancesClick(target);
+
+                EditorGUILayout.BeginHorizontal();
+                bool setWeightToValue = GUILayout.Button("Set All Weights = ");
+                weightOverrideValue = EditorGUILayout.FloatField(weightOverrideValue);
+                if (setWeightToValue)
+                {
+                    SetAllWeightsToValueClick(target, weightOverrideValue);
+                }
+                EditorGUILayout.EndHorizontal();
             }
             EditorGUILayout.EndVertical();
 
@@ -73,7 +84,9 @@ namespace TenaciousEditor.Collections
                                 target.__useTagsToIgnoreCollisions = EditorGUILayout.Toggle("Use Tags To Ignore Collisions", target.__useTagsToIgnoreCollisions);
 
                                 EditorGUI.BeginChangeCheck();
+                                EditorGUI.indentLevel++; EditorGUI.indentLevel++;
                                 EditorGUILayout.PropertyField(serializedObject.FindProperty("__collisionTags"), new GUIContent("Ignored Collision Tags"));
+                                EditorGUI.indentLevel--; EditorGUI.indentLevel--;
                                 if (EditorGUI.EndChangeCheck()) serializedObject.ApplyModifiedProperties();
                             }
                         }
@@ -107,6 +120,18 @@ namespace TenaciousEditor.Collections
             foreach (GraphEdge<float> edge in target.graph.Edges())
             {
                 edge.Weight = (target.graph[edge.FromId].Data.transform.position - target.graph[edge.ToId].Data.transform.position).magnitude;
+            }
+
+            EditorSceneManager.MarkSceneDirty(target.gameObject.scene);
+            EditorUtility.SetDirty(target);
+        }
+
+        private void SetAllWeightsToValueClick(MBGraph target, float value)
+        {
+            target.graph.isDirty = true;
+            foreach (GraphEdge<float> edge in target.graph.Edges())
+            {
+                edge.Weight = value;
             }
 
             EditorSceneManager.MarkSceneDirty(target.gameObject.scene);

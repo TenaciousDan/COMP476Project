@@ -12,7 +12,7 @@ namespace Tenacious.Scenes
 {
     public sealed class SceneLoader : MBSingleton<SceneLoader>
     {
-        [SerializeField] private string loadingSceneName = "Loading";
+        [SerializeField] private SceneReference loadingScene;
         [SerializeField] private GameObject transitionsObject;
         [SerializeField] private GameObject imageAlphaMaskObject;
         [SerializeField] private GameObject fadeObject;
@@ -59,7 +59,7 @@ namespace Tenacious.Scenes
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
         {
-            if (scene.name.Equals(loadingSceneName))
+            if (scene.name.Equals(loadingScene))
                 transitionsObject.SetActive(false);
         }
 
@@ -85,8 +85,8 @@ namespace Tenacious.Scenes
             {
                 beforeSceneLoadCallback?.Invoke();
 
-                if (SceneUtility.GetBuildIndexByScenePath(loadingSceneName) >= 0)
-                    SceneManager.LoadScene(loadingSceneName);
+                if (SceneUtility.GetBuildIndexByScenePath(loadingScene) >= 0)
+                    SceneManager.LoadScene(loadingScene);
 
                 StartCoroutine(CRLoadSceneInBackground(sceneToLoad));
             }
