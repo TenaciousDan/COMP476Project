@@ -29,6 +29,7 @@ namespace Game.AI
         {
             Phase = EPlayerPhase.Main;
 
+            ResetBehaviorTreeProperties();
             behaviorTree.Evaluate();
 
             // Process actions
@@ -79,10 +80,11 @@ namespace Game.AI
         private int itemToUseIndex = -1;
         private bool shouldTakeCover;
         private List<AbstractPlayer> playerAttackThreats = new List<AbstractPlayer>();
+        private AbstractPlayer playerAttackTarget;
         private MBGraphNode moveTargetNode;
 
         /// <summary>
-        /// Resets the behavior tree properties. Should be called before each time the behavior tree is evaluated. <br />
+        /// Resets the behavior tree properties. This function is called each time before the behavior tree is evaluated. <br />
         /// See <see cref="BehaviorTree.Evaluate"/>
         /// </summary>
         private void ResetBehaviorTreeProperties()
@@ -90,6 +92,7 @@ namespace Game.AI
             itemToUseIndex = -1;
             shouldTakeCover = false;
             playerAttackThreats.Clear();
+            playerAttackTarget = null;
             moveTargetNode = null;
         }
 
@@ -109,7 +112,65 @@ namespace Game.AI
             //       else if none of the items give any value at this moment (ex: no targets, etc...)
             //           return failure
 
-            return (int)BTNode.EState.Success;
+            int missileIndex = -1;//GetItemIndex("Missile");
+            int boostIndex = -1;//GetItemIndex("Boost");
+            int shieldIndex = -1;//GetItemIndex("Shield");
+            int oilSpillIndex = -1;//GetItemIndex("Oil Spill");
+
+            if (boostIndex != -1)
+            {
+                itemToUseIndex = boostIndex;
+            }
+            else if (missileIndex != -1)
+            {
+                // check if other players are in sight for missile target
+                foreach (AbstractPlayer p in GameplayManager.Instance.Players)
+                {
+                    RaycastHit[] hits = Physics.RaycastAll(transform.position, p.transform.position - transform.position);
+                    foreach (RaycastHit hit in hits)
+                    {
+                        // we are colliding with ourself
+                        if (hit.transform == transform) continue;
+
+                        if (hit.collider.tag.Equals("Player"))
+                        {
+                            AbstractPlayer potentialTarget = hit.collider.GetComponent<AbstractPlayer>();
+
+                            // TODO: check if potentialTarget is in equal or higher place standing. If not, then do not waste the missile on them.
+
+                            playerAttackTarget = potentialTarget;
+                            itemToUseIndex = missileIndex;
+                            break;
+                        }
+                    }
+                }
+            }
+            else if (shieldIndex != -1)
+            {
+                // check if player is in sight for foreign missiles
+                foreach (AbstractPlayer p in GameplayManager.Instance.Players)
+                {
+                    RaycastHit[] hits = Physics.RaycastAll(transform.position, transform.position - p.transform.position);
+                    foreach (RaycastHit hit in hits)
+                    {
+                        // the ray has hit us
+                        if (hit.transform == transform)
+                        {
+                            playerAttackThreats.Add(p);
+                            itemToUseIndex = shieldIndex;
+                        }
+                    }
+                }
+
+                itemToUseIndex = shieldIndex;
+            }
+            else if (oilSpillIndex != -1)
+            {
+
+                itemToUseIndex = oilSpillIndex;
+            }
+
+            return itemToUseIndex >= 0 ? (int)BTNode.EState.Success : (int)BTNode.EState.Failure;
         }
 
         public int UseItem()
