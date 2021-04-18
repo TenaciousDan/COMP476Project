@@ -46,10 +46,18 @@ MonoBehaviour:
   allowReinitialization: 1
   destroyOnLoad: 1
   playerDescriptors:
-  - playerPrefab: {fileID: 4635357089720670571, guid: 1d43910f799a0d646b26b087a495df89, type: 3}
-    startNode: {fileID: 0}
+  - startNode: {fileID: 0}
     positionOffset: {x: 2.5, y: 0, z: 2.5}
-  - playerPrefab: {fileID: 4635357089720670571, guid: 1d43910f799a0d646b26b087a495df89, type: 3}
-    startNode: {fileID: 0}
+  - startNode: {fileID: 0}
     positionOffset: {x: 2.5, y: 0, z: -2.5}
+  - startNode: {fileID: 0}
+    positionOffset: {x: -2.5, y: 0, z: -2.5}
+  - startNode: {fileID: 0}
+    positionOffset: {x: -2.5, y: 0, z: 2.5}
   playersParent: {fileID: 0}
+  maxActionPoints: 0
+  usingNetwork: 1
+  debugHumanCount: 0
+  debugAICount: 0
+  HumanPlayerPrefab: {fileID: 0}
+  AIPlayerPrefab: {fileID: 0}
