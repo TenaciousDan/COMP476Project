@@ -79,7 +79,6 @@ namespace Game.AI
 
         private int itemToUseIndex = -1;
         private bool shouldTakeCover;
-        private List<AbstractPlayer> playerAttackThreats = new List<AbstractPlayer>();
         private AbstractPlayer playerAttackTarget;
         private MBGraphNode moveTargetNode;
 
@@ -91,7 +90,6 @@ namespace Game.AI
         {
             itemToUseIndex = -1;
             shouldTakeCover = false;
-            playerAttackThreats.Clear();
             playerAttackTarget = null;
             moveTargetNode = null;
         }
@@ -156,7 +154,6 @@ namespace Game.AI
                         // the ray has hit us
                         if (hit.transform == transform)
                         {
-                            playerAttackThreats.Add(p);
                             itemToUseIndex = shieldIndex;
                         }
                     }
