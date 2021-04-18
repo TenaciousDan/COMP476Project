@@ -25,7 +25,38 @@ namespace Game.UI
         /// </summary>
         private void Update()
         {
-            
+            UpdateSharedHud();
+        }
+
+        /// <summary>
+        /// Update whose turn it is and and their relevant information.
+        /// </summary>
+        private void UpdateSharedHud()
+        {
+            for (int i = 0; i < GameplayManager.Instance.Players.Count; i++)
+            {
+                var currentPlayer = GameplayManager.Instance.Players[i];
+                playerContainers[i].turnPointerObj.SetActive(currentPlayer.Phase == AbstractPlayer.EPlayerPhase.Main);
+                playerContainers[i].playerName.text = currentPlayer.Name;
+                UpdatePlayerItems(currentPlayer, i);
+                UpdatePlayerCheckpoints(currentPlayer, i);
+            }
+        }
+
+        private void UpdatePlayerItems(AbstractPlayer player, int playerIndex)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                bool hasItem = player.Inventory.items[i]?.inventoryImage != null;
+                var hudItemImage = playerContainers[playerIndex].itemImages[i];
+                hudItemImage.enabled = hasItem;
+                hudItemImage.sprite = player.Inventory.items[i]?.inventoryImage;
+            }
+        }
+
+        private void UpdatePlayerCheckpoints(AbstractPlayer player, int playerIndex)
+        {
+            // TODO: Add feature when checkpoints are implemented.
         }
 
         /// <summary>
