@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PU_OilSpill : PU_Base
+[CreateAssetMenu(fileName = "PU_OilSpill_Script", menuName = "ScriptableBase/PU_OilSpill", order = 1)]
+public class PU_OilSpill : Scriptable_Base
 {
+    //public override string PowerUpName
+    //{
+    //    get { return "OilSpill"; }
+    //}
+
     private int numActionPointsToRemove = 2;
 
-    protected override void OnPowerUpGet(AbstractPlayer player)
+    public override void OnPowerUpGet(AbstractPlayer player)
     {
-        if (isActive)
-        {
-            isActive = false;
-            player.RemoveActionPoints(numActionPointsToRemove);
-        }
+        player.RemoveActionPoints(numActionPointsToRemove);
     }
 
     public override void OnPowerUpUse(AbstractPlayer player)
