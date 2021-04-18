@@ -21,8 +21,10 @@ public class GameplayManager : MBSingleton<GameplayManager>
     public List<PlayerDescriptor> playerDescriptors;
 
     [SerializeField] private Transform playersParent;
+    [SerializeField] private float maxActionPoints;
 
     private List<AbstractPlayer> players = new List<AbstractPlayer>();
+
     public List<AbstractPlayer> Players { get => players; }
 
     private int currentPlayer = 0;
@@ -59,7 +61,7 @@ public class GameplayManager : MBSingleton<GameplayManager>
             {
                 GameObject playerObj = Instantiate(HumanPlayerPrefab);
                 HumanPlayer player = playerObj.GetComponent<HumanPlayer>();
-                player.InitializePlayer(99, playerDescriptors[i].positionOffset, playerDescriptors[i].startNode);
+                player.InitializePlayer(maxActionPoints, playerDescriptors[i].positionOffset, playerDescriptors[i].startNode);
                 players.Add(player);
             }
 
@@ -68,7 +70,7 @@ public class GameplayManager : MBSingleton<GameplayManager>
             {
                 GameObject aiObj = Instantiate(AIPlayerPrefab);
                 AIPlayer player = aiObj.GetComponent<AIPlayer>();
-                player.InitializePlayer(99, playerDescriptors[i].positionOffset, playerDescriptors[i].startNode);
+                player.InitializePlayer(maxActionPoints, playerDescriptors[i].positionOffset, playerDescriptors[i].startNode);
                 players.Add(player);
             }
             

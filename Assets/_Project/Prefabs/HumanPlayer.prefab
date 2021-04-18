@@ -144,6 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee8cca0fd16b4fa4da7a3fdcabf245aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hudParent: {fileID: 3226824879726454784, guid: 3a10080c8917feb4e9c57a59384b627a, type: 3}
   hud: {fileID: 0}
 --- !u!114 &5966305015554868115
 MonoBehaviour:

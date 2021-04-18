@@ -9,7 +9,6 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
 {
     public enum EPlayerPhase { None, Standby, Main, End, PassTurn }
     public enum EPlayerState { Waiting, Busy }
-
     public EPlayerPhase Phase { get; set; }
     public EPlayerState State { get; set; }
     private float maxActionPoints;
@@ -26,6 +25,14 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
     public float CurrentActionPoints
     {
         get; private set;
+    }
+
+    public float MaxActionPoints
+    {
+        get
+        {
+            return maxActionPoints;
+        }
     }
 
     public float CostPerMovement { get => costPerMovement; set => costPerMovement = value; }
@@ -48,7 +55,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
 
     // assign values to member variables
     [PunRPC]
-    public void InitializePlayer(float _maxActionPoints, Vector3 _positionOffset, MBGraphNode _startingNode)
+    public virtual void InitializePlayer(float _maxActionPoints, Vector3 _positionOffset, MBGraphNode _startingNode)
     {
         maxActionPoints = CurrentActionPoints = _maxActionPoints;
         PositionOffset = _positionOffset;
@@ -56,6 +63,8 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
 
         Vector3 newWorldPosition = _startingNode.transform.position + _positionOffset;
         transform.position = new Vector3(newWorldPosition.x, transform.position.y, newWorldPosition.z);
+
+        
     }
 
     /// <summary>
@@ -66,6 +75,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         Phase = EPlayerPhase.Standby;
 
         // TODO: do standby phase things
+        AddActionPoints(1, false);
 
         Phase = EPlayerPhase.Main;
     }

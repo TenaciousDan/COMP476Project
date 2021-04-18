@@ -12,7 +12,9 @@ using Game.UI;
 
 public class HumanPlayer : AbstractPlayer
 {
-    [SerializeField] private PlayerHUD hud;
+    [SerializeField] private Transform hudParent;
+
+    public PlayerHUD hud;
 
     public Player photonPlayer;
     [HideInInspector]
@@ -24,6 +26,18 @@ public class HumanPlayer : AbstractPlayer
     protected override void Awake()
     {
         base.Awake();
+    }
+
+    private void Start()
+    {
+        hud.gameObject.SetActive(false);
+    }
+
+    public override void InitializePlayer(float _maxActionPoints, Vector3 _positionOffset, MBGraphNode _startingNode)
+    {
+        base.InitializePlayer(_maxActionPoints, _positionOffset, _startingNode);
+
+        PlayerHUDManager.Instance.InitializeUI(this);
     }
 
     /// <summary>
