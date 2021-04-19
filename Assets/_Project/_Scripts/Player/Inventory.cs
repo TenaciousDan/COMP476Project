@@ -61,7 +61,7 @@ public class Inventory : MonoBehaviour
 
         for(int i = 0; i < items.Count; ++i)
         {
-            if(string.Equals(items[i].name, name))
+            if(string.Equals(items[i].powerUpName, name))
             {
                 index = i;
             }
