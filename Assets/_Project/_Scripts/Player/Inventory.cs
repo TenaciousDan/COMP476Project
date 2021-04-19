@@ -84,12 +84,12 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public void UseItem(int itemIndex)
+    public void UseItem(int itemIndex, GameObject target = null)
     {
-        if(items[itemIndex] != null)
+        if (items[itemIndex] != null)
         {
             print($"Used {items[itemIndex].name}");
-            items[itemIndex].OnPowerUpUse(player);
+            items[itemIndex].OnPowerUpUse(player, target);
             RemoveItem(itemIndex);
         }
     }

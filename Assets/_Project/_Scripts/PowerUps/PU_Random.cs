@@ -15,7 +15,7 @@ public class PU_Random : Scriptable_Base
         player.Inventory.AddItem(powerUps[randomIndex]);
     }
 
-    public override void OnPowerUpUse(AbstractPlayer player)
+    public override void OnPowerUpUse(AbstractPlayer player, GameObject target = null)
     {
         powerUps[randomIndex].OnPowerUpUse(player);
     }

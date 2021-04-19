@@ -142,6 +142,18 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         print("shield activated");
     }
 
+    public void GetHit(float numActionPoints)
+    {
+        if (hasShield)
+        {
+            hasShield = false;
+        }
+        else
+        {
+            RemoveActionPoints(numActionPoints);
+        }
+    }
+
     protected IEnumerator CRMove(List<GraphNode<GameObject>> path)
     {
         if (path == null) path = new List<GraphNode<GameObject>>();
