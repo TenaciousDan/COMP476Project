@@ -1720,7 +1720,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &108733009026486431
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1768,6 +1768,7 @@ MonoBehaviour:
   - {fileID: 108733008856387051}
   - {fileID: 108733007998519964}
   - {fileID: 108733007578345523}
+  distanceBetweenNodes: 10
 --- !u!1 &108733009037440729
 GameObject:
   m_ObjectHideFlags: 0
