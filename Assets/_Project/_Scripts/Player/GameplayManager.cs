@@ -8,12 +8,14 @@ using Game.AI;
 using Photon.Pun;
 using Tenacious;
 using Tenacious.Collections;
+using Game.UI;
 
 public class GameplayManager : MBSingleton<GameplayManager>
 {
     [Serializable]
     public class PlayerDescriptor
     {
+        public string name = "Test";
         public MBGraphNode startNode;
         public Vector3 positionOffset = new Vector3(2.5f, 0.0f, 2.5f);
     }
@@ -39,6 +41,7 @@ public class GameplayManager : MBSingleton<GameplayManager>
     [SerializeField] private int debugAICount;
     [SerializeField] private GameObject HumanPlayerPrefab;
     [SerializeField] private GameObject AIPlayerPrefab;
+    [SerializeField] private SharedHUD sharedHud;
     
     protected override void Awake()
     {
@@ -61,7 +64,7 @@ public class GameplayManager : MBSingleton<GameplayManager>
             {
                 GameObject playerObj = Instantiate(HumanPlayerPrefab);
                 HumanPlayer player = playerObj.GetComponent<HumanPlayer>();
-                player.InitializePlayer(maxActionPoints, playerDescriptors[i].positionOffset, playerDescriptors[i].startNode);
+                player.InitializePlayer(maxActionPoints, playerDescriptors[i].positionOffset, playerDescriptors[i].startNode, playerDescriptors[i].name);
                 players.Add(player);
             }
 
@@ -70,9 +73,11 @@ public class GameplayManager : MBSingleton<GameplayManager>
             {
                 GameObject aiObj = Instantiate(AIPlayerPrefab);
                 AIPlayer player = aiObj.GetComponent<AIPlayer>();
-                player.InitializePlayer(maxActionPoints, playerDescriptors[i].positionOffset, playerDescriptors[i].startNode);
+                player.InitializePlayer(maxActionPoints, playerDescriptors[i].positionOffset, playerDescriptors[i].startNode, playerDescriptors[i].name);
                 players.Add(player);
             }
+
+            sharedHud.InitializeTest();
         }
     }
 
@@ -94,7 +99,7 @@ public class GameplayManager : MBSingleton<GameplayManager>
             
             foreach (var player in NetworkManager.Instance.humanPlayers)
             {
-                player.InitializePlayer(99, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode);
+                player.InitializePlayer(maxActionPoints, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode, player.name);
                 players.Add(player);
                 index++;
             }

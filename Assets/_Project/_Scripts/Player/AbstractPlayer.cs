@@ -11,6 +11,8 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
     public enum EPlayerState { Waiting, Busy }
     public EPlayerPhase Phase { get; set; }
     public EPlayerState State { get; set; }
+    public string Name { get; set; }
+
     private float maxActionPoints;
     private float moveSpeed = 10;
     private float rotationSpeed = 10;
@@ -55,8 +57,9 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
 
     // assign values to member variables
     [PunRPC]
-    public virtual void InitializePlayer(float _maxActionPoints, Vector3 _positionOffset, MBGraphNode _startingNode)
+    public virtual void InitializePlayer(float _maxActionPoints, Vector3 _positionOffset, MBGraphNode _startingNode, string name)
     {
+        Name = name;
         maxActionPoints = CurrentActionPoints = _maxActionPoints;
         PositionOffset = _positionOffset;
         PositionNode = _startingNode;

@@ -32,10 +32,10 @@ public class HumanPlayer : AbstractPlayer
     {
         hud.gameObject.SetActive(false);
     }
-    
-    public override void InitializePlayer(float _maxActionPoints, Vector3 _positionOffset, MBGraphNode _startingNode)
+
+    public override void InitializePlayer(float _maxActionPoints, Vector3 _positionOffset, MBGraphNode _startingNode, string name)
     {
-        base.InitializePlayer(_maxActionPoints, _positionOffset, _startingNode);
+        base.InitializePlayer(_maxActionPoints, _positionOffset, _startingNode, name);
 
         PlayerHUDManager.Instance.InitializeUI(this);
     }
