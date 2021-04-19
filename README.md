@@ -31,8 +31,8 @@ Open the included Splash scene located at `Assets/_Scenes/Splash.unity` and pres
 
 
 ### Icon Sources
-missile: https://game-icons.net/1x1/lorc/rocket.html (Lorc)
-oil spill: https://game-icons.net/1x1/delapouite/leak.html (Delapouite)
-random: https://game-icons.net/1x1/lorc/uncertainty.html (Lorc)
-shield: https://game-icons.net/1x1/lorc/bordered-shield.html (Lorc)
-speed: https://game-icons.net/1x1/delapouite/speedometer.html (Delapouite)
+- missile: https://game-icons.net/1x1/lorc/rocket.html (Lorc)
+- oil spill: https://game-icons.net/1x1/delapouite/leak.html (Delapouite)
+- random: https://game-icons.net/1x1/lorc/uncertainty.html (Lorc)
+- shield: https://game-icons.net/1x1/lorc/bordered-shield.html (Lorc)
+- speed: https://game-icons.net/1x1/delapouite/speedometer.html (Delapouite)
