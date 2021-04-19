@@ -24,8 +24,7 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
     [SerializeField] private Button startGameButton;
 
     private Dictionary<string, RoomInfo> cachedRoomList;
-    private int aiPlayerCount;
-    
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -104,7 +103,7 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
     // Called when create room button is pressed
     public void CreateRoomBtnClick(TMP_InputField roomNameInput)
     {
-        NetworkManager.Instance.CreateRoom(roomNameInput.text, aiPlayerCount);
+        NetworkManager.Instance.CreateRoom(roomNameInput.text, NetworkManager.Instance.aiPlayerCount);
     }
 
     // Called when join room button is pressed
@@ -193,7 +192,7 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
         }
         
         // Display all AI players if any
-        foreach (int ai in Enumerable.Range(1, aiPlayerCount))
+        foreach (int ai in Enumerable.Range(1, NetworkManager.Instance.aiPlayerCount))
         {
             playerListText.text += $"AI Player {ai}\n";
         }
@@ -222,6 +221,6 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
 
     public void HandleInputData(int value)
     {
-        aiPlayerCount = value;
+        NetworkManager.Instance.aiPlayerCount = value;
     }
 }

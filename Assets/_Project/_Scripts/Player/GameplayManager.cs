@@ -84,11 +84,18 @@ public class GameplayManager : MBSingleton<GameplayManager>
     private void Update()
     {
         // Initialize all players through the network and pass player list to game manager
-        if (usingNetwork && isLoadingPlayers && NetworkManager.Instance.humanPlayers.Length == NetworkManager.Instance.humanPlayersInGame)
+        if (usingNetwork && isLoadingPlayers && NetworkManager.Instance.humanPlayers.Length == NetworkManager.Instance.humanPlayerCount)
         {
             isLoadingPlayers = false;
 
             var index = 0;
+            
+            for (int i = 0; i < NetworkManager.Instance.aiPlayerCount; i++)
+            {
+                NetworkManager.Instance.aiPlayers[i].InitializePlayer(99, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode);
+                players.Add(NetworkManager.Instance.aiPlayers[i]);
+                index++;
+            }
             
             foreach (var player in NetworkManager.Instance.humanPlayers)
             {
@@ -96,8 +103,6 @@ public class GameplayManager : MBSingleton<GameplayManager>
                 players.Add(player);
                 index++;
             }
-            
-            // TODO: Instantiate AI Players
         }
         
         if (currentPlayer < Players.Count)

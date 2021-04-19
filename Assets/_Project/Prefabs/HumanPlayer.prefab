@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hudParent: {fileID: 3226824879726454784, guid: 3a10080c8917feb4e9c57a59384b627a, type: 3}
-  hud: {fileID: 0}
+  hud: {fileID: 450685282, guid: dbd8db4bcbd496d4e89f5cf8567c51bb, type: 3}
 --- !u!114 &5966305015554868115
 MonoBehaviour:
   m_ObjectHideFlags: 0
