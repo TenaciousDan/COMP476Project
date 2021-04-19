@@ -29,12 +29,14 @@ namespace Game.AI
         {
             Phase = EPlayerPhase.Main;
 
-            ResetBehaviorTreeProperties();
-            behaviorTree.Evaluate();
-
-            // Process actions
             if (!isProcessingActions)
+            {
+                ResetBehaviorTreeProperties();
+                behaviorTree.Evaluate();
+
+                // Process actions
                 StartCoroutine(ProcessActionsQueue());
+            }
         }
 
         private void EnqueueAction(IEnumerator action)
@@ -82,6 +84,7 @@ namespace Game.AI
         private List<AbstractPlayer> playerAttackThreats = new List<AbstractPlayer>();
         private AbstractPlayer playerAttackTarget;
         private MBGraphNode moveTargetNode;
+        private GameObject nodeToSpillOn;
 
         /// <summary>
         /// Resets the behavior tree properties. This function is called each time before the behavior tree is evaluated. <br />
@@ -94,6 +97,7 @@ namespace Game.AI
             playerAttackThreats.Clear();
             playerAttackTarget = null;
             moveTargetNode = null;
+            nodeToSpillOn = null;
         }
 
         public int HasItem()
@@ -156,7 +160,6 @@ namespace Game.AI
                         // the ray has hit us
                         if (hit.transform == transform)
                         {
-                            playerAttackThreats.Add(p);
                             itemToUseIndex = shieldIndex;
                         }
                     }
@@ -166,8 +169,22 @@ namespace Game.AI
             }
             else if (oilSpillIndex != -1)
             {
+                // we can only place oil spills on neighbor nodes around us
+                IWeightedDiGraph<GameObject, float> graph = PositionNode.mbGraph.graph;
+                List<GameObject> potentialOilTargets = new List<GameObject>();
+                foreach (GraphNode<GameObject> graphNode in graph.Neighbors(PositionNode.nodeId))
+                {
+                    // CalculatePathToGoal() and if this node is on that path then do not add it to the list (otherwise we'd be hindering ourselves)
+                    potentialOilTargets.Add(graphNode.Data);
+                }
 
-                itemToUseIndex = oilSpillIndex;
+                // If there 1 or less nodes that don't have an oil spill on them then don't place the oil spill or else we would be trapping ourselves
+                if (potentialOilTargets.Count > 1)
+                {
+                    // select the first potential oil target
+                    nodeToSpillOn = potentialOilTargets[0];
+                    itemToUseIndex = oilSpillIndex;
+                }
             }
 
             return itemToUseIndex >= 0 ? (int)BTNode.EState.Success : (int)BTNode.EState.Failure;
@@ -185,7 +202,7 @@ namespace Game.AI
 
         public int ShouldTakeCover()
         {
-            // TODO: foreach player in the game, check if they have ranged/attack items
+            // foreach player in the game, check if they have ranged/attack items
             //       if they do, then get the item with the longest range and check if they can reach this player
             //       if they can reach us 
             //           set shouldTakeCover to true
@@ -194,6 +211,38 @@ namespace Game.AI
             //       else if no one can reach us with an attack
             //           return failure
 
+            foreach (AbstractPlayer p in GameplayManager.Instance.Players)
+            {
+                int pOilSpillIndex = -1;//GetItemIndex("Oil Spill");
+                int pMissileIndex = -1;//GetItemIndex("Missile");
+
+                if (pMissileIndex != -1)
+                {
+                    RaycastHit[] hits = Physics.RaycastAll(transform.position, transform.position - p.transform.position);
+                    foreach (RaycastHit hit in hits)
+                    {
+                        // the ray has hit us
+                        if (hit.transform == transform)
+                        {
+                            playerAttackThreats.Add(p);
+                            shouldTakeCover = true;
+                        }
+                    }
+                }
+                else if (pOilSpillIndex != -1)
+                {
+                    IWeightedDiGraph<GameObject, float> graph = PositionNode.mbGraph.graph;
+                    foreach (GraphNode<GameObject> graphNode in graph.Neighbors(PositionNode.nodeId))
+                    {
+                        if (graphNode.Data.transform == PositionNode.transform)
+                        {
+                            // we can be hit by this player's oil spill directly
+                            playerAttackThreats.Add(p);
+                            shouldTakeCover = true;
+                        }
+                    }
+                }
+            }
 
             return (int)BTNode.EState.Success;
         }
