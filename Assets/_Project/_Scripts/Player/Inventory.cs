@@ -27,29 +27,6 @@ public class Inventory : MonoBehaviour
             items.Add(null);
         }
     }
-    // TODO remove this hard coded way of selecting items once we decide how we want to select an item
-    private int tempIndex = 0;
-    private void Update()
-    {
-		/*
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            UseItem(tempIndex);
-        }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            tempIndex = 0;
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            tempIndex = 1;
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            tempIndex = 2;
-        }
-		*/
-    }
 
     public void AddItem(Scriptable_Base newItem)
     {
@@ -68,6 +45,30 @@ public class Inventory : MonoBehaviour
         items[itemIndex] = null;
     }
 
+    public void UseItem(int itemIndex, GameObject target = null)
+    {
+        if (items[itemIndex] != null)
+        {
+            print($"Used {items[itemIndex].name}");
+            items[itemIndex].OnPowerUpUse(player, target);
+            RemoveItem(itemIndex);
+        }
+    }
+
+    public int GetItemIndex(string name)
+    {
+        int index = -1;
+
+        for(int i = 0; i < items.Count; ++i)
+        {
+            if(string.Equals(items[i].name, name))
+            {
+                index = i;
+            }
+        }
+        return index;
+    }
+
     private void ShiftItems(Scriptable_Base newItem)
     {
         for(int i = 0; i < items.Count; i++)
@@ -81,16 +82,6 @@ public class Inventory : MonoBehaviour
             {
                 items[i] = newItem;
             }
-        }
-    }
-
-    public void UseItem(int itemIndex, GameObject target = null)
-    {
-        if (items[itemIndex] != null)
-        {
-            print($"Used {items[itemIndex].name}");
-            items[itemIndex].OnPowerUpUse(player, target);
-            RemoveItem(itemIndex);
         }
     }
 
