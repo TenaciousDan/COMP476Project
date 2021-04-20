@@ -12,12 +12,15 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
     public EPlayerPhase Phase { get; set; }
     public EPlayerState State { get; set; }
     public string Name { get; set; }
+    [SerializeField]
+    protected GameObject shieldObject;
 
     private float maxActionPoints;
     private float moveSpeed = 10;
     private float rotationSpeed = 10;
     private bool hasShield = false;
     private float costPerMovement = 1;
+    private float pointsDeficit = 0;
 
     public Inventory Inventory
     {
@@ -80,6 +83,11 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         // TODO: do standby phase things
         AddActionPoints(1, false);
 
+        RemoveActionPoints(pointsDeficit);
+        pointsDeficit = 0;
+
+        DeactivateShield();
+
         Phase = EPlayerPhase.Main;
     }
 
@@ -136,13 +144,21 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         {
             CurrentActionPoints = 0;
         }
-        print("Removed action points. Player now has " + CurrentActionPoints + " action points.");
+        print("Removed " + numActionPoints + " action points. Player now has " + CurrentActionPoints + " action points.");
     }
 
     public void ActivateShield()
     {
         hasShield = true;
+        shieldObject.SetActive(true);
         print("shield activated");
+    }
+
+    public void DeactivateShield()
+    {
+        hasShield = false;
+        shieldObject.SetActive(false);
+        print("shield deactivated");
     }
 
     public void GetHit(float numActionPoints)
@@ -153,8 +169,13 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         }
         else
         {
-            RemoveActionPoints(numActionPoints);
+            AddPointsDeficit(numActionPoints);
         }
+    }
+
+    public void AddPointsDeficit(float numActionPoints)
+    {
+        pointsDeficit += numActionPoints;
     }
 
     protected IEnumerator CRMove(List<GraphNode<GameObject>> path)
