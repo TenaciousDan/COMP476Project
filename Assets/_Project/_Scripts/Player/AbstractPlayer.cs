@@ -57,14 +57,16 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
 
     // assign values to member variables
     [PunRPC]
-    public virtual void InitializePlayer(float _maxActionPoints, Vector3 _positionOffset, MBGraphNode _startingNode, string name)
+    public virtual void InitializePlayer(float _maxActionPoints, Vector3 _positionOffset, string _startingNodeId, string name)
     {
+        MBGraphNode startingNode = GameplayManager.Instance.gridGraph.graph[_startingNodeId].Data.GetComponent<MBGraphNode>();
+        
         Name = name;
         maxActionPoints = CurrentActionPoints = _maxActionPoints;
         PositionOffset = _positionOffset;
-        PositionNode = _startingNode;
-
-        Vector3 newWorldPosition = _startingNode.transform.position + _positionOffset;
+        PositionNode = startingNode;
+        
+        Vector3 newWorldPosition = startingNode.transform.position + _positionOffset;
         transform.position = new Vector3(newWorldPosition.x, transform.position.y, newWorldPosition.z);
     }
 

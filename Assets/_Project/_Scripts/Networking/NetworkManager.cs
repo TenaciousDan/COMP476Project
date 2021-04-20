@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Game.AI;
 using Photon.Pun;
 using Photon.Realtime;
+using Tenacious.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -216,6 +217,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         AIPlayer playerScript = playerObj.GetComponent<AIPlayer>();
 
         aiPlayers.Add(playerScript);
+    }
+    
+    public void InitializeHumanPlayer(HumanPlayer player, float _maxActionPoints, Vector3 _offset, string _startNodeId, string _name)
+    {
+        player.photonView.RPC("InitializePlayer", RpcTarget.All, _maxActionPoints, _offset, _startNodeId, _name);
     }
 
     #endregion
