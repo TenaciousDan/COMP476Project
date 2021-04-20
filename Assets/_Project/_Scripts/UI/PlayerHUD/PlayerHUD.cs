@@ -169,23 +169,25 @@ namespace Game.UI
             var nodeNeighbors = startNode.mbGraph.graph.Neighbors(startNode.nodeId);
             foreach (var node in nodeNeighbors)
             {
+                int extraValue = (node.Data.transform.GetComponentInChildren<OilSpillManager>()) != null ? 2 : 0;
+
                 var mbNode = node.Data.GetComponent<MBGraphNode>();
 
                 if (node.Data.transform.position.x > startNode.transform.position.x && direction == Direction.Right)
                 {
-                    ShowMovementTiles(show, mbNode, times - 1, Direction.Right);
+                    ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Right);
                 }
                 if (node.Data.transform.position.x < startNode.transform.position.x && direction == Direction.Left)
                 {
-                    ShowMovementTiles(show, mbNode, times - 1, Direction.Left);
+                    ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Left);
                 }
                 if (node.Data.transform.position.z > startNode.transform.position.z && direction == Direction.Down)
                 {
-                    ShowMovementTiles(show, mbNode, times - 1, Direction.Down);
+                    ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Down);
                 }
                 if (node.Data.transform.position.z < startNode.transform.position.z && direction == Direction.Up)
                 {
-                    ShowMovementTiles(show, mbNode, times - 1, Direction.Up);
+                    ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Up);
                 }
             }
         }
