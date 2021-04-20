@@ -207,6 +207,8 @@ namespace Game.AI
             return (int)BTNode.EState.Success;
         }
 
+        // sphere cast to check if collision with box
+
         public int IsItemInRange()
         {
             // TODO: check if item box is in range (there's enough action points to reach it)
