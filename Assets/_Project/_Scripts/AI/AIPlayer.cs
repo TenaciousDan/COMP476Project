@@ -2,6 +2,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 using Tenacious.Collections;
 
@@ -29,12 +30,14 @@ namespace Game.AI
         {
             Phase = EPlayerPhase.Main;
 
-            ResetBehaviorTreeProperties();
-            behaviorTree.Evaluate();
-
-            // Process actions
             if (!isProcessingActions)
+            {
+                ResetBehaviorTreeProperties();
+                behaviorTree.Evaluate();
+
+                // Process actions
                 StartCoroutine(ProcessActionsQueue());
+            }
         }
 
         private void EnqueueAction(IEnumerator action)
@@ -80,7 +83,9 @@ namespace Game.AI
         private int itemToUseIndex = -1;
         private bool shouldTakeCover;
         private AbstractPlayer playerAttackTarget;
+        private List<AbstractPlayer> playerAttackThreats;
         private MBGraphNode moveTargetNode;
+        private GameObject nodeToSpillOn;
 
         /// <summary>
         /// Resets the behavior tree properties. This function is called each time before the behavior tree is evaluated. <br />
@@ -91,7 +96,9 @@ namespace Game.AI
             itemToUseIndex = -1;
             shouldTakeCover = false;
             playerAttackTarget = null;
+            playerAttackThreats.Clear();
             moveTargetNode = null;
+            nodeToSpillOn = null;
         }
 
         public int HasItem()
@@ -163,8 +170,22 @@ namespace Game.AI
             }
             else if (oilSpillIndex != -1)
             {
+                // we can only place oil spills on neighbor nodes around us
+                IWeightedDiGraph<GameObject, float> graph = PositionNode.mbGraph.graph;
+                List<GameObject> potentialOilTargets = new List<GameObject>();
+                foreach (GraphNode<GameObject> graphNode in graph.Neighbors(PositionNode.nodeId))
+                {
+                    // CalculatePathToGoal() and if this node is on that path then do not add it to the list (otherwise we'd be hindering ourselves)
+                    potentialOilTargets.Add(graphNode.Data);
+                }
 
-                itemToUseIndex = oilSpillIndex;
+                // If there 1 or less nodes that don't have an oil spill on them then don't place the oil spill or else we would be trapping ourselves
+                if (potentialOilTargets.Count > 1)
+                {
+                    // select the first potential oil target
+                    nodeToSpillOn = potentialOilTargets[0];
+                    itemToUseIndex = oilSpillIndex;
+                }
             }
 
             return itemToUseIndex >= 0 ? (int)BTNode.EState.Success : (int)BTNode.EState.Failure;
@@ -182,7 +203,7 @@ namespace Game.AI
 
         public int ShouldTakeCover()
         {
-            // TODO: foreach player in the game, check if they have ranged/attack items
+            // foreach player in the game, check if they have ranged/attack items
             //       if they do, then get the item with the longest range and check if they can reach this player
             //       if they can reach us 
             //           set shouldTakeCover to true
@@ -191,6 +212,38 @@ namespace Game.AI
             //       else if no one can reach us with an attack
             //           return failure
 
+            foreach (AbstractPlayer p in GameplayManager.Instance.Players)
+            {
+                int pOilSpillIndex = -1;//p.GetItemIndex("Oil Spill");
+                int pMissileIndex = -1;//p.GetItemIndex("Missile");
+
+                if (pMissileIndex != -1)
+                {
+                    RaycastHit[] hits = Physics.RaycastAll(transform.position, transform.position - p.transform.position);
+                    foreach (RaycastHit hit in hits)
+                    {
+                        // the ray has hit us
+                        if (hit.transform == transform)
+                        {
+                            playerAttackThreats.Add(p);
+                            shouldTakeCover = true;
+                        }
+                    }
+                }
+                else if (pOilSpillIndex != -1)
+                {
+                    IWeightedDiGraph<GameObject, float> graph = PositionNode.mbGraph.graph;
+                    foreach (GraphNode<GameObject> graphNode in graph.Neighbors(PositionNode.nodeId))
+                    {
+                        if (graphNode.Data.transform == PositionNode.transform)
+                        {
+                            // we can be hit by this player's oil spill directly
+                            playerAttackThreats.Add(p);
+                            shouldTakeCover = true;
+                        }
+                    }
+                }
+            }
 
             return (int)BTNode.EState.Success;
         }
@@ -202,9 +255,53 @@ namespace Game.AI
             //       and add the CRMove() coroutine to the queue (see below) and return success
             //       else if there is no cover available then return failure
 
-            //actionQueue.Enqueue(CRMove(path));
+            // TODO: in AbstractPlayer, make a function that gets a list of all reachable nodes (given current action points)
+            List<MBGraphNode> reachableNodes = new List<MBGraphNode>();
+            // reachableNodes = GetAllReachableNodes();
 
-            return (int)BTNode.EState.Success;
+            List<MBGraphNode> coverNodes = reachableNodes.Select(n => n).ToList();
+            foreach (AbstractPlayer player in playerAttackThreats)
+            {
+                int pMissileIndex = -1;//player.GetItemIndex("Missile");
+
+                if (pMissileIndex != -1)
+                {
+                    foreach (MBGraphNode node in coverNodes)
+                    {
+                        // if we don't hit something, then there is no cover at this node and so, we remove it from the cover list
+                        RaycastHit[] hits = Physics.RaycastAll(player.transform.position, node.transform.position - player.transform.position);
+                        bool coverAvailable = false;
+                        foreach (RaycastHit hit in hits)
+                        {
+                            // ignore ourselves
+                            if (hit.collider.transform != transform)
+                                continue;
+
+                            coverAvailable = true;
+                            break;
+                        }
+
+                        if (!coverAvailable)
+                            coverNodes.Remove(node);
+                    }
+                }
+
+
+            }
+
+            if (coverNodes.Count > 0)
+            {
+                // TODO: Get cover node that is closest to the closest checkpoint/goal
+                // need a way to get the checkpoint/goal nodes
+                MBGraphNode optimalCoverNode = coverNodes[0];
+
+                List<GraphNode<GameObject>> path = pathFinding.FindPath(PositionNode.nodeId, optimalCoverNode.nodeId, MovementHeuristic);
+                actionQueue.Enqueue(CRMove(path));
+
+                return (int)BTNode.EState.Success;
+            }
+            else
+                return (int)BTNode.EState.Failure;
         }
 
         public int IsItemInRange()
@@ -248,15 +345,34 @@ namespace Game.AI
             // TODO: set moveTargetNode to closest checkpoint
             //       implement GetCostToMove() function that returns how much it costs to move (ex: player could have a debuff that makes it cost more/less to move)
 
-            List<GraphNode<GameObject>> path = new List<GraphNode<GameObject>>();
-            path = pathFinding.FindPath(PositionNode.nodeId, moveTargetNode.nodeId, MovementHeuristic);
+            List<MBGraphNode> reachableNodes = new List<MBGraphNode>();
+            // reachableNodes = GetAllReachableNodes(PositionNode);
 
-            while (path.Count > CurrentActionPoints) // use GetCostToMove() instead of CurrentActionPoints
+            // TODO: need a way to get the closest checkpoint/goal node
+            // checkpointNode = 
+
+            // get the closest reachable node to the checkpoint/goal
+            MBGraphNode optimalNode = reachableNodes.Count > 0 ? reachableNodes[0] : null;
+            float dist = Mathf.Infinity;
+            foreach (MBGraphNode node in reachableNodes)
             {
-                actionQueue.Enqueue(CRMove(path));
+                //float tempDist = (node.transform.position - checkpointNode.transform.position).magnitude;
+                //if (tempDist < dist)
+                //{
+                //    optimalNode = node;
+                //    dist = tempDist;
+                //}
             }
 
-            return (int)BTNode.EState.Success;
+            if (optimalNode != null)
+            {
+                List<GraphNode<GameObject>> path = pathFinding.FindPath(PositionNode.nodeId, optimalNode.nodeId, MovementHeuristic);
+                actionQueue.Enqueue(CRMove(path));
+
+                return (int)BTNode.EState.Success;
+            }
+            else
+                return (int)BTNode.EState.Failure; // <- we cannot move anymore
         }
 
         public int EndTurn()
