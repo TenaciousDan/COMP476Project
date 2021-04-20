@@ -21,6 +21,7 @@ namespace Game.UI
 
         private bool moveBtnClicked = false;
         private bool rocketBtnClicked = false;
+        private bool oilSpillBtnClicked = false;
 
         private enum Direction
         {
@@ -51,6 +52,18 @@ namespace Game.UI
                     ItemBtnClick(itemIndex); // Reset button
                     player.Inventory.UseItem(itemIndex, target);
                     rocketBtnClicked = !rocketBtnClicked;
+                }
+            }
+            else if (oilSpillBtnClicked)
+            {
+                var target = ClickSelectOilTarget();
+
+                if (target != null)
+                {
+                    int itemIndex = player.Inventory.GetItemIndex("Oil Spill");
+                    ItemBtnClick(itemIndex); // Reset button
+                    player.Inventory.UseItem(itemIndex, target);
+                    oilSpillBtnClicked = !oilSpillBtnClicked;
                 }
             }
         }
@@ -187,6 +200,8 @@ namespace Game.UI
                     ShowPlayerNodes(rocketBtnClicked);
                     break;
                 case "Oil Spill":
+                    oilSpillBtnClicked = !oilSpillBtnClicked;
+                    ShowOilSpillTiles(oilSpillBtnClicked);
                     break;
                 default:
                     player.Inventory.UseItem(itemIndex);
@@ -217,6 +232,35 @@ namespace Game.UI
                     if (hit.transform.tag.Equals("Player") && hit.transform.gameObject != player.gameObject)
                     {
                         return hit.transform.gameObject;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private void ShowOilSpillTiles(bool show)
+        {
+            var neighbors = player.PositionNode.mbGraph.graph.Neighbors(player.PositionNode.nodeId);
+
+            foreach (var neighbor in neighbors)
+            {
+                neighbor.Data.transform.GetChild(0).gameObject.SetActive(show);
+            }
+        }
+
+        private GameObject ClickSelectOilTarget()
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                RaycastHit[] hits;
+                hits = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition));
+
+                foreach (var hit in hits)
+                {
+                    if (hit.transform.name.Equals("GridSquare(Clone)") && hit.transform != player.PositionNode.transform)
+                    {
+                        return hit.transform.parent.gameObject;
                     }
                 }
             }
