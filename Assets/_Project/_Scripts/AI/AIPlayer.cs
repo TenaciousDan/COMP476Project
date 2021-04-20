@@ -83,6 +83,7 @@ namespace Game.AI
         private int itemToUseIndex = -1;
         private bool shouldTakeCover;
         private AbstractPlayer playerAttackTarget;
+        private List<AbstractPlayer> playerAttackThreats;
         private MBGraphNode moveTargetNode;
         private GameObject nodeToSpillOn;
 
@@ -95,6 +96,7 @@ namespace Game.AI
             itemToUseIndex = -1;
             shouldTakeCover = false;
             playerAttackTarget = null;
+            playerAttackThreats.Clear();
             moveTargetNode = null;
             nodeToSpillOn = null;
         }
