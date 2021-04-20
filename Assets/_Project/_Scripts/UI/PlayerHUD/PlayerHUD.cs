@@ -45,25 +45,19 @@ namespace Game.UI
             else if (rocketBtnClicked)
             {
                 var target = ClickSelectRocketTarget();
-
                 if (target != null)
                 {
-                    int itemIndex = player.Inventory.GetItemIndex("Rocket");
-                    ItemBtnClick(itemIndex); // Reset button
-                    player.Inventory.UseItem(itemIndex, target);
-                    rocketBtnClicked = !rocketBtnClicked;
+                    SpecialItemClick(target, "Rocket");
+                    rocketBtnClicked = false;
                 }
             }
             else if (oilSpillBtnClicked)
             {
                 var target = ClickSelectOilTarget();
-
                 if (target != null)
                 {
-                    int itemIndex = player.Inventory.GetItemIndex("Oil Spill");
-                    ItemBtnClick(itemIndex); // Reset button
-                    player.Inventory.UseItem(itemIndex, target);
-                    oilSpillBtnClicked = !oilSpillBtnClicked;
+                    SpecialItemClick(target, "Oil Spill");
+                    oilSpillBtnClicked = false;
                 }
             }
         }
@@ -72,6 +66,39 @@ namespace Game.UI
         {
             actionPoints.current = player.CurrentActionPoints;
             actionPoints.maximum = player.MaxActionPoints;
+        }
+
+        private void SpecialItemClick(GameObject target, string itemName)
+        {
+            int itemIndex = player.Inventory.GetItemIndex(itemName);
+            ItemBtnClick(itemIndex); // Reset button
+            player.Inventory.UseItem(itemIndex, target);
+        }
+
+        private void RocketClick()
+        {
+            var target = ClickSelectRocketTarget();
+
+            if (target != null)
+            {
+                int itemIndex = player.Inventory.GetItemIndex("Rocket");
+                ItemBtnClick(itemIndex); // Reset button
+                player.Inventory.UseItem(itemIndex, target);
+                rocketBtnClicked = false;
+            }
+        }
+
+        private void OilSpillClick()
+        {
+            var target = ClickSelectOilTarget();
+
+            if (target != null)
+            {
+                int itemIndex = player.Inventory.GetItemIndex("Oil Spill");
+                ItemBtnClick(itemIndex); // Reset button
+                player.Inventory.UseItem(itemIndex, target);
+                oilSpillBtnClicked = false;
+            }
         }
 
         /// <summary>
