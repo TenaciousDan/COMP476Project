@@ -12,6 +12,8 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
     public EPlayerPhase Phase { get; set; }
     public EPlayerState State { get; set; }
     public string Name { get; set; }
+    [SerializeField]
+    protected GameObject shieldObject;
 
     private float maxActionPoints;
     private float moveSpeed = 10;
@@ -84,6 +86,8 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         RemoveActionPoints(pointsDeficit);
         pointsDeficit = 0;
 
+        DeactivateShield();
+
         Phase = EPlayerPhase.Main;
     }
 
@@ -146,7 +150,15 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
     public void ActivateShield()
     {
         hasShield = true;
+        shieldObject.SetActive(true);
         print("shield activated");
+    }
+
+    public void DeactivateShield()
+    {
+        hasShield = false;
+        shieldObject.SetActive(false);
+        print("shield deactivated");
     }
 
     public void GetHit(float numActionPoints)
