@@ -92,7 +92,7 @@ public class GameplayManager : MBSingleton<GameplayManager>
             
             for (int i = 0; i < NetworkManager.Instance.aiPlayerCount; i++)
             {
-                NetworkManager.Instance.aiPlayers[i].InitializePlayer(99, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode);
+                NetworkManager.Instance.aiPlayers[i].InitializePlayer(99, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode, "AI" + i);
                 players.Add(NetworkManager.Instance.aiPlayers[i]);
                 index++;
             }
