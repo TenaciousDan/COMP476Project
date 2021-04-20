@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   powerUpName: Rocket
   inventoryImage: {fileID: 21300000, guid: fe1e195f4d67c2647a919543422a0a9a, type: 3}
-  rocketObject: {fileID: 2862185475246856077, guid: 0221f8b6d4cf4bf4a90ec9dd2fa9b8db, type: 3}
+  rocketObject: {fileID: 2865899898258453693, guid: 0221f8b6d4cf4bf4a90ec9dd2fa9b8db, type: 3}
