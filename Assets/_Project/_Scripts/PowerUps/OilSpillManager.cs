@@ -11,7 +11,7 @@ public class OilSpillManager : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             other.GetComponent<AbstractPlayer>().GetHit(numActionPointsToRemove);
-            //Destroy(gameObject);
+            Destroy(gameObject);
         }
     }
 }

@@ -19,7 +19,7 @@ public class RocketManager : MonoBehaviour
         targetPosition = new Vector3(targetPosition.x, targetPosition.y, targetPosition.z);
 
         Vector3 targetDirection = (target.transform.position) - transform.position;
-        Quaternion toRotation = Quaternion.FromToRotation(transform.up, targetDirection);
+        Quaternion toRotation = Quaternion.LookRotation(targetDirection);
         transform.rotation = toRotation;
         while (transform.position != targetPosition)
         {
