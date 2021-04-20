@@ -331,10 +331,10 @@ namespace Game.AI
             // TODO: set moveTargetNode to closest checkpoint
             //       implement GetCostToMove() function that returns how much it costs to move (ex: player could have a debuff that makes it cost more/less to move)
 
-            // moveTargetNode = ...
+            // checkpointNode = 
 
             List<GraphNode<GameObject>> path = new List<GraphNode<GameObject>>();
-            path = pathFinding.FindPath(PositionNode.nodeId, moveTargetNode.nodeId, MovementHeuristic);
+            //path = pathFinding.FindPath(PositionNode.nodeId, checkpointNode.nodeId, MovementHeuristic);
 
             while (path.Count > CurrentActionPoints) // use GetCostToMove() instead of CurrentActionPoints
             {
