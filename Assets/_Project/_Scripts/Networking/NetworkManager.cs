@@ -1,5 +1,6 @@
 using System;
-
+using System.Collections.Generic;
+using Game.AI;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -8,9 +9,11 @@ using UnityEngine.SceneManagement;
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
     public const int MaxRoomSize = 4;
-    public int humanPlayersInGame = 0;
+    public int humanPlayerCount = 0;
+    public int aiPlayerCount = 0;
     
     public HumanPlayer[] humanPlayers;
+    public List<AIPlayer> aiPlayers = new List<AIPlayer>();
 
     private static NetworkManager instance;
     private static bool reinitializationPermitted = false;
@@ -176,15 +179,23 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void UpdateHumanPlayerCount()
     {
-        humanPlayersInGame++;
+        humanPlayerCount++;
 
         // After all players are loaded in, set their networking parameters
-        if (humanPlayersInGame == PhotonNetwork.PlayerList.Length)
+        if (humanPlayerCount == PhotonNetwork.PlayerList.Length)
         {
             SpawnHumanPlayer();
+
+            // Host will handle all AI Spawning
+            if (PhotonNetwork.IsMasterClient)
+            {
+                for (var i = 0; i < aiPlayerCount; i++)
+                {
+                    SpawnAIPlayer();
+                }
+            }
+            
         }
-        
-        //TODO: Spawn in AI Player's Properly
     }
 
     public void SpawnHumanPlayer()
@@ -195,6 +206,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         HumanPlayer playerScript = playerObj.GetComponent<HumanPlayer>();
 
         playerScript.photonView.RPC("InitializePlayerOnNetwork", RpcTarget.All, PhotonNetwork.LocalPlayer);
+    }
+
+    public void SpawnAIPlayer()
+    {
+        GameObject playerObj = PhotonNetwork.Instantiate("AIPlayer", new Vector3(0, 0, 0), Quaternion.identity);
+        playerObj.SetActive(true);
+
+        AIPlayer playerScript = playerObj.GetComponent<AIPlayer>();
+
+        aiPlayers.Add(playerScript);
     }
 
     #endregion
