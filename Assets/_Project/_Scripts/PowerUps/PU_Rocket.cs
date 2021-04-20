@@ -5,13 +5,23 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PU_Rocket_Script", menuName = "ScriptableBase/PU_Rocket", order = 1)]
 public class PU_Rocket : Scriptable_Base
 {
-    //public override string PowerUpName
+    [SerializeField]
+    private RocketManager rocketObject;
+
+
+    //Remove comments to test hard coded target
+
+    //private GameObject _target;
+    //private void OnEnable()
     //{
-    //    get { return "Rocket"; }
+    //    _target = GameObject.Find("TempTarget");
     //}
 
-    public override void OnPowerUpUse(AbstractPlayer player, AbstractPlayer target)
+
+    public override void OnPowerUpUse(AbstractPlayer player, GameObject target)
     {
-        //Debug.Log(player.name + " fires rocket at " + target.name);
+        //target = _target;
+        Debug.Log(player.name + " fires rocket at " + target.GetComponent<AbstractPlayer>().Name);
+        Instantiate(rocketObject, new Vector3(player.transform.position.x, player.transform.position.y + 4, player.transform.position.z), Quaternion.Euler(90, 0, 0)).GetComponent<RocketManager>().FireRocket(target);
     }
 }

@@ -57,14 +57,16 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
 
     // assign values to member variables
     [PunRPC]
-    public virtual void InitializePlayer(float _maxActionPoints, Vector3 _positionOffset, MBGraphNode _startingNode, string name)
+    public virtual void InitializePlayer(float _maxActionPoints, Vector3 _positionOffset, string _startingNodeId, string name)
     {
+        MBGraphNode startingNode = GameplayManager.Instance.gridGraph.graph[_startingNodeId].Data.GetComponent<MBGraphNode>();
+        
         Name = name;
         maxActionPoints = CurrentActionPoints = _maxActionPoints;
         PositionOffset = _positionOffset;
-        PositionNode = _startingNode;
-
-        Vector3 newWorldPosition = _startingNode.transform.position + _positionOffset;
+        PositionNode = startingNode;
+        
+        Vector3 newWorldPosition = startingNode.transform.position + _positionOffset;
         transform.position = new Vector3(newWorldPosition.x, transform.position.y, newWorldPosition.z);
     }
 
@@ -143,6 +145,18 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         print("shield activated");
     }
 
+    public void GetHit(float numActionPoints)
+    {
+        if (hasShield)
+        {
+            hasShield = false;
+        }
+        else
+        {
+            RemoveActionPoints(numActionPoints);
+        }
+    }
+
     protected IEnumerator CRMove(List<GraphNode<GameObject>> path)
     {
         if (path == null) path = new List<GraphNode<GameObject>>();
@@ -158,10 +172,12 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
                 Vector3 targetDirection = (node.Data.transform.position + PositionOffset) - transform.position;
                 while (transform.position != newWorldPosition)
                 {
-                    Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, rotationSpeed * Time.deltaTime, 0.0f);
                     transform.position = Vector3.MoveTowards(transform.position, newWorldPosition, moveSpeed * Time.deltaTime);
-                    transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(targetDirection, Vector3.up), rotationSpeed * Time.deltaTime);
-                    transform.rotation = Quaternion.LookRotation(newDirection);
+
+                    Quaternion newRotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(targetDirection), rotationSpeed * Time.deltaTime);
+                    transform.rotation = newRotation;
+                    transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+
                     yield return null;
                 }
             }

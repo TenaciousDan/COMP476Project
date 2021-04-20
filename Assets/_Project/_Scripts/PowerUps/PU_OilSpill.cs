@@ -5,20 +5,25 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PU_OilSpill_Script", menuName = "ScriptableBase/PU_OilSpill", order = 1)]
 public class PU_OilSpill : Scriptable_Base
 {
-    //public override string PowerUpName
-    //{
-    //    get { return "OilSpill"; }
-    //}
+    [SerializeField]
+    private OilSpillManager oilSpillObject;
 
-    private int numActionPointsToRemove = 2;
+    private float numActionPointsToRemove = 2;
 
-    public override void OnPowerUpGet(AbstractPlayer player)
+    /*
+    Remove comments to test hard coded target
+
+    private GameObject _target;
+    private void OnEnable()
     {
-        player.RemoveActionPoints(numActionPointsToRemove);
+        _target = GameObject.Find("TempOilTarget");
     }
+    */
 
-    public override void OnPowerUpUse(AbstractPlayer player)
+    public override void OnPowerUpUse(AbstractPlayer player, GameObject target = null)
     {
-        throw new System.NotImplementedException();
+        //target = _target;
+        OilSpillManager oilSpill = Instantiate(oilSpillObject, new Vector3(target.transform.position.x, 0.1f, target.transform.position.z), Quaternion.identity).GetComponent<OilSpillManager>();
+        oilSpill.transform.parent = target.transform;
     }
 }

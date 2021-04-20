@@ -11,11 +11,6 @@ public class Scriptable_Base : ScriptableObject
         get; set;
     }
 
-    //public virtual string PowerUpName
-    //{
-    //    get { return null; }
-    //}
-
     public string powerUpName;
 
     [SerializeField]
@@ -26,12 +21,7 @@ public class Scriptable_Base : ScriptableObject
         player.Inventory.AddItem(this);
     }
 
-    public virtual void OnPowerUpUse(AbstractPlayer player)
-    {
-        throw new NotImplementedException("This power up does not have an OnPowerUpUse implemented.");
-    }
-
-    public virtual void OnPowerUpUse(AbstractPlayer player, AbstractPlayer target)
+    public virtual void OnPowerUpUse(AbstractPlayer player, GameObject target = null)
     {
         throw new NotImplementedException("This power up does not have an OnPowerUpUse implemented.");
     }
