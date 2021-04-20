@@ -2,6 +2,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 using Tenacious.Collections;
 
@@ -213,8 +214,8 @@ namespace Game.AI
 
             foreach (AbstractPlayer p in GameplayManager.Instance.Players)
             {
-                int pOilSpillIndex = -1;//GetItemIndex("Oil Spill");
-                int pMissileIndex = -1;//GetItemIndex("Missile");
+                int pOilSpillIndex = -1;//p.GetItemIndex("Oil Spill");
+                int pMissileIndex = -1;//p.GetItemIndex("Missile");
 
                 if (pMissileIndex != -1)
                 {
@@ -254,6 +255,36 @@ namespace Game.AI
             //       and add the CRMove() coroutine to the queue (see below) and return success
             //       else if there is no cover available then return failure
 
+            // TODO: in AbstractPlayer, make a function that gets a list of all reachable nodes (given current action points)
+            List<MBGraphNode> reachableNodes = new List<MBGraphNode>();
+            // reachableNodes = GetAllReachableNodes(PositionNode);
+
+            List<MBGraphNode> coverNodes = reachableNodes.Select(n => n).ToList();
+            foreach (AbstractPlayer player in playerAttackThreats)
+            {
+                int pMissileIndex = -1;//player.GetItemIndex("Missile");
+
+                if (pMissileIndex != -1)
+                {
+                    foreach (MBGraphNode node in coverNodes)
+                    {
+                        // if we don't hit something, then there is no cover at this node and so, we remove it from the cover list
+                        if (!Physics.Raycast(transform.position, transform.position - node.transform.position, out RaycastHit hit))
+                        {
+                            // ignore ourselves
+                            if (hit.collider.transform != transform)
+                            {
+
+                            }
+                        }
+
+                    }
+                }
+
+
+            }
+
+            //
             //actionQueue.Enqueue(CRMove(path));
 
             return (int)BTNode.EState.Success;
@@ -299,6 +330,8 @@ namespace Game.AI
         {
             // TODO: set moveTargetNode to closest checkpoint
             //       implement GetCostToMove() function that returns how much it costs to move (ex: player could have a debuff that makes it cost more/less to move)
+
+            // moveTargetNode = ...
 
             List<GraphNode<GameObject>> path = new List<GraphNode<GameObject>>();
             path = pathFinding.FindPath(PositionNode.nodeId, moveTargetNode.nodeId, MovementHeuristic);
