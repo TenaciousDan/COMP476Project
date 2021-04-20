@@ -257,7 +257,7 @@ namespace Game.AI
 
             // TODO: in AbstractPlayer, make a function that gets a list of all reachable nodes (given current action points)
             List<MBGraphNode> reachableNodes = new List<MBGraphNode>();
-            // reachableNodes = GetAllReachableNodes(PositionNode);
+            // reachableNodes = GetAllReachableNodes();
 
             List<MBGraphNode> coverNodes = reachableNodes.Select(n => n).ToList();
             foreach (AbstractPlayer player in playerAttackThreats)
@@ -269,25 +269,39 @@ namespace Game.AI
                     foreach (MBGraphNode node in coverNodes)
                     {
                         // if we don't hit something, then there is no cover at this node and so, we remove it from the cover list
-                        if (!Physics.Raycast(transform.position, transform.position - node.transform.position, out RaycastHit hit))
+                        RaycastHit[] hits = Physics.RaycastAll(player.transform.position, node.transform.position - player.transform.position);
+                        bool coverAvailable = false;
+                        foreach (RaycastHit hit in hits)
                         {
                             // ignore ourselves
                             if (hit.collider.transform != transform)
-                            {
+                                continue;
 
-                            }
+                            coverAvailable = true;
+                            break;
                         }
 
+                        if (!coverAvailable)
+                            coverNodes.Remove(node);
                     }
                 }
 
 
             }
 
-            //
-            //actionQueue.Enqueue(CRMove(path));
+            if (coverNodes.Count > 0)
+            {
+                // TODO: Get cover node that is closest to the closest checkpoint/goal
+                // need a way to get the checkpoint/goal nodes
+                MBGraphNode optimalCoverNode = coverNodes[0];
 
-            return (int)BTNode.EState.Success;
+                List<GraphNode<GameObject>> path = pathFinding.FindPath(PositionNode.nodeId, optimalCoverNode.nodeId, MovementHeuristic);
+                actionQueue.Enqueue(CRMove(path));
+
+                return (int)BTNode.EState.Success;
+            }
+            else
+                return (int)BTNode.EState.Failure;
         }
 
         public int IsItemInRange()
@@ -331,17 +345,34 @@ namespace Game.AI
             // TODO: set moveTargetNode to closest checkpoint
             //       implement GetCostToMove() function that returns how much it costs to move (ex: player could have a debuff that makes it cost more/less to move)
 
+            List<MBGraphNode> reachableNodes = new List<MBGraphNode>();
+            // reachableNodes = GetAllReachableNodes(PositionNode);
+
+            // TODO: need a way to get the closest checkpoint/goal node
             // checkpointNode = 
 
-            List<GraphNode<GameObject>> path = new List<GraphNode<GameObject>>();
-            //path = pathFinding.FindPath(PositionNode.nodeId, checkpointNode.nodeId, MovementHeuristic);
-
-            while (path.Count > CurrentActionPoints) // use GetCostToMove() instead of CurrentActionPoints
+            // get the closest reachable node to the checkpoint/goal
+            MBGraphNode optimalNode = reachableNodes.Count > 0 ? reachableNodes[0] : null;
+            float dist = Mathf.Infinity;
+            foreach (MBGraphNode node in reachableNodes)
             {
-                actionQueue.Enqueue(CRMove(path));
+                //float tempDist = (node.transform.position - checkpointNode.transform.position).magnitude;
+                //if (tempDist < dist)
+                //{
+                //    optimalNode = node;
+                //    dist = tempDist;
+                //}
             }
 
-            return (int)BTNode.EState.Success;
+            if (optimalNode != null)
+            {
+                List<GraphNode<GameObject>> path = pathFinding.FindPath(PositionNode.nodeId, optimalNode.nodeId, MovementHeuristic);
+                actionQueue.Enqueue(CRMove(path));
+
+                return (int)BTNode.EState.Success;
+            }
+            else
+                return (int)BTNode.EState.Failure; // <- we cannot move anymore
         }
 
         public int EndTurn()
