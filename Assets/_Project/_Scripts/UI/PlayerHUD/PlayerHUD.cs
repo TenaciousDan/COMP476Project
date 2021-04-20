@@ -75,32 +75,6 @@ namespace Game.UI
             player.Inventory.UseItem(itemIndex, target);
         }
 
-        private void RocketClick()
-        {
-            var target = ClickSelectRocketTarget();
-
-            if (target != null)
-            {
-                int itemIndex = player.Inventory.GetItemIndex("Rocket");
-                ItemBtnClick(itemIndex); // Reset button
-                player.Inventory.UseItem(itemIndex, target);
-                rocketBtnClicked = false;
-            }
-        }
-
-        private void OilSpillClick()
-        {
-            var target = ClickSelectOilTarget();
-
-            if (target != null)
-            {
-                int itemIndex = player.Inventory.GetItemIndex("Oil Spill");
-                ItemBtnClick(itemIndex); // Reset button
-                player.Inventory.UseItem(itemIndex, target);
-                oilSpillBtnClicked = false;
-            }
-        }
-
         /// <summary>
         /// Update item sprites and button interactibility for items.
         /// </summary>
