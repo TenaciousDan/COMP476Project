@@ -143,6 +143,18 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         print("shield activated");
     }
 
+    public void GetHit(float numActionPoints)
+    {
+        if (hasShield)
+        {
+            hasShield = false;
+        }
+        else
+        {
+            RemoveActionPoints(numActionPoints);
+        }
+    }
+
     protected IEnumerator CRMove(List<GraphNode<GameObject>> path)
     {
         if (path == null) path = new List<GraphNode<GameObject>>();
@@ -158,10 +170,12 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
                 Vector3 targetDirection = (node.Data.transform.position + PositionOffset) - transform.position;
                 while (transform.position != newWorldPosition)
                 {
-                    Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, rotationSpeed * Time.deltaTime, 0.0f);
                     transform.position = Vector3.MoveTowards(transform.position, newWorldPosition, moveSpeed * Time.deltaTime);
-                    transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(targetDirection, Vector3.up), rotationSpeed * Time.deltaTime);
-                    transform.rotation = Quaternion.LookRotation(newDirection);
+
+                    Quaternion newRotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(targetDirection), rotationSpeed * Time.deltaTime);
+                    transform.rotation = newRotation;
+                    transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+
                     yield return null;
                 }
             }

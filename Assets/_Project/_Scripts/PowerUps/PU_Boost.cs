@@ -7,7 +7,7 @@ public class PU_Boost : Scriptable_Base
 {
     private int numExtraActionPoints = 2;
 
-    public override void OnPowerUpUse(AbstractPlayer player)
+    public override void OnPowerUpUse(AbstractPlayer player, GameObject target = null)
     {
         player.AddActionPoints(numExtraActionPoints, true);
     }
