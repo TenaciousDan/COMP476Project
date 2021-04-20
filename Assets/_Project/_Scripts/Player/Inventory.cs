@@ -55,13 +55,19 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    public Scriptable_Base GetItemFromIndex(int itemIndex)
+    {
+        return items[itemIndex];
+    }
+
     public int GetItemIndex(string name)
     {
+        print(name);
         int index = -1;
 
         for(int i = 0; i < items.Count; ++i)
         {
-            if(string.Equals(items[i].powerUpName, name))
+            if (items[i] != null && items[i].powerUpName.Equals(name))
             {
                 index = i;
             }
