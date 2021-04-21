@@ -3,12 +3,12 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 
-
 using Game.AI;
 using Photon.Pun;
 using Tenacious;
 using Tenacious.Collections;
 using Game.UI;
+using Tenacious.Audio;
 
 public class GameplayManager : MBSingleton<GameplayManager>
 {
@@ -18,10 +18,13 @@ public class GameplayManager : MBSingleton<GameplayManager>
         public string name = "Test";
         public MBGraphNode startNode;
         public Vector3 positionOffset = new Vector3(2.5f, 0.0f, 2.5f);
+        public Transform checkpoint1;
+        public Transform checkpoint2;
     }
 
     [SerializeField] public MBGraph gridGraph;
 
+    public Transform playersParentTransform;
     public List<PlayerDescriptor> playerDescriptors;
 
     [SerializeField] private Transform playersParent;
@@ -48,6 +51,8 @@ public class GameplayManager : MBSingleton<GameplayManager>
     protected override void Awake()
     {
         base.Awake();
+
+        AudioManager.Instance.PlayMusic("Gameplay1");
     }
 	
     private void Start()
