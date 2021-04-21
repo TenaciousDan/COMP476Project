@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
 using Tenacious.Collections;
 
 namespace Game.AI
@@ -33,6 +33,7 @@ namespace Game.AI
             if (!isProcessingActions)
             {
                 ResetBehaviorTreeProperties();
+                GetAllReachableNodes(PositionNode.nodeId, (int)CurrentActionPoints);
                 behaviorTree.Evaluate();
 
                 // Process actions
@@ -83,7 +84,8 @@ namespace Game.AI
         private int itemToUseIndex = -1;
         private bool shouldTakeCover;
         private AbstractPlayer playerAttackTarget;
-        private List<AbstractPlayer> playerAttackThreats;
+        private List<AbstractPlayer> playerAttackThreats = new List<AbstractPlayer>();
+        private List<string> reachableNodeIds = new List<string>();
         private MBGraphNode moveTargetNode;
         private GameObject nodeToSpillOn;
 
@@ -97,6 +99,7 @@ namespace Game.AI
             shouldTakeCover = false;
             playerAttackTarget = null;
             playerAttackThreats.Clear();
+            reachableNodeIds.Clear();
             moveTargetNode = null;
             nodeToSpillOn = null;
         }
@@ -303,16 +306,51 @@ namespace Game.AI
             else
                 return (int)BTNode.EState.Failure;
         }
-
+        
         public int IsItemInRange()
         {
-            // TODO: check if item box is in range (there's enough action points to reach it)
-            //       if true 
-            //           set moveTargetNode and return success
-            //       else
-            //           return failure
+            var nodesWithItems = new List<MBGraphNode>();
+            
+            // Check all reachable nodes to see if it contains a PowerUp
+            foreach (var nodeID in reachableNodeIds)
+            {
+                var node = GameplayManager.Instance.gridGraph.graph[nodeID];
+                var hitColliders = Physics.OverlapSphere(node.Data.transform.position, 2.5f);
 
-            return (int)BTNode.EState.Success;
+                // Check all colliders and see if one of them is a PowerUp
+                foreach (var hitCollider in hitColliders)
+                {
+                    if (hitCollider.gameObject.CompareTag("PowerUp"))
+                    {
+                        nodesWithItems.Add(GameplayManager.Instance.gridGraph.graph[nodeID].Data.GetComponent<MBGraphNode>());
+                    }
+                }
+            }
+
+            // At least one PowerUp is in Range
+            if (nodesWithItems.Count > 0)
+            {
+                var shortestDistance = int.MaxValue;
+                var closestNode = nodesWithItems[0];
+                
+                // Find the closest PowerUp
+                foreach (var node in nodesWithItems)
+                {
+                    List<GraphNode<GameObject>> path = pathFinding.FindPath(PositionNode.nodeId, node.nodeId, MovementHeuristic);
+
+                    if (path.Count < shortestDistance)
+                    {
+                        shortestDistance = path.Count;
+                        closestNode = node;
+                    }
+                }
+
+                moveTargetNode = closestNode;
+                return (int)BTNode.EState.Success;
+            }
+
+            // No Items in Range
+            return (int)BTNode.EState.Failure;
         }
 
         public int ShouldGetItem()
@@ -380,6 +418,26 @@ namespace Game.AI
             Phase = EPlayerPhase.End;
 
             return (int)BTNode.EState.Success;
+        }
+
+        // Returns all nodes reachable by the players current action points
+        private void GetAllReachableNodes(string positionNodeID, int iterationsLeft)
+        {
+            if (iterationsLeft <= 0)
+            {
+                return;
+            }
+            
+            var neighbors = GameplayManager.Instance.gridGraph.graph.Neighbors(positionNodeID);
+            reachableNodeIds.Add(positionNodeID);
+            
+            foreach (var node in neighbors)
+            {
+                if (!reachableNodeIds.Contains(node.Id))
+                {
+                    GetAllReachableNodes(node.Id, iterationsLeft - 1);
+                }
+            }
         }
     }
 }
