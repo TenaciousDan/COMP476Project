@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: -7508347478912789463}
   - component: {fileID: 4581904335914262765}
   m_Layer: 0
-  m_Name: Boost
-  m_TagString: Untagged
+  m_Name: PU_Boost
+  m_TagString: PowerUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,7 +100,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f76bfdd98812ef4eb3a76e318793ca1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryImage: {fileID: 21300000, guid: 1d733cb5ba747c4449032aec351a1360, type: 3}
   powerUpScript: {fileID: 11400000, guid: ae55485fb7e1b59429735b989740f12f, type: 2}
   positionNode: {fileID: 0}
 --- !u!65 &4581904335914262765
