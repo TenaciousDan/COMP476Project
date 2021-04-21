@@ -15,7 +15,11 @@ public class PlayerHUDManager : MBSingleton<PlayerHUDManager>
     {
         foreach (var hud in huds)
         {
-            hud.gameObject.SetActive(hud.player.Phase == AbstractPlayer.EPlayerPhase.Main);
+            bool show = GameplayManager.Instance.usingNetwork ? 
+                hud.player.photonView.IsMine && hud.player.Phase == AbstractPlayer.EPlayerPhase.Main : 
+                hud.player.Phase == AbstractPlayer.EPlayerPhase.Main;
+            
+            hud.gameObject.SetActive(show);
         }
     }
 

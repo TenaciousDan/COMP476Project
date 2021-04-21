@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Sandbox/MainLevel/MainLevel.unity
     guid: fabec125088885449ae029e08573fa93
+  - enabled: 0
+    path: Assets/_Project/Sandbox/UITest/UINetworkTest.unity
+    guid: 0ad58e3a947f91a44acec3ddcf0f8545
   m_configObjects: {}
