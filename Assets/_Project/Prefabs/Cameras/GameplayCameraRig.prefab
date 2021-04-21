@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 50
   fastMoveSpeed: 150
-  rotationAmount: 75
+  rotationAmount: 100
   zoomAmount: 100
   smoothing: 5
   rigCamera: {fileID: 5174228198714366055}

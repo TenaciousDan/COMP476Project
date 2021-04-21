@@ -73,6 +73,7 @@ public class GameplayCameraRig : MonoBehaviour
 
     private void HandleZoomInput()
     {
-        newZoom += rigCamera.transform.forward * Input.GetAxis("Mouse ScrollWheel") * zoomAmount;
+        Vector3 zoom = (-rigCamera.transform.localPosition).normalized * Input.GetAxis("Mouse ScrollWheel") * zoomAmount;
+        newZoom += zoom;
     }
 }
