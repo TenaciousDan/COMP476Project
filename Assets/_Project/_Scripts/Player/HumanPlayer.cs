@@ -37,8 +37,7 @@ public class HumanPlayer : AbstractPlayer
     public override void InitializePlayer(float _maxActionPoints, Vector3 _positionOffset, string _startingNodeId, string name)
     {
         base.InitializePlayer(_maxActionPoints, _positionOffset, _startingNodeId, name);
-
-        PlayerHUDManager.Instance.InitializeUI(this);
+        //PlayerHUDManager.Instance.InitializeUI(this);
     }
 
     /// <summary>

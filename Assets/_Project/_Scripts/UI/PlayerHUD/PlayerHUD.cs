@@ -6,10 +6,11 @@ using UnityEngine.UI;
 using Tenacious.Collections;
 using System.Linq;
 using System;
+using Photon.Pun;
 
 namespace Game.UI
 {
-    public class PlayerHUD : MonoBehaviour
+    public class PlayerHUD : MonoBehaviourPunCallbacks
     {
         public TextMeshProUGUI checkpointsLeft;
         public List<Image> itemImages;
@@ -64,8 +65,8 @@ namespace Game.UI
 
         private void UpdateAP()
         {
-            actionPoints.current = player.CurrentActionPoints;
-            actionPoints.maximum = player.MaxActionPoints;
+            //actionPoints.current = player.CurrentActionPoints;
+            //actionPoints.maximum = player.MaxActionPoints;
         }
 
         private void SpecialItemClick(GameObject target, string itemName)
@@ -274,7 +275,15 @@ namespace Game.UI
         public void EndTurnBtnClick()
         {
             print("Ending turn!");
-            player.Phase = AbstractPlayer.EPlayerPhase.End; // GameplayManager ends turn instead?
+            //player.Phase = AbstractPlayer.EPlayerPhase.End; // GameplayManager ends turn instead?
+            photonView.RPC("EndTurn", RpcTarget.All);
+        }
+
+        [PunRPC]
+        private void EndTurn()
+        {
+            print("turn ended");
+            player.Phase = AbstractPlayer.EPlayerPhase.End;
         }
     }
 }

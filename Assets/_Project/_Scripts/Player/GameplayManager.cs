@@ -9,8 +9,9 @@ using Photon.Pun;
 using Tenacious;
 using Tenacious.Collections;
 using Game.UI;
+using UnityEngine.SceneManagement;
 
-public class GameplayManager : MBSingleton<GameplayManager>
+public class GameplayManager : MonoBehaviourPunCallbacks, IPunObservable
 {
     [Serializable]
     public class PlayerDescriptor
@@ -31,6 +32,7 @@ public class GameplayManager : MBSingleton<GameplayManager>
 
     public List<AbstractPlayer> Players { get => players; }
 
+    [SerializeField]
     private int currentPlayer = 0;
 
     private bool isCRTurnUpdateRunning;
@@ -44,10 +46,66 @@ public class GameplayManager : MBSingleton<GameplayManager>
     [SerializeField] private GameObject HumanPlayerPrefab;
     [SerializeField] private GameObject AIPlayerPrefab;
     [SerializeField] private SharedHUD sharedHud;
-    
-    protected override void Awake()
+
+    private static GameplayManager instance;
+    private static bool reinitializationPermitted = false;
+    private static bool destroyed = false;
+    private static object mutex = new object();
+    [Tooltip("Allow this object to be re-initialized after being destroyed.")]
+    [SerializeField] private bool allowReinitialization = false;
+    [Tooltip("Destroy this object when a new scene is loaded.")]
+    [SerializeField] private bool destroyOnLoad = false;
+
+    public static GameplayManager Instance
     {
-        base.Awake();
+        get
+        {
+            if (destroyed)
+            {
+                string log_message = "NetworkManager has already been destroyed";
+
+                if (reinitializationPermitted)
+                {
+                    Debug.LogWarning(log_message + " - Creating new instance.");
+                    destroyed = false;
+                }
+                else
+                {
+                    Debug.LogWarning(log_message + " - Returning null.");
+                    return null;
+                }
+            }
+
+            return CreateInstance(null);
+        }
+    }
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            if (destroyed && !allowReinitialization)
+            {
+                Destroy(this.gameObject);
+                return;
+            }
+            else
+            {
+                CreateInstance(this.gameObject);
+            }
+        }
+        else
+        {
+            // an instance already exists and this is a duplicate
+            Destroy(this.gameObject);
+            destroyed = false; // the "true" instance has not yet been destroyed
+            return;
+        }
+
+        reinitializationPermitted = allowReinitialization;
+
+        if (!DestroyOnLoad)
+            DontDestroyOnLoad(this.gameObject);
     }
 	
     private void Start()
@@ -86,7 +144,7 @@ public class GameplayManager : MBSingleton<GameplayManager>
     private void Update()
     {
         // Initialize all players through the network and pass player list to game manager
-        if (usingNetwork && isLoadingPlayers && NetworkManager.Instance.humanPlayers.Length == NetworkManager.Instance.humanPlayerCount)
+        if (usingNetwork && isLoadingPlayers && NetworkManager.Instance.humanPlayers.Length == NetworkManager.Instance.humanPlayerCount && PhotonNetwork.IsMasterClient)
         {
             isLoadingPlayers = false;
 
@@ -105,8 +163,60 @@ public class GameplayManager : MBSingleton<GameplayManager>
                 players.Add(player);
                 index++;
             }
+
+            PlayerHUDManager.Instance.numToUse = NetworkManager.Instance.humanPlayers.Length;
+
+            for (int i = 0; i < NetworkManager.Instance.humanPlayers.Length; i++)
+            {
+                photonView.RPC("InitializeUI", RpcTarget.All, i);
+            }
         }
-        
+
+        if (currentPlayer < Players.Count)
+        {
+            if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.Standby || Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.None)
+                Players[currentPlayer].StandbyPhaseUpdate();
+            else if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.Main)
+                Players[currentPlayer].MainPhaseUpdate();
+            else if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.End)
+                Players[currentPlayer].EndPhaseUpdate();
+            else if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.PassTurn)
+            {
+                Players[currentPlayer].Phase = AbstractPlayer.EPlayerPhase.None;
+                ++currentPlayer;
+                //photonView.RPC("UpdateCurrentPlayer", RpcTarget.All);
+            }
+        }
+        else
+        {
+            currentPlayer = 0;
+            //photonView.RPC("ResetCurrentPlayer", RpcTarget.All);
+        }
+
+        //photonView.RPC("UpdatePlayerTurns", RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void InitializeUI(int index)
+    {
+        PlayerHUDManager.Instance.huds[index].player = NetworkManager.Instance.humanPlayers[index];
+    }
+
+    [PunRPC]
+    private void ResetCurrentPlayer()
+    {
+        currentPlayer = 0;
+    }
+
+    [PunRPC]
+    private void UpdateCurrentPlayer()
+    {
+        ++currentPlayer;
+    }
+
+    [PunRPC]
+    private void UpdatePlayerTurns()
+    {
         if (currentPlayer < Players.Count)
         {
             if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.Standby || Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.None)
@@ -125,5 +235,68 @@ public class GameplayManager : MBSingleton<GameplayManager>
         {
             currentPlayer = 0;
         }
+
+        //print($"Current player {currentPlayer}");
     }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(currentPlayer);
+        }
+        else if (stream.IsReading)
+        {
+            currentPlayer = (int)stream.ReceiveNext();
+        }
+    }
+
+    #region SINGLETON
+    private static GameplayManager CreateInstance(GameObject game_object)
+    {
+        lock (mutex)
+        {
+            // Create new instance if one doesn't already exist
+            if (instance == null)
+            {
+                if (game_object == null)
+                {
+                    // create the GameObject that will house the singleton instance
+                    game_object = new GameObject("GameplayManager");
+                    game_object.AddComponent<GameplayManager>();
+                }
+
+                instance = game_object.GetComponent<GameplayManager>();
+            }
+
+            return instance;
+        }
+    }
+    public bool DestroyOnLoad
+    {
+        get { return destroyOnLoad; }
+        set
+        {
+            destroyOnLoad = value;
+            if (destroyOnLoad)
+                SceneManager.MoveGameObjectToScene(this.gameObject, SceneManager.GetActiveScene());
+            else
+                DontDestroyOnLoad(this.gameObject);
+        }
+    }
+
+    private void OnApplicationQuit()
+    {
+        // When Unity quits it destroys objects in a random order and this can create issues for singletons. 
+        // So we prevent reinitialization and access to the instance when the application quits to prevent problems.
+        reinitializationPermitted = false;
+        destroyed = true; // pretend its already destroyed
+    }
+
+    private void OnDestroy()
+    {
+        instance = null;
+        destroyed = true;
+    }
+    #endregion
 }

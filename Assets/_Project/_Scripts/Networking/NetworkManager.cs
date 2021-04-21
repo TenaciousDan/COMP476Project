@@ -203,8 +203,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         GameObject playerObj = PhotonNetwork.Instantiate("HumanPlayer", new Vector3(0,0,0), Quaternion.identity);
         playerObj.SetActive(true);
-        
+
         HumanPlayer playerScript = playerObj.GetComponent<HumanPlayer>();
+        //PlayerHUDManager.Instance.InitializeUI(playerScript);
 
         playerScript.photonView.RPC("InitializePlayerOnNetwork", RpcTarget.All, PhotonNetwork.LocalPlayer);
     }
