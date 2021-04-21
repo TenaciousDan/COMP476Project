@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 48649055827547802}
   - component: {fileID: 48649055827547803}
+  - component: {fileID: 3155624079335072250}
   m_Layer: 0
   m_Name: GameplayManager
   m_TagString: Untagged
@@ -43,27 +44,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbb21e3331259eb44848b261539f95f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowReinitialization: 1
-  destroyOnLoad: 1
   gridGraph: {fileID: 0}
+  playersParentTransform: {fileID: 0}
   playerDescriptors:
   - name: Test
     startNode: {fileID: 0}
     positionOffset: {x: 2.5, y: 0, z: 2.5}
+    checkpoints: []
   - name: Test
     startNode: {fileID: 0}
     positionOffset: {x: 2.5, y: 0, z: -2.5}
+    checkpoints: []
   - name: Test
     startNode: {fileID: 0}
     positionOffset: {x: -2.5, y: 0, z: -2.5}
+    checkpoints: []
   - name: Test
     startNode: {fileID: 0}
     positionOffset: {x: -2.5, y: 0, z: 2.5}
-  playersParent: {fileID: 0}
+    checkpoints: []
   maxActionPoints: 5
+  currentPlayer: 0
   usingNetwork: 1
   debugHumanCount: 3
   debugAICount: 0
   HumanPlayerPrefab: {fileID: 4635357089720670571, guid: 68fb856aaa301c7409568e1df9d5c71b, type: 3}
   AIPlayerPrefab: {fileID: 4635357089720670571, guid: 1d43910f799a0d646b26b087a495df89, type: 3}
   sharedHud: {fileID: 0}
+  allowReinitialization: 1
+  destroyOnLoad: 1
+--- !u!114 &3155624079335072250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 48649055827547804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  observableSearch: 2
+  Synchronization: 3
+  OwnershipTransfer: 0
+  ObservedComponents: []
+  viewIdField: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
