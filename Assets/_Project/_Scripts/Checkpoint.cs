@@ -4,7 +4,7 @@ using Tenacious.Collections;
 
 public class Checkpoint : MonoBehaviour
 {
-    public string name;
+    public string checkpointName;
     public MBGraphNode node;
     public bool isGoal;
 }
