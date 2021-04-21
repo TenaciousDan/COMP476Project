@@ -65,6 +65,13 @@ namespace Game.AI
             isProcessingActions = false;
         }
 
+        public override void InitializePlayer(float _maxActionPoints, Vector3 _positionOffset, string _startingNodeId, string name, int playerIndex)
+        {
+            base.InitializePlayer(_maxActionPoints, _positionOffset, _startingNodeId, name, playerIndex);
+
+            pathFinding.mbGraph = GameplayManager.Instance.gridGraph;
+        }
+
         private float MovementHeuristic(Transform start, Transform end)
         {
             // Manhattan distance
@@ -380,31 +387,47 @@ namespace Game.AI
 
         public int MoveToBestSpot()
         {
-            // TODO: set moveTargetNode to closest checkpoint
-            //       implement GetCostToMove() function that returns how much it costs to move (ex: player could have a debuff that makes it cost more/less to move)
-
-            List<MBGraphNode> reachableNodes = new List<MBGraphNode>();
-            // reachableNodes = GetAllReachableNodes(PositionNode);
-
-            // TODO: need a way to get the closest checkpoint/goal node
-            // checkpointNode = 
-
-            // get the closest reachable node to the checkpoint/goal
-            MBGraphNode optimalNode = reachableNodes.Count > 0 ? reachableNodes[0] : null;
-            float dist = Mathf.Infinity;
-            foreach (MBGraphNode node in reachableNodes)
+            if (CurrentActionPoints <= 0) return (int)BTNode.EState.Failure;
+            
+            // get the closest checkpoint/goal node
+            float cpDist = Mathf.Infinity;
+            Checkpoint checkpointTarget = null;
+            foreach (Checkpoint cp in checkpoints)
             {
-                //float tempDist = (node.transform.position - checkpointNode.transform.position).magnitude;
-                //if (tempDist < dist)
-                //{
-                //    optimalNode = node;
-                //    dist = tempDist;
-                //}
+                if (cp != null)
+                {
+                    if (checkpointTarget != null && cp.isGoal) continue;
+
+                    float tempDist = (cp.node.transform.position - transform.position).magnitude;
+                    if (tempDist < cpDist || checkpointTarget.isGoal)
+                    {
+                        checkpointTarget = cp;
+                        cpDist = tempDist;
+                    }
+                }
             }
 
-            if (optimalNode != null)
+            MBGraphNode checkpointNode = checkpointTarget == null ? null : checkpointTarget.node;
+            if (checkpointNode == null)
+                return (int)BTNode.EState.Failure;
+
+            // get the closest reachable node to the checkpoint/goal
+            GraphNode<GameObject> optimalGraphNode = reachableNodeIds.Count > 0 ? GameplayManager.Instance.gridGraph.graph[reachableNodeIds[0]] : null;
+            float dist = Mathf.Infinity;
+            foreach (string nodeId in reachableNodeIds)
             {
-                List<GraphNode<GameObject>> path = pathFinding.FindPath(PositionNode.nodeId, optimalNode.nodeId, MovementHeuristic);
+                GraphNode<GameObject> graphNode = GameplayManager.Instance.gridGraph.graph[nodeId];
+                float tempDist = (graphNode.Data.transform.position - checkpointNode.transform.position).magnitude;
+                if (tempDist < dist)
+                {
+                    optimalGraphNode = graphNode;
+                    dist = tempDist;
+                }
+            }
+
+            if (optimalGraphNode != null)
+            {
+                List<GraphNode<GameObject>> path = pathFinding.FindPath(PositionNode.nodeId, optimalGraphNode.Id, MovementHeuristic);
                 actionQueue.Enqueue(CRMove(path));
 
                 return (int)BTNode.EState.Success;

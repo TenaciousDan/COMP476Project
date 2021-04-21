@@ -143,7 +143,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         {
             CurrentActionPoints = maxActionPoints;
         }
-        print("Added action points. Player now has " + CurrentActionPoints + " action points.");
+        //print("Added action points. Player now has " + CurrentActionPoints + " action points.");
     }
 
     public void RemoveActionPoints(float numActionPoints)
@@ -153,21 +153,21 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         {
             CurrentActionPoints = 0;
         }
-        print("Removed " + numActionPoints + " action points. Player now has " + CurrentActionPoints + " action points.");
+        //print("Removed " + numActionPoints + " action points. Player now has " + CurrentActionPoints + " action points.");
     }
 
     public void ActivateShield()
     {
         hasShield = true;
         shieldObject.SetActive(true);
-        print("shield activated");
+        //print("shield activated");
     }
 
     public void DeactivateShield()
     {
         hasShield = false;
         shieldObject.SetActive(false);
-        print("shield deactivated");
+        //print("shield deactivated");
     }
 
     public void GetHit(float numActionPoints)
