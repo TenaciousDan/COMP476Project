@@ -17,11 +17,6 @@ public class HumanPlayer : AbstractPlayer
     public PlayerHUD hud;
 
     public Player photonPlayer;
-    [HideInInspector]
-    public int ID
-    {
-        get; private set;
-    }
     
     protected override void Awake()
     {
@@ -34,9 +29,9 @@ public class HumanPlayer : AbstractPlayer
     }
 
     [PunRPC]
-    public override void InitializePlayer(float _maxActionPoints, Vector3 _positionOffset, string _startingNodeId, string name)
+    public override void InitializePlayer(float _maxActionPoints, Vector3 _positionOffset, string _startingNodeId, string name, int playerIndex)
     {
-        base.InitializePlayer(_maxActionPoints, _positionOffset, _startingNodeId, name);
+        base.InitializePlayer(_maxActionPoints, _positionOffset, _startingNodeId, name, playerIndex);
 
         PlayerHUDManager.Instance.InitializeUI(this);
     }
@@ -53,7 +48,7 @@ public class HumanPlayer : AbstractPlayer
     {
         StartCoroutine(CRMove(path));
     }
-    
+
     #region NETWORK
 
     [PunRPC]

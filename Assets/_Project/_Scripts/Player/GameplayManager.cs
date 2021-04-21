@@ -18,8 +18,7 @@ public class GameplayManager : MBSingleton<GameplayManager>
         public string name = "Test";
         public MBGraphNode startNode;
         public Vector3 positionOffset = new Vector3(2.5f, 0.0f, 2.5f);
-        public Transform checkpoint1;
-        public Transform checkpoint2;
+        public List<Checkpoint> checkpoints;
     }
 
     [SerializeField] public MBGraph gridGraph;
@@ -70,7 +69,7 @@ public class GameplayManager : MBSingleton<GameplayManager>
             {
                 GameObject playerObj = Instantiate(HumanPlayerPrefab, playersParentTransform);
                 HumanPlayer player = playerObj.GetComponent<HumanPlayer>();
-                player.InitializePlayer(maxActionPoints, playerDescriptors[i].positionOffset, playerDescriptors[i].startNode.nodeId, playerDescriptors[i].name);
+                player.InitializePlayer(maxActionPoints, playerDescriptors[i].positionOffset, playerDescriptors[i].startNode.nodeId, playerDescriptors[i].name, i);
                 players.Add(player);
             }
 
@@ -79,7 +78,7 @@ public class GameplayManager : MBSingleton<GameplayManager>
             {
                 GameObject aiObj = Instantiate(AIPlayerPrefab, playersParentTransform);
                 AIPlayer player = aiObj.GetComponent<AIPlayer>();
-                player.InitializePlayer(maxActionPoints, playerDescriptors[i].positionOffset, playerDescriptors[i].startNode.nodeId, playerDescriptors[i].name);
+                player.InitializePlayer(maxActionPoints, playerDescriptors[i].positionOffset, playerDescriptors[i].startNode.nodeId, playerDescriptors[i].name, i);
                 players.Add(player);
             }
 
@@ -98,14 +97,14 @@ public class GameplayManager : MBSingleton<GameplayManager>
             
             for (int i = 0; i < NetworkManager.Instance.aiPlayerCount; i++)
             {
-                NetworkManager.Instance.aiPlayers[i].InitializePlayer(99, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode.nodeId, "AI " + i);
+                NetworkManager.Instance.aiPlayers[i].InitializePlayer(99, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode.nodeId, "AI " + i, index);
                 players.Add(NetworkManager.Instance.aiPlayers[i]);
                 index++;
             }
             
             foreach (var player in NetworkManager.Instance.humanPlayers)
             {
-                NetworkManager.Instance.InitializeHumanPlayer(player, maxActionPoints, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode.nodeId, player.name);
+                NetworkManager.Instance.InitializeHumanPlayer(player, maxActionPoints, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode.nodeId, player.name, index);
                 players.Add(player);
                 index++;
             }
