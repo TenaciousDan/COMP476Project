@@ -224,9 +224,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         aiPlayers.Add(playerScript);
     }
     
-    public void InitializeHumanPlayer(HumanPlayer player, float _maxActionPoints, Vector3 _offset, string _startNodeId, string _name)
+    public void InitializeHumanPlayer(HumanPlayer player, float _maxActionPoints, Vector3 _offset, string _startNodeId, string _name, int playerIndex)
     {
-        player.photonView.RPC("InitializePlayer", RpcTarget.All, _maxActionPoints, _offset, _startNodeId, _name);
+        player.photonView.RPC("InitializePlayer", RpcTarget.All, _maxActionPoints, _offset, _startNodeId, _name, playerIndex);
     }
 
     #endregion
