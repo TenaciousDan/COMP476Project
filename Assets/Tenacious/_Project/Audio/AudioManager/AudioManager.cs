@@ -83,7 +83,7 @@ namespace Tenacious.Audio
             source.outputAudioMixerGroup = musicGroup;
             source.loop = musicAudio.loop;
 
-            float targetVolume = source.volume;
+            float targetVolume = source.volume * musicAudio.volumeScale;
             if (musicAudio.fade)
             {
                 musicFadeNewClip = musicAudio.audioClip;

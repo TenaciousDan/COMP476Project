@@ -128,7 +128,7 @@ namespace Game.AI
             //       else if none of the items give any value at this moment (ex: no targets, etc...)
             //           return failure
 
-            int missileIndex = Inventory.GetItemIndex("Missile");
+            int missileIndex = Inventory.GetItemIndex("Rocket");
             int boostIndex = Inventory.GetItemIndex("Boost");
             int shieldIndex = Inventory.GetItemIndex("Shield");
             int oilSpillIndex = Inventory.GetItemIndex("Oil Spill");
@@ -230,11 +230,11 @@ namespace Game.AI
             foreach (AbstractPlayer p in GameplayManager.Instance.Players)
             {
                 int pOilSpillIndex = p.Inventory.GetItemIndex("Oil Spill");
-                int pMissileIndex = p.Inventory.GetItemIndex("Missile");
+                int pMissileIndex = p.Inventory.GetItemIndex("Rocket");
 
                 if (pMissileIndex != -1)
                 {
-                    RaycastHit[] hits = Physics.RaycastAll(transform.position, transform.position - p.transform.position);
+                    RaycastHit[] hits = Physics.RaycastAll(p.transform.position, transform.position - p.transform.position);
                     foreach (RaycastHit hit in hits)
                     {
                         // the ray has hit us
@@ -278,27 +278,34 @@ namespace Game.AI
             List<MBGraphNode> coverNodes = reachableNodeIds.Select(nId => GameplayManager.Instance.gridGraph.graph[nId].Data.GetComponent<MBGraphNode>()).ToList();
             foreach (AbstractPlayer player in playerAttackThreats)
             {
-                int pMissileIndex = player.Inventory.GetItemIndex("Missile");
+                int pMissileIndex = player.Inventory.GetItemIndex("Rocket");
 
                 if (pMissileIndex != -1)
                 {
-                    foreach (MBGraphNode node in coverNodes)
+                    for (int i = 0; i < coverNodes.Count; ++i)
                     {
+                        MBGraphNode node = coverNodes[i];
+
                         // if we don't hit something, then there is no cover at this node and so, we remove it from the cover list
                         RaycastHit[] hits = Physics.RaycastAll(player.transform.position, node.transform.position - player.transform.position);
+                        Debug.DrawRay(player.transform.position, node.transform.position - player.transform.position, Color.red, 10000);
                         bool coverAvailable = false;
                         foreach (RaycastHit hit in hits)
                         {
                             // ignore ourselves
-                            if (hit.collider.transform != transform)
+                            if (hit.collider.transform == transform)
                                 continue;
 
+                            //print(node.transform.localPosition);
                             coverAvailable = true;
                             break;
                         }
 
                         if (!coverAvailable)
-                            coverNodes.Remove(node);
+                        {
+                            coverNodes.RemoveAt(i);
+                            --i;
+                        }
                     }
                 }
             }
@@ -324,7 +331,12 @@ namespace Game.AI
                 }
 
                 List<GraphNode<GameObject>> path = pathFinding.FindPath(PositionNode.nodeId, optimalCoverNode.nodeId, MovementHeuristic);
-                //actionQueue.Enqueue(CRMove(path));
+
+                if (path.Count > 0) path.RemoveAt(0);
+                if (path.Count == 0)
+                    return (int)BTNode.EState.Failure;
+
+                actionQueue.Enqueue(CRMove(path));
 
                 return (int)BTNode.EState.Success;
             }
@@ -439,8 +451,8 @@ namespace Game.AI
             if (optimalGraphNode != null)
             {
                 List<GraphNode<GameObject>> path = pathFinding.FindPath(PositionNode.nodeId, optimalGraphNode.Id, MovementHeuristic);
-                if (path.Count > 0) path.RemoveAt(0);
 
+                if (path.Count > 0) path.RemoveAt(0);
                 if (path.Count == 0)
                     return (int)BTNode.EState.Failure;
 

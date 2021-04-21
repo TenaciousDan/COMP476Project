@@ -14,6 +14,11 @@ public class GameplayCameraRig : MonoBehaviour
     private Quaternion newRotation;
     private Vector3 newZoom;
 
+    private bool IsMouseOverGameWindow 
+    { 
+        get { return !(0 > Input.mousePosition.x || 0 > Input.mousePosition.y || Screen.width < Input.mousePosition.x || Screen.height < Input.mousePosition.y); } 
+    }
+
     private void Awake()
     {
         newPosition = transform.position;
@@ -73,7 +78,10 @@ public class GameplayCameraRig : MonoBehaviour
 
     private void HandleZoomInput()
     {
-        Vector3 zoom = (-rigCamera.transform.localPosition).normalized * Input.GetAxis("Mouse ScrollWheel") * zoomAmount;
-        newZoom += zoom;
+        if (IsMouseOverGameWindow)
+        {
+            Vector3 zoom = (-rigCamera.transform.localPosition).normalized * Input.GetAxis("Mouse ScrollWheel") * zoomAmount;
+            newZoom += zoom;
+        }
     }
 }

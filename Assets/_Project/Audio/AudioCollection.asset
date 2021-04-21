@@ -24,7 +24,7 @@ MonoBehaviour:
   - audioClip: {fileID: 8300000, guid: 84fa7f054aa84b94caad2db6bc91c756, type: 3}
     loop: 1
     fade: 1
-    volumeScale: 1
+    volumeScale: 0.5
   - audioClip: {fileID: 8300000, guid: 4444ec54f6cc97b44be16765b1c8f85f, type: 3}
     loop: 1
     fade: 1
