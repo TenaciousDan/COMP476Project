@@ -22,6 +22,13 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
     private float costPerMovement = 1;
     private float pointsDeficit = 0;
 
+    public List<Checkpoint> checkpoints;
+
+    public int ID
+    {
+        get; protected set;
+    }
+
     public Inventory Inventory
     {
         get; private set;
@@ -60,7 +67,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
 
     // assign values to member variables
     [PunRPC]
-    public virtual void InitializePlayer(float _maxActionPoints, Vector3 _positionOffset, string _startingNodeId, string name)
+    public virtual void InitializePlayer(float _maxActionPoints, Vector3 _positionOffset, string _startingNodeId, string name, int playerIndex)
     {
         MBGraphNode startingNode = GameplayManager.Instance.gridGraph.graph[_startingNodeId].Data.GetComponent<MBGraphNode>();
         
@@ -68,6 +75,8 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         maxActionPoints = CurrentActionPoints = _maxActionPoints;
         PositionOffset = _positionOffset;
         PositionNode = startingNode;
+
+        this.checkpoints = GameplayManager.Instance.playerDescriptors[playerIndex].checkpoints;
         
         Vector3 newWorldPosition = startingNode.transform.position + _positionOffset;
         transform.position = new Vector3(newWorldPosition.x, transform.position.y, newWorldPosition.z);
@@ -144,21 +153,21 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         {
             CurrentActionPoints = 0;
         }
-        print("Removed " + numActionPoints + " action points. Player now has " + CurrentActionPoints + " action points.");
+        //print("Removed " + numActionPoints + " action points. Player now has " + CurrentActionPoints + " action points.");
     }
 
     public void ActivateShield()
     {
         hasShield = true;
         shieldObject.SetActive(true);
-        print("shield activated");
+        //print("shield activated");
     }
 
     public void DeactivateShield()
     {
         hasShield = false;
         shieldObject.SetActive(false);
-        print("shield deactivated");
+        //print("shield deactivated");
     }
 
     public void GetHit(float numActionPoints)
@@ -201,6 +210,22 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
 
                     yield return null;
                 }
+            }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Checkpoint cp = other.GetComponent<Checkpoint>();
+        if (cp != null)
+        {
+            if (cp.isGoal)
+            {
+
+            }
+            else
+            {
+
             }
         }
     }

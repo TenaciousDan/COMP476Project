@@ -4,6 +4,7 @@ using Game.AI;
 using Photon.Pun;
 using Photon.Realtime;
 using Tenacious.Collections;
+using Tenacious.Scenes;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -118,7 +119,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void ChangeScene(string sceneName)
     {
-        PhotonNetwork.LoadLevel(sceneName);
+        SceneLoader.Instance.LoadScene(sceneName, SceneLoader.FADE_TRANSITION);
+        // uncomment if the above line causes problems
+        //PhotonNetwork.LoadLevel(sceneName);
     }
 
     #region SINGLETON
@@ -202,6 +205,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void SpawnHumanPlayer()
     {
         GameObject playerObj = PhotonNetwork.Instantiate("HumanPlayer", new Vector3(0,0,0), Quaternion.identity);
+        playerObj.transform.parent = GameplayManager.Instance.playersParentTransform;
         playerObj.SetActive(true);
         
         HumanPlayer playerScript = playerObj.GetComponent<HumanPlayer>();
@@ -212,6 +216,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void SpawnAIPlayer()
     {
         GameObject playerObj = PhotonNetwork.Instantiate("AIPlayer", new Vector3(0, 0, 0), Quaternion.identity);
+        playerObj.transform.parent = GameplayManager.Instance.playersParentTransform;
         playerObj.SetActive(true);
 
         AIPlayer playerScript = playerObj.GetComponent<AIPlayer>();
@@ -219,9 +224,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         aiPlayers.Add(playerScript);
     }
     
-    public void InitializeHumanPlayer(HumanPlayer player, float _maxActionPoints, Vector3 _offset, string _startNodeId, string _name)
+    public void InitializeHumanPlayer(HumanPlayer player, float _maxActionPoints, Vector3 _offset, string _startNodeId, string _name, int playerIndex)
     {
-        player.photonView.RPC("InitializePlayer", RpcTarget.All, _maxActionPoints, _offset, _startNodeId, _name);
+        player.photonView.RPC("InitializePlayer", RpcTarget.All, _maxActionPoints, _offset, _startNodeId, _name, playerIndex);
     }
 
     #endregion

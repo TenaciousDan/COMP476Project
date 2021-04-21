@@ -65,16 +65,20 @@ namespace Game.AI
             isProcessingActions = false;
         }
 
+        public override void InitializePlayer(float _maxActionPoints, Vector3 _positionOffset, string _startingNodeId, string name, int playerIndex)
+        {
+            base.InitializePlayer(_maxActionPoints, _positionOffset, _startingNodeId, name, playerIndex);
+
+            pathFinding.mbGraph = GameplayManager.Instance.gridGraph;
+        }
+
         private float MovementHeuristic(Transform start, Transform end)
         {
             // Manhattan distance
             float dx = Mathf.Abs(start.position.x - end.position.x);
             float dz = Mathf.Abs(start.position.z - end.position.z);
 
-            // TODO: implement GetCostToMove() function that returns how much it costs to move (ex: player could have a debuff that makes it cost more/less to move)
-            float cost = 1;
-
-            return cost * (dx + dz);
+            return CostPerMovement * (dx + dz);
         }
 
         /**********************************
@@ -106,6 +110,8 @@ namespace Game.AI
 
         public int HasItem()
         {
+            //print("HasItem()");
+
             if (Inventory.items.Count > 0)
                 return (int)BTNode.EState.Success;
             else
@@ -114,16 +120,18 @@ namespace Game.AI
 
         public int ShouldUseItem()
         {
+            //print("ShouldUseItem()");
+
             // TODO: foreach item in inventory,
             //       if any item would give the player any value
             //           set itemToUseIndex to be the item that offers the greatest value and return success
             //       else if none of the items give any value at this moment (ex: no targets, etc...)
             //           return failure
 
-            int missileIndex = -1;//GetItemIndex("Missile");
-            int boostIndex = -1;//GetItemIndex("Boost");
-            int shieldIndex = -1;//GetItemIndex("Shield");
-            int oilSpillIndex = -1;//GetItemIndex("Oil Spill");
+            int missileIndex = Inventory.GetItemIndex("Missile");
+            int boostIndex = Inventory.GetItemIndex("Boost");
+            int shieldIndex = Inventory.GetItemIndex("Shield");
+            int oilSpillIndex = Inventory.GetItemIndex("Oil Spill");
 
             if (boostIndex != -1)
             {
@@ -196,6 +204,8 @@ namespace Game.AI
 
         public int UseItem()
         {
+            //print("UseItem()");
+
             // TODO: powerup/item class needs to expose a method to activate the effect of the powerup
             //       it should take an AbstractPlayer as a parameter and modify that player's state accordingly
 
@@ -206,6 +216,8 @@ namespace Game.AI
 
         public int ShouldTakeCover()
         {
+            //print("ShouldTakeCover()");
+
             // foreach player in the game, check if they have ranged/attack items
             //       if they do, then get the item with the longest range and check if they can reach this player
             //       if they can reach us 
@@ -217,8 +229,8 @@ namespace Game.AI
 
             foreach (AbstractPlayer p in GameplayManager.Instance.Players)
             {
-                int pOilSpillIndex = -1;//p.GetItemIndex("Oil Spill");
-                int pMissileIndex = -1;//p.GetItemIndex("Missile");
+                int pOilSpillIndex = p.Inventory.GetItemIndex("Oil Spill");
+                int pMissileIndex = p.Inventory.GetItemIndex("Missile");
 
                 if (pMissileIndex != -1)
                 {
@@ -248,24 +260,25 @@ namespace Game.AI
                 }
             }
 
-            return (int)BTNode.EState.Success;
+            if (playerAttackThreats.Count > 0)
+                return (int)BTNode.EState.Success;
+            else
+                return (int)BTNode.EState.Failure;
         }
 
         public int MoveToCover()
         {
-            // TODO: foreach player in the playerAttackThreats list, check if they have ranged/attack items
-            //       if they do, then foreach spot that the player can reach choose the one that is safest
-            //       and add the CRMove() coroutine to the queue (see below) and return success
-            //       else if there is no cover available then return failure
+            //print("MoveToCover()");
 
-            // TODO: in AbstractPlayer, make a function that gets a list of all reachable nodes (given current action points)
-            List<MBGraphNode> reachableNodes = new List<MBGraphNode>();
-            // reachableNodes = GetAllReachableNodes();
+            // foreach player in the playerAttackThreats list, check if they have ranged/attack items
+            // if they do, then foreach spot that the player can reach choose the one that is safest
+            // and add the CRMove() coroutine to the queue (see below) and return success
+            // else if there is no cover available then return failure
 
-            List<MBGraphNode> coverNodes = reachableNodes.Select(n => n).ToList();
+            List<MBGraphNode> coverNodes = reachableNodeIds.Select(nId => GameplayManager.Instance.gridGraph.graph[nId].Data.GetComponent<MBGraphNode>()).ToList();
             foreach (AbstractPlayer player in playerAttackThreats)
             {
-                int pMissileIndex = -1;//player.GetItemIndex("Missile");
+                int pMissileIndex = player.Inventory.GetItemIndex("Missile");
 
                 if (pMissileIndex != -1)
                 {
@@ -288,18 +301,30 @@ namespace Game.AI
                             coverNodes.Remove(node);
                     }
                 }
-
-
             }
 
             if (coverNodes.Count > 0)
             {
-                // TODO: Get cover node that is closest to the closest checkpoint/goal
-                // need a way to get the checkpoint/goal nodes
-                MBGraphNode optimalCoverNode = coverNodes[0];
+                // Get cover node that is closest to the closest checkpoint/goal
+                Checkpoint checkpointTarget = GetClosestCheckpoint();
+                MBGraphNode optimalCoverNode = checkpointTarget == null ? coverNodes[0] : checkpointTarget.node;
+
+                if (checkpointTarget != null)
+                {
+                    float coverToCPDist = Mathf.Infinity;
+                    foreach (MBGraphNode coverNode in coverNodes)
+                    {
+                        float tempDist = (coverNode.transform.position - checkpointTarget.transform.position).magnitude;
+                        if (tempDist < coverToCPDist)
+                        {
+                            optimalCoverNode = coverNode;
+                            coverToCPDist = tempDist;
+                        }
+                    }
+                }
 
                 List<GraphNode<GameObject>> path = pathFinding.FindPath(PositionNode.nodeId, optimalCoverNode.nodeId, MovementHeuristic);
-                actionQueue.Enqueue(CRMove(path));
+                //actionQueue.Enqueue(CRMove(path));
 
                 return (int)BTNode.EState.Success;
             }
@@ -309,6 +334,8 @@ namespace Game.AI
         
         public int IsItemInRange()
         {
+            //print("IsItemInRange()");
+
             var nodesWithItems = new List<MBGraphNode>();
             
             // Check all reachable nodes to see if it contains a PowerUp
@@ -355,6 +382,8 @@ namespace Game.AI
 
         public int ShouldGetItem()
         {
+            //print("ShouldGetItem()");
+
             // for now I simply only check if they have room for more items
             // but we should also check if they are in the lead, if so then keep pushing towards goal or randomly decide to get an item if they have none
 
@@ -369,9 +398,14 @@ namespace Game.AI
 
         public int MoveToItem()
         {
+            //print("MoveToItem()");
+
             List<GraphNode<GameObject>> path = new List<GraphNode<GameObject>>();
 
             path = pathFinding.FindPath(PositionNode.nodeId, moveTargetNode.nodeId, MovementHeuristic);
+            if (path.Count > 0) path.RemoveAt(0);
+
+            if (path.Count == 0) return (int)BTNode.EState.Failure;
 
             actionQueue.Enqueue(CRMove(path));
 
@@ -380,32 +414,43 @@ namespace Game.AI
 
         public int MoveToBestSpot()
         {
-            // TODO: set moveTargetNode to closest checkpoint
-            //       implement GetCostToMove() function that returns how much it costs to move (ex: player could have a debuff that makes it cost more/less to move)
-
-            List<MBGraphNode> reachableNodes = new List<MBGraphNode>();
-            // reachableNodes = GetAllReachableNodes(PositionNode);
-
-            // TODO: need a way to get the closest checkpoint/goal node
-            // checkpointNode = 
+            //print("MoveToBestSpot()");
+            if (CurrentActionPoints <= 0) return (int)BTNode.EState.Failure;
+            
+            Checkpoint checkpointTarget = GetClosestCheckpoint();
+            MBGraphNode checkpointNode = checkpointTarget == null ? null : checkpointTarget.node;
+            if (checkpointNode == null)
+                return (int)BTNode.EState.Failure;
 
             // get the closest reachable node to the checkpoint/goal
-            MBGraphNode optimalNode = reachableNodes.Count > 0 ? reachableNodes[0] : null;
+            GraphNode<GameObject> optimalGraphNode = reachableNodeIds.Count > 0 ? GameplayManager.Instance.gridGraph.graph[reachableNodeIds[0]] : null;
             float dist = Mathf.Infinity;
-            foreach (MBGraphNode node in reachableNodes)
+            foreach (string nodeId in reachableNodeIds)
             {
-                //float tempDist = (node.transform.position - checkpointNode.transform.position).magnitude;
-                //if (tempDist < dist)
-                //{
-                //    optimalNode = node;
-                //    dist = tempDist;
-                //}
+                GraphNode<GameObject> graphNode = GameplayManager.Instance.gridGraph.graph[nodeId];
+                float tempDist = (graphNode.Data.transform.position - checkpointNode.transform.position).magnitude;
+                if (tempDist < dist)
+                {
+                    optimalGraphNode = graphNode;
+                    dist = tempDist;
+                }
             }
 
-            if (optimalNode != null)
+            if (optimalGraphNode != null)
             {
-                List<GraphNode<GameObject>> path = pathFinding.FindPath(PositionNode.nodeId, optimalNode.nodeId, MovementHeuristic);
+                List<GraphNode<GameObject>> path = pathFinding.FindPath(PositionNode.nodeId, optimalGraphNode.Id, MovementHeuristic);
+                if (path.Count > 0) path.RemoveAt(0);
+
+                if (path.Count == 0)
+                    return (int)BTNode.EState.Failure;
+
                 actionQueue.Enqueue(CRMove(path));
+
+                //print("MTBS: " + path.Count);
+                //foreach (GraphNode<GameObject> gnode in path)
+                //{
+                //    print(gnode.Data.transform.localPosition);
+                //}
 
                 return (int)BTNode.EState.Success;
             }
@@ -415,6 +460,7 @@ namespace Game.AI
 
         public int EndTurn()
         {
+            // print("EndTurn()");
             Phase = EPlayerPhase.End;
 
             return (int)BTNode.EState.Success;
@@ -438,6 +484,28 @@ namespace Game.AI
                     GetAllReachableNodes(node.Id, iterationsLeft - 1);
                 }
             }
+        }
+
+        private Checkpoint GetClosestCheckpoint()
+        {
+            float cpDist = Mathf.Infinity;
+            Checkpoint checkpointTarget = null;
+            foreach (Checkpoint cp in checkpoints)
+            {
+                if (cp != null)
+                {
+                    if (checkpointTarget != null && cp.isGoal) continue;
+
+                    float tempDist = (cp.node.transform.position - transform.position).magnitude;
+                    if (tempDist < cpDist || checkpointTarget.isGoal)
+                    {
+                        checkpointTarget = cp;
+                        cpDist = tempDist;
+                    }
+                }
+            }
+
+            return checkpointTarget;
         }
     }
 }

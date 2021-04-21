@@ -49,7 +49,7 @@ public class Inventory : MonoBehaviour
     {
         if (items[itemIndex] != null)
         {
-            print($"Used {items[itemIndex].name}");
+            //print($"Used {items[itemIndex].name}");
             items[itemIndex].OnPowerUpUse(player, target);
             RemoveItem(itemIndex);
         }
@@ -62,7 +62,7 @@ public class Inventory : MonoBehaviour
 
     public int GetItemIndex(string name)
     {
-        print(name);
+        //print(name);
         int index = -1;
 
         for(int i = 0; i < items.Count; ++i)

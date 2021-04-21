@@ -3,12 +3,12 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 
-
 using Game.AI;
 using Photon.Pun;
 using Tenacious;
 using Tenacious.Collections;
 using Game.UI;
+using Tenacious.Audio;
 
 public class GameplayManager : MBSingleton<GameplayManager>
 {
@@ -18,13 +18,14 @@ public class GameplayManager : MBSingleton<GameplayManager>
         public string name = "Test";
         public MBGraphNode startNode;
         public Vector3 positionOffset = new Vector3(2.5f, 0.0f, 2.5f);
+        public List<Checkpoint> checkpoints;
     }
 
     [SerializeField] public MBGraph gridGraph;
 
+    public Transform playersParentTransform;
     public List<PlayerDescriptor> playerDescriptors;
 
-    [SerializeField] private Transform playersParent;
     [SerializeField] private float maxActionPoints;
 
     private List<AbstractPlayer> players = new List<AbstractPlayer>();
@@ -48,6 +49,8 @@ public class GameplayManager : MBSingleton<GameplayManager>
     protected override void Awake()
     {
         base.Awake();
+
+        AudioManager.Instance.PlayMusic("Gameplay1");
     }
 	
     private void Start()
@@ -64,18 +67,18 @@ public class GameplayManager : MBSingleton<GameplayManager>
             // Initialize Human Players
             for (var i = 0; i < debugHumanCount; i++)
             {
-                GameObject playerObj = Instantiate(HumanPlayerPrefab);
+                GameObject playerObj = Instantiate(HumanPlayerPrefab, playersParentTransform);
                 HumanPlayer player = playerObj.GetComponent<HumanPlayer>();
-                player.InitializePlayer(maxActionPoints, playerDescriptors[i].positionOffset, playerDescriptors[i].startNode.nodeId, playerDescriptors[i].name);
+                player.InitializePlayer(maxActionPoints, playerDescriptors[i].positionOffset, playerDescriptors[i].startNode.nodeId, playerDescriptors[i].name, i);
                 players.Add(player);
             }
 
             // Initialize AI Players
             for (var i = 0 + debugHumanCount; i < debugAICount + debugHumanCount; i++)
             {
-                GameObject aiObj = Instantiate(AIPlayerPrefab);
+                GameObject aiObj = Instantiate(AIPlayerPrefab, playersParentTransform);
                 AIPlayer player = aiObj.GetComponent<AIPlayer>();
-                player.InitializePlayer(maxActionPoints, playerDescriptors[i].positionOffset, playerDescriptors[i].startNode.nodeId, playerDescriptors[i].name);
+                player.InitializePlayer(maxActionPoints, playerDescriptors[i].positionOffset, playerDescriptors[i].startNode.nodeId, playerDescriptors[i].name, i);
                 players.Add(player);
             }
 
@@ -94,14 +97,14 @@ public class GameplayManager : MBSingleton<GameplayManager>
             
             for (int i = 0; i < NetworkManager.Instance.aiPlayerCount; i++)
             {
-                NetworkManager.Instance.aiPlayers[i].InitializePlayer(99, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode.nodeId, "AI " + i);
+                NetworkManager.Instance.aiPlayers[i].InitializePlayer(99, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode.nodeId, "AI " + i, index);
                 players.Add(NetworkManager.Instance.aiPlayers[i]);
                 index++;
             }
             
             foreach (var player in NetworkManager.Instance.humanPlayers)
             {
-                NetworkManager.Instance.InitializeHumanPlayer(player, maxActionPoints, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode.nodeId, player.name);
+                NetworkManager.Instance.InitializeHumanPlayer(player, maxActionPoints, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode.nodeId, player.name, index);
                 players.Add(player);
                 index++;
             }
