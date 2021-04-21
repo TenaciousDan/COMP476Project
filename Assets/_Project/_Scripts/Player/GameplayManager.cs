@@ -86,7 +86,7 @@ public class GameplayManager : MBSingleton<GameplayManager>
     private void Update()
     {
         // Initialize all players through the network and pass player list to game manager
-        if (usingNetwork && isLoadingPlayers && NetworkManager.Instance.humanPlayers.Length == NetworkManager.Instance.humanPlayerCount)
+        if (usingNetwork && isLoadingPlayers && NetworkManager.Instance.humanPlayers.Length == NetworkManager.Instance.humanPlayerCount && PhotonNetwork.IsMasterClient)
         {
             isLoadingPlayers = false;
 
