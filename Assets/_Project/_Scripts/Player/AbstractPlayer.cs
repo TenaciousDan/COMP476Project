@@ -143,7 +143,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         {
             CurrentActionPoints = maxActionPoints;
         }
-        //print("Added action points. Player now has " + CurrentActionPoints + " action points.");
+        print("Added action points. Player now has " + CurrentActionPoints + " action points.");
     }
 
     public void RemoveActionPoints(float numActionPoints)
