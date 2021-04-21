@@ -72,6 +72,9 @@ namespace Game.AI
                     if (closedODict.Contains(n.Id))
                         continue;
 
+                    if (graph[n.Id].Data.GetComponentInChildren<OilSpillManager>() != null)
+                        cost += 2;
+
                     float gNeighbor = gnDict[currentId] + cost;
                     if (!gnDict.ContainsKey(n.Id) || gNeighbor < gnDict[n.Id])
                     {
