@@ -120,10 +120,10 @@ namespace Game.AI
             //       else if none of the items give any value at this moment (ex: no targets, etc...)
             //           return failure
 
-            int missileIndex = -1;//GetItemIndex("Missile");
-            int boostIndex = -1;//GetItemIndex("Boost");
-            int shieldIndex = -1;//GetItemIndex("Shield");
-            int oilSpillIndex = -1;//GetItemIndex("Oil Spill");
+            int missileIndex = Inventory.GetItemIndex("Missile");
+            int boostIndex = Inventory.GetItemIndex("Boost");
+            int shieldIndex = Inventory.GetItemIndex("Shield");
+            int oilSpillIndex = Inventory.GetItemIndex("Oil Spill");
 
             if (boostIndex != -1)
             {
@@ -217,8 +217,8 @@ namespace Game.AI
 
             foreach (AbstractPlayer p in GameplayManager.Instance.Players)
             {
-                int pOilSpillIndex = -1;//p.GetItemIndex("Oil Spill");
-                int pMissileIndex = -1;//p.GetItemIndex("Missile");
+                int pOilSpillIndex = p.Inventory.GetItemIndex("Oil Spill");
+                int pMissileIndex = p.Inventory.GetItemIndex("Missile");
 
                 if (pMissileIndex != -1)
                 {
@@ -265,7 +265,7 @@ namespace Game.AI
             List<MBGraphNode> coverNodes = reachableNodes.Select(n => n).ToList();
             foreach (AbstractPlayer player in playerAttackThreats)
             {
-                int pMissileIndex = -1;//player.GetItemIndex("Missile");
+                int pMissileIndex = player.Inventory.GetItemIndex("Missile");
 
                 if (pMissileIndex != -1)
                 {
