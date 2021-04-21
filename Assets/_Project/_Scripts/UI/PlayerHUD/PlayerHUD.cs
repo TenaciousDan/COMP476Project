@@ -35,8 +35,8 @@ namespace Game.UI
         private void Update()
         {
             UpdateAP();
-            UpdateItems(player.Phase == AbstractPlayer.EPlayerPhase.Main);
-            ToggleMoveBtn(player.CurrentActionPoints != 0);
+            //UpdateItems(player.Phase == AbstractPlayer.EPlayerPhase.Main);
+            //ToggleMoveBtn(player.CurrentActionPoints != 0);
 
             // Can only move if the button is clicked.
             if (moveBtnClicked)
@@ -274,15 +274,16 @@ namespace Game.UI
 
         public void EndTurnBtnClick()
         {
-            print("Ending turn!");
             //player.Phase = AbstractPlayer.EPlayerPhase.End; // GameplayManager ends turn instead?
-            photonView.RPC("EndTurn", RpcTarget.All);
+            //photonView.RPC("EndTurn", RpcTarget.All);
+            //player.Phase = AbstractPlayer.EPlayerPhase.End;
+
+            GameplayManager.Instance.EndPlayerTurn(player.Name);
         }
 
         [PunRPC]
         private void EndTurn()
         {
-            print("turn ended");
             player.Phase = AbstractPlayer.EPlayerPhase.End;
         }
     }

@@ -125,7 +125,7 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
 
     public void StartGameBtnClick()
     {
-        NetworkManager.Instance.photonView.RPC("ChangeScene", RpcTarget.All, "MainLevel");
+        NetworkManager.Instance.photonView.RPC("ChangeScene", RpcTarget.All, "NetGameManagerTest"/*"MainLevel"*/);
     }
 
     public void RefreshBtnClick()

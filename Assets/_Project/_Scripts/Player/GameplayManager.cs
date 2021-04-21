@@ -10,6 +10,7 @@ using Tenacious;
 using Tenacious.Collections;
 using Game.UI;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class GameplayManager : MonoBehaviourPunCallbacks, IPunObservable
 {
@@ -164,13 +165,15 @@ public class GameplayManager : MonoBehaviourPunCallbacks, IPunObservable
                 index++;
             }
 
-            PlayerHUDManager.Instance.numToUse = NetworkManager.Instance.humanPlayers.Length;
+            photonView.RPC("SetNumberOfUI", RpcTarget.All, NetworkManager.Instance.humanPlayers.Length);
 
             for (int i = 0; i < NetworkManager.Instance.humanPlayers.Length; i++)
             {
                 photonView.RPC("InitializeUI", RpcTarget.All, i);
             }
         }
+
+        photonView.RPC("ShowUI", RpcTarget.All, currentPlayer);
 
         if (currentPlayer < Players.Count)
         {
@@ -183,17 +186,42 @@ public class GameplayManager : MonoBehaviourPunCallbacks, IPunObservable
             else if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.PassTurn)
             {
                 Players[currentPlayer].Phase = AbstractPlayer.EPlayerPhase.None;
-                ++currentPlayer;
-                //photonView.RPC("UpdateCurrentPlayer", RpcTarget.All);
+                //++currentPlayer;
+                photonView.RPC("UpdateCurrentPlayer", RpcTarget.All);
             }
         }
         else
         {
-            currentPlayer = 0;
-            //photonView.RPC("ResetCurrentPlayer", RpcTarget.All);
+            //currentPlayer = 0;
+            photonView.RPC("ResetCurrentPlayer", RpcTarget.All);
         }
 
         //photonView.RPC("UpdatePlayerTurns", RpcTarget.All);
+    }
+
+    public void EndPlayerTurn(string name)
+    {
+        photonView.RPC("EndTurn", RpcTarget.All, name);
+    }
+
+    [PunRPC]
+    private void EndTurn(string name)
+    {
+        var player = players.Find(p => p.Name.Equals(name));
+        player.Phase = AbstractPlayer.EPlayerPhase.End;
+    }
+
+    [PunRPC]
+    private void ShowUI(int index)
+    {
+        PlayerHUDManager.Instance.huds[index].gameObject.SetActive(true);
+    }
+
+    [PunRPC]
+    private void SetNumberOfUI(int num)
+    {
+        PlayerHUDManager.Instance.numToUse = num;
+        //PlayerHUDManager.Instance.huds[0].gameObject.SetActive(true);
     }
 
     [PunRPC]
