@@ -150,17 +150,8 @@ public class GameplayManager : MonoBehaviourPunCallbacks
         if (usingNetwork && isLoadingPlayers && NetworkManager.Instance.humanPlayers.Length == NetworkManager.Instance.humanPlayerCount && PhotonNetwork.IsMasterClient)
         {
             isLoadingPlayers = false;
-
-            var index = 0;
             
-            for (int i = 0; i < NetworkManager.Instance.aiPlayerCount; i++)
-            {
-                NetworkManager.Instance.aiPlayers[i].InitializePlayer(99, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode.nodeId, "AI " + i, index);
-                players.Add(NetworkManager.Instance.aiPlayers[i]);
-                index++;
-            }
-
-            photonView.RPC("AddHumanPlayers", RpcTarget.All, index);
+            photonView.RPC("SpawnPlayers", RpcTarget.All);
         }
 
         if (currentPlayer < Players.Count)
@@ -175,34 +166,32 @@ public class GameplayManager : MonoBehaviourPunCallbacks
             {
                 Players[currentPlayer].Phase = AbstractPlayer.EPlayerPhase.None;
                 photonView.RPC("UpdateCurrentPlayer", RpcTarget.All);
-                //++currentPlayer;
             }
         }
         else
         {
             photonView.RPC("ResetCurrentPlayer", RpcTarget.All);
-            currentPlayer = 0;
         }
     }
 
     [PunRPC]
-    private void AddHumanPlayers(int index)
+    private void SpawnPlayers()
     {
+        var index = 0;
+            
+        for (int i = 0; i < NetworkManager.Instance.aiPlayerCount; i++)
+        {
+            NetworkManager.Instance.aiPlayers[i].InitializePlayer(99, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode.nodeId, "AI " + i, index);
+            players.Add(NetworkManager.Instance.aiPlayers[i]);
+            index++;
+        }
+
         foreach (var player in NetworkManager.Instance.humanPlayers)
         {
             NetworkManager.Instance.InitializeHumanPlayer(player, maxActionPoints, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode.nodeId, player.name, index);
             players.Add(player);
             index++;
         }
-    }
-
-    [PunRPC]
-    private void AddAIPlayers(int i)
-    {
-        GameObject playerObj = Instantiate(HumanPlayerPrefab, playersParentTransform);
-        HumanPlayer player = playerObj.GetComponent<HumanPlayer>();
-        player.InitializePlayer(maxActionPoints, playerDescriptors[i].positionOffset, playerDescriptors[i].startNode.nodeId, playerDescriptors[i].name, i);
-        players.Add(player);
     }
 
     [PunRPC]
