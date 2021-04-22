@@ -21,6 +21,7 @@ public class HumanPlayer : AbstractPlayer
     protected override void Awake()
     {
         base.Awake();
+        transform.parent = GameplayManager.Instance.playersParentTransform;
     }
 
     private void Start()

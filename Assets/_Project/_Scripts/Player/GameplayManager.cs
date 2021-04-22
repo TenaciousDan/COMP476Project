@@ -2,7 +2,7 @@ using UnityEngine;
 
 using System;
 using System.Collections.Generic;
-
+using ExitGames.Client.Photon.StructWrapping;
 using Game.AI;
 using Photon.Pun;
 using Tenacious;
@@ -113,6 +113,9 @@ public class GameplayManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        // Ensure Human Players go First
+        currentPlayer = NetworkManager.Instance.aiPlayerCount;
+        
         // Inform all players after loading into scene
         if (usingNetwork)
         {
@@ -146,15 +149,24 @@ public class GameplayManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
+        print("WHY?!?!?!?!?!  " + (currentPlayer > Players.Count));
+
         // Initialize all players through the network and pass player list to game manager
         if (usingNetwork && isLoadingPlayers && NetworkManager.Instance.humanPlayers.Length == NetworkManager.Instance.humanPlayerCount && PhotonNetwork.IsMasterClient)
         {
             isLoadingPlayers = false;
-            
+
+            // Spawn in AI
+            for (var i = 0; i < NetworkManager.Instance.aiPlayerCount; i++)
+            {
+                GameObject playerObj = PhotonNetwork.Instantiate("AIPlayer", new Vector3(0, 0, 0), Quaternion.identity);
+                playerObj.SetActive(true);
+            }
+
             photonView.RPC("InitializePlayers", RpcTarget.All);
         }
         
-        print("PLAYERS COUNT" + Players.Count);
+        print("current player" + currentPlayer);
 
         if (currentPlayer < Players.Count)
         {
@@ -167,12 +179,19 @@ public class GameplayManager : MonoBehaviourPunCallbacks
             else if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.PassTurn)
             {
                 Players[currentPlayer].Phase = AbstractPlayer.EPlayerPhase.None;
-                photonView.RPC("UpdateCurrentPlayer", RpcTarget.All);
+                // Update Turn Order (ONLY FOR AI) - Turn updates for Human Players on End Turn Press
+                if (PhotonNetwork.IsMasterClient && Players[currentPlayer].CompareTag("AIPlayer"))
+                {
+                    photonView.RPC("UpdateCurrentPlayer", RpcTarget.All);
+                }
             }
         }
         else
         {
-            photonView.RPC("ResetCurrentPlayer", RpcTarget.All);
+            if (PhotonNetwork.IsMasterClient)
+            { 
+                photonView.RPC("ResetCurrentPlayer", RpcTarget.All);
+            }
         }
     }
 
@@ -181,19 +200,20 @@ public class GameplayManager : MonoBehaviourPunCallbacks
     {
         var index = 0;
         
-        print("AI PLAYER COUNT = " + NetworkManager.Instance.aiPlayerCount);
-            
-        for (int i = 0; i < NetworkManager.Instance.aiPlayerCount; i++)
-        {
-            print("BUILDING AI PLAYER");
-            NetworkManager.Instance.aiPlayers[i].InitializePlayer(99, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode.nodeId, "AI " + i, index);
-            players.Add(NetworkManager.Instance.aiPlayers[i]);
-            index++;
+        foreach (Transform player in playersParentTransform)
+        { 
+            if (player.gameObject.CompareTag("AIPlayer"))
+            {
+                AIPlayer aiPlayer = player.GetComponent<AIPlayer>();
+                aiPlayer.InitializePlayer(99, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode.nodeId, "AI " + index + 1, index);
+                players.Add(aiPlayer);
+                index++;
+            }
         }
 
         foreach (var player in NetworkManager.Instance.humanPlayers)
         {
-            NetworkManager.Instance.InitializeHumanPlayer(player, maxActionPoints, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode.nodeId, player.name, index);
+            player.InitializePlayer(maxActionPoints, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode.nodeId, player.name, index);
             players.Add(player);
             index++;
         }
@@ -203,12 +223,13 @@ public class GameplayManager : MonoBehaviourPunCallbacks
     private void UpdateCurrentPlayer()
     {
         currentPlayer++;
-        //print(currentPlayer);
+        print("NEW CURRENT PLAYER: " + currentPlayer);
     }
 
     [PunRPC]
     private void ResetCurrentPlayer()
     {
+        print("RESETTING CURRENT PLAYER");
         currentPlayer = 0;
         //print(currentPlayer);
     }

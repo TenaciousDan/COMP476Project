@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Tenacious.Collections;
 using System.Linq;
 using System;
+using Photon.Pun;
 
 namespace Game.UI
 {
@@ -274,6 +275,7 @@ namespace Game.UI
         public void EndTurnBtnClick()
         {
             print("Ending turn!");
+            GameplayManager.Instance.photonView.RPC("UpdateCurrentPlayer", RpcTarget.All);
             player.Phase = AbstractPlayer.EPlayerPhase.End; // GameplayManager ends turn instead?
         }
     }

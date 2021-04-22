@@ -16,7 +16,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public int aiPlayerCount = 0;
     
     public HumanPlayer[] humanPlayers;
-    public List<AIPlayer> aiPlayers = new List<AIPlayer>();
 
     private static NetworkManager instance;
     private static bool reinitializationPermitted = false;
@@ -191,16 +190,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         if (humanPlayerCount == PhotonNetwork.PlayerList.Length)
         {
             SpawnHumanPlayer();
-
-            // Host will handle all AI Spawning
-            if (PhotonNetwork.IsMasterClient)
-            {
-                for (var i = 0; i < aiPlayerCount; i++)
-                {
-                    SpawnAIPlayer();
-                }
-            }
-            
         }
     }
 
@@ -213,22 +202,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         HumanPlayer playerScript = playerObj.GetComponent<HumanPlayer>();
 
         playerScript.photonView.RPC("InitializePlayerOnNetwork", RpcTarget.All, PhotonNetwork.LocalPlayer);
-    }
-
-    public void SpawnAIPlayer()
-    {
-        GameObject playerObj = PhotonNetwork.Instantiate("AIPlayer", new Vector3(0, 0, 0), Quaternion.identity);
-        playerObj.transform.parent = GameplayManager.Instance.playersParentTransform;
-        playerObj.SetActive(true);
-
-        AIPlayer playerScript = playerObj.GetComponent<AIPlayer>();
-
-        aiPlayers.Add(playerScript);
-    }
-    
-    public void InitializeHumanPlayer(HumanPlayer player, float _maxActionPoints, Vector3 _offset, string _startNodeId, string _name, int playerIndex)
-    {
-        player.photonView.RPC("InitializePlayer", RpcTarget.All, _maxActionPoints, _offset, _startNodeId, _name, playerIndex);
     }
 
     #endregion

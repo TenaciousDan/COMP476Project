@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 6438957948705957348}
   m_Layer: 0
   m_Name: AIPlayer
-  m_TagString: Player
+  m_TagString: AIPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
