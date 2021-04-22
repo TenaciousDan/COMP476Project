@@ -394,18 +394,13 @@ namespace Game.AI
 
         public int ShouldGetItem()
         {
-            //print("ShouldGetItem()");
+            // TODO: Check to see if closer to the checkpoint then other players. If in the lead do not go for item
+            if (Inventory.currentItemCount < Inventory.maxInventorySize)
+            {
+                return (int)BTNode.EState.Success;
+            }
 
-            // for now I simply only check if they have room for more items
-            // but we should also check if they are in the lead, if so then keep pushing towards goal or randomly decide to get an item if they have none
-
-            // TODO: Inventory needs to expose size
-            //if (Inventory.items.Count < Inventory.Size)
-            //    return (int)BTNode.EState.Success;
-            //else
-            //    return (int)BTNode.EState.Failure;
-
-            return (int)BTNode.EState.Success;
+            return (int)BTNode.EState.Failure;
         }
 
         public int MoveToItem()
