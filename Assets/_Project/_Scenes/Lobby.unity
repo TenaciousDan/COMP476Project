@@ -3716,6 +3716,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 987187ed39a8c3343b305df4cda7183a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameplayScene:
+    scenePath: Assets/_Project/Sandbox/UITest/UINetworkTest.unity
+    sceneAsset: {fileID: 102900000, guid: 0ad58e3a947f91a44acec3ddcf0f8545, type: 3}
   loginScreen: {fileID: 2081662085}
   joinOrCreateScreen: {fileID: 84010249}
   lobbyScreen: {fileID: 364252914}

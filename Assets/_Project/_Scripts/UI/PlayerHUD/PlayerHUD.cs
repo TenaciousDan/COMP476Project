@@ -273,8 +273,8 @@ namespace Game.UI
 
         public void EndTurnBtnClick()
         {
-            print("Ending turn!");
             player.Phase = AbstractPlayer.EPlayerPhase.End; // GameplayManager ends turn instead?
+            //player.photonView.RPC("EndTurn", Photon.Pun.RpcTarget.All);
         }
     }
 }
