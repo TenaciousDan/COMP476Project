@@ -215,6 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f983c7345ce9c6a44924f29bcdae3c34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentItemCount: 0
   player: {fileID: 2147173957417967686}
 --- !u!114 &2147173957417967686
 MonoBehaviour:
@@ -229,6 +230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shieldObject: {fileID: 3245071922284160273}
+  checkpoints: []
   behaviorTree: {fileID: 5405298471439158274}
 --- !u!114 &6346006916840474583
 MonoBehaviour:
