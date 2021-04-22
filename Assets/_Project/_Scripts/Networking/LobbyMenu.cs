@@ -5,9 +5,12 @@ using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
+using Tenacious.Scenes;
 
 public class LobbyMenu : MonoBehaviourPunCallbacks
 {
+    public SceneReference gameplayScene;
+
     [Header("Screens")] 
     [SerializeField] private GameObject loginScreen;
     [SerializeField] private GameObject joinOrCreateScreen;
@@ -125,7 +128,7 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
 
     public void StartGameBtnClick()
     {
-        NetworkManager.Instance.photonView.RPC("ChangeScene", RpcTarget.All, /*"MainLevel"*/"UINetworkTest");
+        NetworkManager.Instance.photonView.RPC("ChangeScene", RpcTarget.All, gameplayScene.ScenePath);
     }
 
     public void RefreshBtnClick()
