@@ -59,7 +59,8 @@ public class Inventory : MonoBehaviour
         {
             //print($"Used {items[itemIndex].name}");
             items[itemIndex].OnPowerUpUse(player, target);
-            RemoveItem(itemIndex);
+            //RemoveItem(itemIndex);
+            player.photonView.RPC("RemoveItemFromInventory", Photon.Pun.RpcTarget.All, itemIndex);
         }
     }
 

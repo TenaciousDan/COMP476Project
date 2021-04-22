@@ -90,14 +90,18 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         Phase = EPlayerPhase.Standby;
 
         // TODO: do standby phase things
-        FillActionPoints();
-
-        RemoveActionPoints(pointsDeficit);
-        pointsDeficit = 0;
-
-        DeactivateShield();
+        photonView.RPC("MainTurn", RpcTarget.All);
 
         Phase = EPlayerPhase.Main;
+    }
+
+    [PunRPC]
+    public void MainTurn()
+    {
+        FillActionPoints();
+        RemoveActionPoints(pointsDeficit);
+        pointsDeficit = 0;
+        DeactivateShield();
     }
 
     /// <summary>
@@ -131,8 +135,22 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         }
     }
 
+    [PunRPC]
+    public void AddItemToInventory(Scriptable_Base item)
+    {
+        Inventory.AddItem(item);
+    }
+
+    [PunRPC]
+    public void RemoveItemFromInventory(int index)
+    {
+        Inventory.RemoveItem(index);
+    }
+
+    [PunRPC]
     public void FillActionPoints()
     {
+        print($"{Name} fills their points from {CurrentActionPoints}");
         CurrentActionPoints = maxActionPoints;
     }
 
@@ -146,6 +164,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         print("Added action points. Player now has " + CurrentActionPoints + " action points.");
     }
 
+    [PunRPC]
     public void RemoveActionPoints(float numActionPoints)
     {
         CurrentActionPoints -= numActionPoints;
