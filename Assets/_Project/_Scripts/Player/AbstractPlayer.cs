@@ -90,7 +90,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         Phase = EPlayerPhase.Standby;
 
         // TODO: do standby phase things
-        AddActionPoints(1, false);
+        FillActionPoints();
 
         RemoveActionPoints(pointsDeficit);
         pointsDeficit = 0;
