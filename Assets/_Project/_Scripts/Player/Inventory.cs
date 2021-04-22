@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Inventory : MonoBehaviour
 {
     public const int maxInventorySize = 3;
+    public int currentItemCount = 0;
 
     [SerializeField] private AbstractPlayer player;
 
@@ -37,11 +38,18 @@ public class Inventory : MonoBehaviour
             availableSlotIndex = maxInventorySize - 1;
             ShiftItems(newItem);
         }
+        // Increase item count if Inventory is not full
+        else
+        {
+            currentItemCount++;
+        }
+        
         items[availableSlotIndex] = newItem;
     }
 
     public void RemoveItem(int itemIndex)
     {
+        currentItemCount--;
         items[itemIndex] = null;
     }
 
