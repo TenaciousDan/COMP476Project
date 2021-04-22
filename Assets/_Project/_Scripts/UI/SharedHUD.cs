@@ -62,17 +62,18 @@ namespace Game.UI
         /// <summary>
         /// Call to initialize the shared player UI components.
         /// </summary>
+        //[PunRPC]
+        //public void Initialize()
+        //{
+        //    for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+        //    {
+        //        playerContainers[i].playerContainer.SetActive(true);
+        //        // TODO - Configure the elements of the player's UI.
+        //    }
+        //}
+
         [PunRPC]
         public void Initialize()
-        {
-            for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
-            {
-                playerContainers[i].playerContainer.SetActive(true);
-                // TODO - Configure the elements of the player's UI.
-            }
-        }
-
-        public void InitializeTest()
         {
             for (int i = 0; i < GameplayManager.Instance.Players.Count; i++)
             {

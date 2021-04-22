@@ -140,7 +140,7 @@ public class GameplayManager : MonoBehaviourPunCallbacks
                 players.Add(player);
             }
 
-            sharedHud.InitializeTest();
+            sharedHud.Initialize();
         }
     }
 
@@ -152,6 +152,7 @@ public class GameplayManager : MonoBehaviourPunCallbacks
             isLoadingPlayers = false;
             
             photonView.RPC("SpawnPlayers", RpcTarget.All);
+            sharedHud.photonView.RPC("Initialize", RpcTarget.All);
         }
 
         if (currentPlayer < Players.Count)
@@ -164,7 +165,7 @@ public class GameplayManager : MonoBehaviourPunCallbacks
                 Players[currentPlayer].EndPhaseUpdate();
             else if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.PassTurn)
             {
-                Players[currentPlayer].Phase = AbstractPlayer.EPlayerPhase.None;
+                //Players[currentPlayer].Phase = AbstractPlayer.EPlayerPhase.None;
                 photonView.RPC("UpdateCurrentPlayer", RpcTarget.All);
             }
         }
@@ -188,7 +189,7 @@ public class GameplayManager : MonoBehaviourPunCallbacks
 
         foreach (var player in NetworkManager.Instance.humanPlayers)
         {
-            NetworkManager.Instance.InitializeHumanPlayer(player, maxActionPoints, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode.nodeId, player.name, index);
+            NetworkManager.Instance.InitializeHumanPlayer(player, maxActionPoints, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode.nodeId, playerDescriptors[index].name, index);
             players.Add(player);
             index++;
         }
@@ -197,15 +198,14 @@ public class GameplayManager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void UpdateCurrentPlayer()
     {
+        Players[currentPlayer].Phase = AbstractPlayer.EPlayerPhase.None;
         currentPlayer++;
-        print(currentPlayer);
     }
 
     [PunRPC]
     private void ResetCurrentPlayer()
     {
         currentPlayer = 0;
-        print(currentPlayer);
     }
 
     #region SINGLETON

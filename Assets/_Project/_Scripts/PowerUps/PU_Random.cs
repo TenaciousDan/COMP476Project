@@ -5,13 +5,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PU_Random_Script", menuName = "ScriptableBase/PU_Random", order = 1)]
 public class PU_Random : Scriptable_Base
 {
-    private int randomIndex;
+    public int randomIndex;
 
-    [SerializeField] private List<Scriptable_Base> powerUps;
+    public List<Scriptable_Base> powerUps;
 
     public override void OnPowerUpGet(AbstractPlayer player)
     {
-        randomIndex = Random.Range(0, powerUps.Count);
+        //randomIndex = Random.Range(0, powerUps.Count);
         player.Inventory.AddItem(powerUps[randomIndex]);
     }
 
