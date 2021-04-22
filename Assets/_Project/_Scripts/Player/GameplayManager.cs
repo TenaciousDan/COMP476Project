@@ -151,8 +151,10 @@ public class GameplayManager : MonoBehaviourPunCallbacks
         {
             isLoadingPlayers = false;
             
-            photonView.RPC("SpawnPlayers", RpcTarget.All);
+            photonView.RPC("InitializePlayers", RpcTarget.All);
         }
+        
+        print("PLAYERS COUNT" + Players.Count);
 
         if (currentPlayer < Players.Count)
         {
@@ -175,12 +177,15 @@ public class GameplayManager : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    private void SpawnPlayers()
+    private void InitializePlayers()
     {
         var index = 0;
+        
+        print("AI PLAYER COUNT = " + NetworkManager.Instance.aiPlayerCount);
             
         for (int i = 0; i < NetworkManager.Instance.aiPlayerCount; i++)
         {
+            print("BUILDING AI PLAYER");
             NetworkManager.Instance.aiPlayers[i].InitializePlayer(99, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode.nodeId, "AI " + i, index);
             players.Add(NetworkManager.Instance.aiPlayers[i]);
             index++;
@@ -198,14 +203,14 @@ public class GameplayManager : MonoBehaviourPunCallbacks
     private void UpdateCurrentPlayer()
     {
         currentPlayer++;
-        print(currentPlayer);
+        //print(currentPlayer);
     }
 
     [PunRPC]
     private void ResetCurrentPlayer()
     {
         currentPlayer = 0;
-        print(currentPlayer);
+        //print(currentPlayer);
     }
 
     #region SINGLETON

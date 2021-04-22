@@ -68,11 +68,14 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         cachedRoomList.Clear();
+
+        NetworkManager.Instance.aiPlayerCount = (int)PhotonNetwork.CurrentRoom.CustomProperties["aiPlayerCount"];
         
         // Change screen
         SetScreen(lobbyScreen);
 
         // Tell everyone to update the lobby because a new player has joined.
+
         photonView.RPC("UpdateLobbyUI", RpcTarget.All);
     }
 

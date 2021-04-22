@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ExitGames.Client.Photon;
 using Game.AI;
 using Photon.Pun;
 using Photon.Realtime;
@@ -96,7 +97,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         RoomOptions newRoomOptions = new RoomOptions();
         newRoomOptions.MaxPlayers = Convert.ToByte(MaxRoomSize - aiPlayerCount);
-        
+        newRoomOptions.CustomRoomProperties = new Hashtable {{"aiPlayerCount", aiPlayerCount}};
+
         PhotonNetwork.CreateRoom(roomName, newRoomOptions);
     }
 
