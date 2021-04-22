@@ -397,12 +397,9 @@ namespace Game.AI
             // TODO: Check to see if closer to the checkpoint then other players. If in the lead do not go for item
             if (Inventory.currentItemCount < Inventory.maxInventorySize)
             {
-                print("returning success");
                 return (int)BTNode.EState.Success;
             }
 
-            print("returning failure");
-            
             return (int)BTNode.EState.Failure;
         }
 
