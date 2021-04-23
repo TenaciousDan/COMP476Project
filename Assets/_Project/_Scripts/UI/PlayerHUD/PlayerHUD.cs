@@ -165,7 +165,12 @@ namespace Game.UI
             if (times <= 0)
                 return;
 
-            startNode.transform.GetChild(0).gameObject.SetActive(show);
+            for (int i = 0; i < startNode.transform.childCount; ++i)
+            {
+                if (startNode.transform.GetChild(i).tag.Equals("GridSquare"))
+                    startNode.transform.GetChild(i).gameObject.SetActive(show);
+            }    
+
             var nodeNeighbors = startNode.mbGraph.graph.Neighbors(startNode.nodeId);
             foreach (var node in nodeNeighbors)
             {
@@ -226,7 +231,11 @@ namespace Game.UI
             {
                 if(player != this.player)
                 {
-                    player.PositionNode.transform.GetChild(0).gameObject.SetActive(show);
+                    for (int i = 0; i < player.PositionNode.transform.childCount; ++i)
+                    {
+                        if (player.PositionNode.transform.GetChild(i).tag.Equals("GridSquare"))
+                            player.PositionNode.transform.GetChild(i).gameObject.SetActive(show);
+                    }
                 }
             }
         }
@@ -256,7 +265,11 @@ namespace Game.UI
 
             foreach (var neighbor in neighbors)
             {
-                neighbor.Data.transform.GetChild(0).gameObject.SetActive(show);
+                for (int i = 0; i < neighbor.Data.transform.childCount; ++i)
+                {
+                    if (neighbor.Data.transform.GetChild(i).tag.Equals("GridSquare"))
+                        neighbor.Data.transform.GetChild(i).gameObject.SetActive(show);
+                }
             }
         }
 
