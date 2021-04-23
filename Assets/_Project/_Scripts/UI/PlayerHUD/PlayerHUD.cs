@@ -17,6 +17,7 @@ namespace Game.UI
         public ProgressBar actionPoints;
         public HumanPlayer player;
 
+        [SerializeField] private SDictionary<string, RectTransform> cpPointerTransforms;
         [SerializeField] private List<Button> btns;
         [SerializeField] private float distanceBetweenNodes = 10.0f;
 
@@ -37,6 +38,9 @@ namespace Game.UI
             UpdateAP();
             UpdateItems(player.Phase == AbstractPlayer.EPlayerPhase.Main);
             ToggleMoveBtn(player.CurrentActionPoints != 0);
+
+            ShowCheckpointMarkers();
+            RepositionCheckpointPointers();
 
             // Can only move if the button is clicked.
             if (moveBtnClicked)
@@ -59,6 +63,59 @@ namespace Game.UI
                 {
                     SpecialItemClick(target, "Oil Spill");
                     oilSpillBtnClicked = false;
+                }
+            }
+        }
+
+        private void ShowCheckpointMarkers()
+        {
+            foreach (string cpName in cpPointerTransforms.Keys)
+            {
+                bool cpActive = false;
+                for (int i = 0; i < player.checkpoints.Count; ++i)
+                {
+                    Checkpoint cp = player.checkpoints[i];
+                    print(cpName + " == " + cp.checkpointName);
+                    if (cp.checkpointName.Equals(cpName))
+                    {
+                        cpActive = true;
+                        break;
+                    }
+                }
+                cpPointerTransforms[cpName].parent.GetComponentInChildren<TextMeshProUGUI>().text = cpName;
+                cpPointerTransforms[cpName].parent.gameObject.SetActive(cpActive);
+            }
+        }
+
+        private void RepositionCheckpointPointers()
+        {
+            Camera camera = GameplayManager.Instance.cameraRig.rigCamera;
+
+            for (int i = 0; i < player.checkpoints.Count; ++i)
+            {
+                Checkpoint cp = player.checkpoints[i];
+                RectTransform pointer = cpPointerTransforms[cp.checkpointName];
+
+                Vector3 toPosition = cp.transform.position;
+                toPosition.y = 0;
+                Vector3 fromPosition = GameplayManager.Instance.cameraRig.transform.position;
+                fromPosition.y = 0;
+                Vector3 dir = (toPosition - fromPosition).normalized;
+
+                float angle = Vector3.Angle(Vector3.ProjectOnPlane(camera.transform.forward, Vector3.up), dir);
+                if (angle < 0) angle += 360;
+                pointer.localEulerAngles = new Vector3(0, 0, angle);
+
+                Vector3 targetPositionScreenPoint = camera.WorldToViewportPoint(cp.transform.position);
+                bool isOffScreen = targetPositionScreenPoint.x <= 0 || targetPositionScreenPoint.x >= Screen.width || targetPositionScreenPoint.y <= 0 || targetPositionScreenPoint.y >= Screen.height;
+                if (isOffScreen)
+                {
+                    //pointer.GetComponent<Image>().enabled = true;
+                    
+                }
+                else
+                {
+                    //pointer.GetComponent<Image>().enabled = false;
                 }
             }
         }

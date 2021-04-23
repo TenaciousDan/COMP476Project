@@ -38,4 +38,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Sandbox/Level1AITest/Level1AITest.unity
     guid: 0bc19fe50894e0241899138bb39af1f7
+  - enabled: 1
+    path: Assets/_Project/_Scenes/Levels/Level1.unity
+    guid: d2a4a1f5b23441746ae4908d38b3cd3b
   m_configObjects: {}
