@@ -17,7 +17,10 @@ namespace Game.UI
         public ProgressBar actionPoints;
         public HumanPlayer player;
 
+        [SerializeField] private Sprite cpPointerSprite;
+        [SerializeField] private Sprite cpInRangeSprite;
         [SerializeField] private SDictionary<string, RectTransform> cpPointerTransforms;
+
         [SerializeField] private List<Button> btns;
         [SerializeField] private float distanceBetweenNodes = 10.0f;
 
@@ -75,7 +78,6 @@ namespace Game.UI
                 for (int i = 0; i < player.checkpoints.Count; ++i)
                 {
                     Checkpoint cp = player.checkpoints[i];
-                    print(cpName + " == " + cp.checkpointName);
                     if (cp.checkpointName.Equals(cpName))
                     {
                         cpActive = true;
@@ -100,22 +102,21 @@ namespace Game.UI
                 toPosition.y = 0;
                 Vector3 fromPosition = GameplayManager.Instance.cameraRig.transform.position;
                 fromPosition.y = 0;
-                Vector3 dir = (toPosition - fromPosition).normalized;
+                float dist = (toPosition - fromPosition).magnitude;
 
-                float angle = Vector3.Angle(Vector3.ProjectOnPlane(camera.transform.forward, Vector3.up), dir);
-                if (angle < 0) angle += 360;
-                pointer.localEulerAngles = new Vector3(0, 0, angle);
-
-                Vector3 targetPositionScreenPoint = camera.WorldToViewportPoint(cp.transform.position);
-                bool isOffScreen = targetPositionScreenPoint.x <= 0 || targetPositionScreenPoint.x >= Screen.width || targetPositionScreenPoint.y <= 0 || targetPositionScreenPoint.y >= Screen.height;
-                if (isOffScreen)
+                if (dist <= 25)
                 {
-                    //pointer.GetComponent<Image>().enabled = true;
-                    
+                    pointer.GetComponent<Image>().sprite = cpInRangeSprite;
+                    pointer.localEulerAngles = new Vector3(0, 0, 0);
                 }
                 else
                 {
-                    //pointer.GetComponent<Image>().enabled = false;
+                    pointer.GetComponent<Image>().sprite = cpPointerSprite;
+
+                    Vector3 dir = (toPosition - fromPosition).normalized;
+
+                    float angle = -Vector3.SignedAngle(GameplayManager.Instance.cameraRig.transform.forward, dir, Vector3.up);
+                    pointer.localEulerAngles = new Vector3(0, 0, angle);
                 }
             }
         }
