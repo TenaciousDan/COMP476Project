@@ -79,6 +79,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         maxActionPoints = CurrentActionPoints = _maxActionPoints;
         PositionOffset = _positionOffset;
         PositionNode = startingNode;
+        Inventory.InitializeList();
 
         this.checkpoints = GameplayManager.Instance.playerDescriptors[playerIndex].checkpoints;
         
