@@ -75,7 +75,13 @@ namespace Game.AI
             pathFinding.mbGraph = GameplayManager.Instance.gridGraph;
         }
 
-       private float MovementHeuristic(Transform start, Transform end)
+        public override void Move(List<GraphNode<GameObject>> path)
+        {
+            if (PhotonNetwork.IsMasterClient)
+                actionQueue.Enqueue(CRMove(path));
+        }
+
+        private float MovementHeuristic(Transform start, Transform end)
         {
             // Manhattan distance
             float dx = Mathf.Abs(start.position.x - end.position.x);
@@ -339,7 +345,7 @@ namespace Game.AI
                 if (path.Count == 0)
                     return (int)BTNode.EState.Failure;
 
-                actionQueue.Enqueue(CRMove(path));
+                Move(path);
 
                 return (int)BTNode.EState.Success;
             }
@@ -428,7 +434,7 @@ namespace Game.AI
 
             if (path.Count == 0) return (int)BTNode.EState.Failure;
 
-            actionQueue.Enqueue(CRMove(path));
+            Move(path);
 
             return (int)BTNode.EState.Success;
         }
@@ -465,7 +471,7 @@ namespace Game.AI
                 if (path.Count == 0)
                     return (int)BTNode.EState.Failure;
 
-                actionQueue.Enqueue(CRMove(path));
+                Move(path);
 
                 //print("MoveToBestSpot: " + path.Count);
                 //foreach (GraphNode<GameObject> gnode in path)

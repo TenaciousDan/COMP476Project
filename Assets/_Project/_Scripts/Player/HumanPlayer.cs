@@ -45,11 +45,6 @@ public class HumanPlayer : AbstractPlayer
         Phase = EPlayerPhase.Main;
     }
 
-    public void Move(List<GraphNode<GameObject>> path)
-    {
-        StartCoroutine(CRMove(path));
-    }
-
     #region NETWORK
 
     [PunRPC]
