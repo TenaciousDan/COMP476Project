@@ -174,21 +174,29 @@ namespace Game.UI
 
                 var mbNode = node.Data.GetComponent<MBGraphNode>();
 
+                bool doIt = true;
+                if (GameplayManager.Instance.blockedOffNodes.Contains(mbNode) && player.checkpoints.Count > 1)
+                    doIt = false;
+
                 if (node.Data.transform.position.x > startNode.transform.position.x && direction == Direction.Right)
                 {
-                    ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Right);
+                    if (doIt)
+                        ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Right);
                 }
                 if (node.Data.transform.position.x < startNode.transform.position.x && direction == Direction.Left)
                 {
-                    ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Left);
+                    if (doIt)
+                        ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Left);
                 }
                 if (node.Data.transform.position.z > startNode.transform.position.z && direction == Direction.Down)
                 {
-                    ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Down);
+                    if (doIt)
+                        ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Down);
                 }
                 if (node.Data.transform.position.z < startNode.transform.position.z && direction == Direction.Up)
                 {
-                    ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Up);
+                    if (doIt)
+                        ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Up);
                 }
             }
         }
@@ -274,7 +282,6 @@ namespace Game.UI
 
         public void EndTurnBtnClick()
         {
-            print("Ending turn!");
             GameplayManager.Instance.photonView.RPC("UpdateCurrentPlayer", RpcTarget.All);
             player.Phase = AbstractPlayer.EPlayerPhase.End; // GameplayManager ends turn instead?
         }

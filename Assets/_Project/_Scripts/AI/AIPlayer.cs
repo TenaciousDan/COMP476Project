@@ -75,7 +75,7 @@ namespace Game.AI
             pathFinding.mbGraph = GameplayManager.Instance.gridGraph;
         }
 
-        private float MovementHeuristic(Transform start, Transform end)
+       private float MovementHeuristic(Transform start, Transform end)
         {
             // Manhattan distance
             float dx = Mathf.Abs(start.position.x - end.position.x);
@@ -145,7 +145,7 @@ namespace Game.AI
                 // check if other players are in sight for missile target
                 foreach (AbstractPlayer p in GameplayManager.Instance.Players)
                 {
-                    RaycastHit[] hits = Physics.RaycastAll(transform.position, p.transform.position - transform.position);
+                    RaycastHit[] hits = Physics.RaycastAll(transform.position + (Vector3.up * 0.5f), p.transform.position - transform.position);
                     foreach (RaycastHit hit in hits)
                     {
                         // we are colliding with ourself
@@ -169,7 +169,7 @@ namespace Game.AI
                 // check if player is in sight for foreign missiles
                 foreach (AbstractPlayer p in GameplayManager.Instance.Players)
                 {
-                    RaycastHit[] hits = Physics.RaycastAll(transform.position, transform.position - p.transform.position);
+                    RaycastHit[] hits = Physics.RaycastAll(transform.position + (Vector3.up * 0.5f), transform.position - p.transform.position);
                     foreach (RaycastHit hit in hits)
                     {
                         // the ray has hit us
@@ -237,7 +237,7 @@ namespace Game.AI
 
                 if (pMissileIndex != -1)
                 {
-                    RaycastHit[] hits = Physics.RaycastAll(p.transform.position, transform.position - p.transform.position);
+                    RaycastHit[] hits = Physics.RaycastAll(p.transform.position + (Vector3.up * 0.5f), transform.position - p.transform.position);
                     foreach (RaycastHit hit in hits)
                     {
                         // the ray has hit us
@@ -290,7 +290,7 @@ namespace Game.AI
                         MBGraphNode node = coverNodes[i];
 
                         // if we don't hit something, then there is no cover at this node and so, we remove it from the cover list
-                        RaycastHit[] hits = Physics.RaycastAll(player.transform.position, node.transform.position - player.transform.position);
+                        RaycastHit[] hits = Physics.RaycastAll(player.transform.position + (Vector3.up * 0.5f), node.transform.position - player.transform.position);
                         Debug.DrawRay(player.transform.position, node.transform.position - player.transform.position, Color.red, 10000);
                         bool coverAvailable = false;
                         foreach (RaycastHit hit in hits)
@@ -333,7 +333,7 @@ namespace Game.AI
                     }
                 }
 
-                List<GraphNode<GameObject>> path = pathFinding.FindPath(PositionNode.nodeId, optimalCoverNode.nodeId, MovementHeuristic);
+                List<GraphNode<GameObject>> path = pathFinding.FindPath(PositionNode.nodeId, optimalCoverNode.nodeId, MovementHeuristic, checkpoints.Count <= 1);
 
                 if (path.Count > 0) path.RemoveAt(0);
                 if (path.Count == 0)
@@ -378,7 +378,7 @@ namespace Game.AI
                 // Find the closest PowerUp
                 foreach (var node in nodesWithItems)
                 {
-                    List<GraphNode<GameObject>> path = pathFinding.FindPath(PositionNode.nodeId, node.nodeId, MovementHeuristic);
+                    List<GraphNode<GameObject>> path = pathFinding.FindPath(PositionNode.nodeId, node.nodeId, MovementHeuristic, checkpoints.Count <= 1);
 
                     if (path.Count < shortestDistance)
                     {
@@ -412,7 +412,7 @@ namespace Game.AI
 
             List<GraphNode<GameObject>> path = new List<GraphNode<GameObject>>();
 
-            path = pathFinding.FindPath(PositionNode.nodeId, moveTargetNode.nodeId, MovementHeuristic);
+            path = pathFinding.FindPath(PositionNode.nodeId, moveTargetNode.nodeId, MovementHeuristic, checkpoints.Count <= 1);
             if (path.Count > 0) path.RemoveAt(0);
 
             if (path.Count == 0) return (int)BTNode.EState.Failure;
@@ -448,7 +448,7 @@ namespace Game.AI
 
             if (optimalGraphNode != null)
             {
-                List<GraphNode<GameObject>> path = pathFinding.FindPath(PositionNode.nodeId, optimalGraphNode.Id, MovementHeuristic);
+                List<GraphNode<GameObject>> path = pathFinding.FindPath(PositionNode.nodeId, optimalGraphNode.Id, MovementHeuristic, checkpoints.Count <= 1);
 
                 if (path.Count > 0) path.RemoveAt(0);
                 if (path.Count == 0)
@@ -456,7 +456,7 @@ namespace Game.AI
 
                 actionQueue.Enqueue(CRMove(path));
 
-                //print("MTBS: " + path.Count);
+                //print("MoveToBestSpot: " + path.Count);
                 //foreach (GraphNode<GameObject> gnode in path)
                 //{
                 //    print(gnode.Data.transform.localPosition);
