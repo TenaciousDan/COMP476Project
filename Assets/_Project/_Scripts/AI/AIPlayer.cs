@@ -397,8 +397,19 @@ namespace Game.AI
 
         public int ShouldGetItem()
         {
-            // TODO: Check to see if closer to the checkpoint then other players. If in the lead do not go for item
-            if (Inventory.currentItemCount < Inventory.maxInventorySize)
+            // TODO: Check to see if closer to the goal then other players. If in the lead do not go for item
+            int numCheckpointsLeft = checkpoints.Count;
+            bool shouldGetItem = false;
+            foreach (AbstractPlayer p in GameplayManager.Instance.Players)
+            {
+                if (numCheckpointsLeft >= p.checkpoints.Count)
+                {
+                    shouldGetItem = true;
+                    break;
+                }
+            }
+
+            if (shouldGetItem && Inventory.currentItemCount < Inventory.maxInventorySize)
             {
                 return (int)BTNode.EState.Success;
             }
