@@ -37,10 +37,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         get; private set;
     }
 
-    public float CurrentActionPoints
-    {
-        get; private set;
-    }
+    public float CurrentActionPoints;
 
     public float MaxActionPoints
     {
@@ -254,7 +251,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    private void ChangeMusicTrack(string trackName)
+    public void ChangeMusicTrack(string trackName)
     {
         AudioManager.Instance.PlayMusic(trackName);
     }
@@ -271,7 +268,8 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
             transform.position = GameplayManager.Instance.goalPlatforms[0].position;
             GameplayManager.Instance.cameraRig.target = transform;
         }
-        
+
+        print("cpoints contains cp :" + checkpoints.Contains(cp));
         if (checkpoints.Contains(cp))
             checkpoints.Remove(cp);
 
