@@ -178,6 +178,10 @@ public class GameplayManager : MonoBehaviourPunCallbacks
         {
             photonView.RPC("ResetCurrentPlayer", RpcTarget.All);
         }
+
+        // **Emergency failsafe** Please avoid pressing this key during the demo as it may break things (this is only if the AI freezes up for some reason)
+        if (PhotonNetwork.IsMasterClient && Input.GetKeyDown(KeyCode.F12))
+            photonView.RPC("UpdateCurrentPlayer", RpcTarget.All);
     }
 
     [PunRPC]
