@@ -7,6 +7,9 @@ public class PU_Shield : Scriptable_Base
 {
     public override void OnPowerUpUse(AbstractPlayer player, GameObject target = null)
     {
-        player.ActivateShield();
+        if (player.photonView.IsMine)
+        {
+            player.photonView.RPC("ActivateShield", Photon.Pun.RpcTarget.All);
+        }
     }
 }
