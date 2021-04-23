@@ -517,6 +517,5 @@ namespace Game.AI
 
             return checkpointTarget;
         }
-        
     }
 }

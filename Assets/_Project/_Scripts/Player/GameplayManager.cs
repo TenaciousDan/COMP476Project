@@ -149,8 +149,6 @@ public class GameplayManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        print("WHY?!?!?!?!?!  " + (currentPlayer > Players.Count));
-
         // Initialize all players through the network and pass player list to game manager
         if (usingNetwork && isLoadingPlayers && NetworkManager.Instance.humanPlayers.Length == NetworkManager.Instance.humanPlayerCount && PhotonNetwork.IsMasterClient)
         {
@@ -166,8 +164,6 @@ public class GameplayManager : MonoBehaviourPunCallbacks
             photonView.RPC("InitializePlayers", RpcTarget.All);
         }
         
-        print("current player" + currentPlayer);
-
         if (currentPlayer < Players.Count)
         {
             if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.Standby || Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.None)
@@ -223,15 +219,12 @@ public class GameplayManager : MonoBehaviourPunCallbacks
     private void UpdateCurrentPlayer()
     {
         currentPlayer++;
-        print("NEW CURRENT PLAYER: " + currentPlayer);
     }
 
     [PunRPC]
     private void ResetCurrentPlayer()
     {
-        print("RESETTING CURRENT PLAYER");
         currentPlayer = 0;
-        //print(currentPlayer);
     }
 
     #region SINGLETON
