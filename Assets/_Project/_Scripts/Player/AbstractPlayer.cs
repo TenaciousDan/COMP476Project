@@ -210,6 +210,12 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         pointsDeficit += numActionPoints;
     }
 
+    public virtual void Move(List<GraphNode<GameObject>> path)
+    {
+        if (PhotonNetwork.IsMasterClient)
+            StartCoroutine(CRMove(path));
+    }
+
     protected IEnumerator CRMove(List<GraphNode<GameObject>> path)
     {
         if (path == null) path = new List<GraphNode<GameObject>>();
