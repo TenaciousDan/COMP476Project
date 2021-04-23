@@ -66,6 +66,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
     protected virtual void Awake()
     {
         Inventory = GetComponent<Inventory>();
+        transform.parent = GameplayManager.Instance.playersParentTransform;
     }
 
     // assign values to member variables

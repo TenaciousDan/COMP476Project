@@ -31,6 +31,7 @@ public class HumanPlayer : AbstractPlayer
     [PunRPC]
     public override void InitializePlayer(float _maxActionPoints, Vector3 _positionOffset, string _startingNodeId, string name, int playerIndex)
     {
+        transform.parent = GameplayManager.Instance.playersParentTransform;
         base.InitializePlayer(_maxActionPoints, _positionOffset, _startingNodeId, name, playerIndex);
 
         PlayerHUDManager.Instance.InitializeUI(this);
@@ -56,7 +57,7 @@ public class HumanPlayer : AbstractPlayer
     {
         photonPlayer = player;
         ID = player.ActorNumber;
-        NetworkManager.Instance.humanPlayers[ID - 1] = this;
+        gameObject.name = player.NickName;
 
         // Only track local physics
         if (!photonView.IsMine)

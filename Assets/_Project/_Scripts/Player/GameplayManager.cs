@@ -2,10 +2,8 @@ using UnityEngine;
 
 using System;
 using System.Collections.Generic;
-
 using Game.AI;
 using Photon.Pun;
-using Tenacious;
 using Tenacious.Collections;
 using Game.UI;
 using Tenacious.Audio;
@@ -39,10 +37,15 @@ public class GameplayManager : MonoBehaviourPunCallbacks
     public List<AbstractPlayer> Players { get => players; }
 
     public int currentPlayer = 0;
+    public int totalPlayersInGame = 0;
 
     private bool isCRTurnUpdateRunning;
     
-    private bool isLoadingPlayers = true;
+    // Network bools that ensure order is followed when starting game
+    private bool isLoaded;
+    private bool isSpawningPlayers = true;
+    private bool isInitializingPlayers = true;
+    private bool finishedPregameSetup;
 
     [Header("Debug Settings")] 
     public bool usingNetwork = true;
@@ -118,16 +121,14 @@ public class GameplayManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        // Inform all players after loading into scene
+        // Update PlayerCount if Playing Online
         if (usingNetwork)
         {
-            NetworkManager.Instance.humanPlayers = new HumanPlayer[PhotonNetwork.PlayerList.Length];
-            NetworkManager.Instance.LoadedIntoGame();
+            photonView.RPC("LoadedIntoScene", RpcTarget.AllBuffered);
         }
-        // Instantiate all players on local machine
+        // Offline Mode Setup
         else
         {
-            // Initialize Human Players
             for (var i = 0; i < debugHumanCount; i++)
             {
                 GameObject playerObj = Instantiate(HumanPlayerPrefab, playersParentTransform);
@@ -135,8 +136,7 @@ public class GameplayManager : MonoBehaviourPunCallbacks
                 player.InitializePlayer(maxActionPoints, playerDescriptors[i].positionOffset, playerDescriptors[i].startNode.nodeId, playerDescriptors[i].name, i);
                 players.Add(player);
             }
-
-            // Initialize AI Players
+            
             for (var i = 0 + debugHumanCount; i < debugAICount + debugHumanCount; i++)
             {
                 GameObject aiObj = Instantiate(AIPlayerPrefab, playersParentTransform);
@@ -151,59 +151,118 @@ public class GameplayManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        // Initialize all players through the network and pass player list to game manager
-        if (usingNetwork && isLoadingPlayers && NetworkManager.Instance.humanPlayers.Length == NetworkManager.Instance.humanPlayerCount && PhotonNetwork.IsMasterClient)
+        // =================================================
+        // SPAWNING AND INITIALIZING PLAYERS / AI ON NETWORK
+        // =================================================
+        
+        // Instantiate Players and Initialize Them Across the Network
+        if (totalPlayersInGame == PhotonNetwork.CurrentRoom.PlayerCount && !isLoaded)
         {
-            isLoadingPlayers = false;
+            GameObject playerObj = PhotonNetwork.Instantiate("HumanPlayer", new Vector3(0,0,0), Quaternion.identity);
+            HumanPlayer playerScript = playerObj.GetComponent<HumanPlayer>();
+
+            playerScript.photonView.RPC("InitializePlayerOnNetwork", RpcTarget.All, PhotonNetwork.LocalPlayer);
+
+            isLoaded = true;
+        }
+        
+        // Instantiate AI Across the Network After Ensuring All Players Are In
+        if (usingNetwork && isSpawningPlayers && playersParentTransform.childCount == PhotonNetwork.PlayerList.Length && PhotonNetwork.IsMasterClient)
+        {
+            isSpawningPlayers = false;
+
+            // Spawn in AI
+            for (var i = 0; i < NetworkManager.Instance.aiPlayerCount; i++)
+            {
+                GameObject playerObj = PhotonNetwork.Instantiate("AIPlayer", new Vector3(0, 0, 0), Quaternion.identity);
+                playerObj.SetActive(true);
+            }
+        }
+
+        // When All GameObjects are Built - Initialize All Players and HUD Across the Network
+        if (usingNetwork && isInitializingPlayers && playersParentTransform.childCount == PhotonNetwork.PlayerList.Length + NetworkManager.Instance.aiPlayerCount && PhotonNetwork.IsMasterClient)
+        {
+            isInitializingPlayers = false;
             
-            photonView.RPC("SpawnPlayers", RpcTarget.All);
+            photonView.RPC("InitializePlayers", RpcTarget.All);
             sharedHud.photonView.RPC("Initialize", RpcTarget.All);
         }
 
-        if (currentPlayer < Players.Count)
+        // ===================
+        // MAIN GAMEPLAY LOOP
+        // ===================
+        
+        if (finishedPregameSetup)
         {
-            if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.Standby || Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.None)
-                Players[currentPlayer].StandbyPhaseUpdate();
-            else if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.Main)
-                Players[currentPlayer].MainPhaseUpdate();
-            else if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.End)
-                Players[currentPlayer].EndPhaseUpdate();
-            else if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.PassTurn)
+            if (currentPlayer < Players.Count)
             {
-                //Players[currentPlayer].Phase = AbstractPlayer.EPlayerPhase.None;
-                photonView.RPC("UpdateCurrentPlayer", RpcTarget.All);
+                if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.Standby || Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.None)
+                    Players[currentPlayer].StandbyPhaseUpdate();
+                else if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.Main)
+                    Players[currentPlayer].MainPhaseUpdate();
+                else if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.End)
+                    Players[currentPlayer].EndPhaseUpdate();
+                else if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.PassTurn)
+                {
+                    Players[currentPlayer].Phase = AbstractPlayer.EPlayerPhase.None;
+                    // Update Turn Order (ONLY FOR AI) - Turn updates for Human Players on End Turn Press
+                    if (PhotonNetwork.IsMasterClient && Players[currentPlayer].CompareTag("AIPlayer"))
+                    {
+                        photonView.RPC("UpdateCurrentPlayer", RpcTarget.All);
+                    }
+                }
             }
-        }
-        else
-        {
-            photonView.RPC("ResetCurrentPlayer", RpcTarget.All);
+            else
+            {
+                if (PhotonNetwork.IsMasterClient)
+                { 
+                    photonView.RPC("ResetCurrentPlayer", RpcTarget.All);
+                }
+            }
         }
     }
 
     [PunRPC]
-    private void SpawnPlayers()
+    private void InitializePlayers()
     {
         var index = 0;
-            
-        for (int i = 0; i < NetworkManager.Instance.aiPlayerCount; i++)
+        
+        // Initialize Players first since their id starts from index 0
+        foreach (Transform player in playersParentTransform)
         {
-            NetworkManager.Instance.aiPlayers[i].InitializePlayer(99, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode.nodeId, "AI " + i, index);
-            players.Add(NetworkManager.Instance.aiPlayers[i]);
-            index++;
+            if (player.gameObject.CompareTag("HumanPlayer"))
+            {
+                HumanPlayer humanPlayer = player.GetComponent<HumanPlayer>();
+                players.Add(humanPlayer);
+                humanPlayer.InitializePlayer(maxActionPoints, playerDescriptors[humanPlayer.ID - 1].positionOffset, playerDescriptors[humanPlayer.ID - 1].startNode.nodeId, player.name, humanPlayer.ID);
+                index++;   
+            }
         }
-
-        foreach (var player in NetworkManager.Instance.humanPlayers)
-        {
-            NetworkManager.Instance.InitializeHumanPlayer(player, maxActionPoints, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode.nodeId, playerDescriptors[index].name, index);
-            players.Add(player);
-            index++;
+        
+        // Initialize AI afterwards
+        foreach (Transform player in playersParentTransform)
+        { 
+            if (player.gameObject.CompareTag("AIPlayer"))
+            {
+                AIPlayer aiPlayer = player.GetComponent<AIPlayer>();
+                aiPlayer.InitializePlayer(maxActionPoints, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode.nodeId, "AI " + index, index);
+                players.Add(aiPlayer);
+                index++;
+            }
         }
+        
+        finishedPregameSetup = true;
+    }
+    
+    [PunRPC]
+    public void LoadedIntoScene()
+    {
+        totalPlayersInGame++;
     }
 
     [PunRPC]
     private void UpdateCurrentPlayer()
     {
-        Players[currentPlayer].Phase = AbstractPlayer.EPlayerPhase.None;
         currentPlayer++;
     }
 
