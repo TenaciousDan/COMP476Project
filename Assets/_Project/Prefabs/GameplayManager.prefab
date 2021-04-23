@@ -45,12 +45,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridGraph: {fileID: 0}
+  cameraRig: {fileID: 0}
+  goalPlatforms: []
+  blockedOffNodes: []
   playersParentTransform: {fileID: 0}
   playerDescriptors:
   - name: Test
     startNode: {fileID: 0}
     positionOffset: {x: 2.5, y: 0, z: 2.5}
-    checkpoints: []
+    checkpoints:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
   - name: Test
     startNode: {fileID: 0}
     positionOffset: {x: 2.5, y: 0, z: -2.5}
@@ -64,7 +70,9 @@ MonoBehaviour:
     positionOffset: {x: -2.5, y: 0, z: 2.5}
     checkpoints: []
   maxActionPoints: 5
+  players: []
   currentPlayer: 0
+  totalPlayersInGame: 0
   usingNetwork: 1
   debugHumanCount: 3
   debugAICount: 0
