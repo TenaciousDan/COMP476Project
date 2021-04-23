@@ -240,6 +240,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         {
             if (cp.isGoal)
             {
+                // This player has won the game
 
             }
             else
