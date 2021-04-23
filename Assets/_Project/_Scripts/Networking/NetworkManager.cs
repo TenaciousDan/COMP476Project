@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Game.AI;
 using Photon.Pun;
 using Photon.Realtime;
-using Tenacious.Collections;
+using ExitGames.Client.Photon;
 using Tenacious.Scenes;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -96,6 +96,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         RoomOptions newRoomOptions = new RoomOptions();
         newRoomOptions.MaxPlayers = Convert.ToByte(MaxRoomSize - aiPlayerCount);
+        newRoomOptions.CustomRoomProperties = new Hashtable {{"aiPlayerCount", aiPlayerCount}};
         
         PhotonNetwork.CreateRoom(roomName, newRoomOptions);
     }
