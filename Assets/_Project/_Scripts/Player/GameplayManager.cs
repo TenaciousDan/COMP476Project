@@ -38,6 +38,7 @@ public class GameplayManager : MonoBehaviourPunCallbacks
 
     public int currentPlayer = 0;
     public int totalPlayersInGame = 0;
+    public bool hasInitializedPlayers = false;
 
     private bool isCRTurnUpdateRunning;
     
@@ -186,6 +187,7 @@ public class GameplayManager : MonoBehaviourPunCallbacks
             
             photonView.RPC("InitializePlayers", RpcTarget.All);
             sharedHud.photonView.RPC("Initialize", RpcTarget.All);
+            photonView.RPC("InitializationComplete", RpcTarget.All);
         }
 
         // ===================
@@ -224,6 +226,12 @@ public class GameplayManager : MonoBehaviourPunCallbacks
         // **Emergency failsafe** Please avoid pressing this key during the demo as it may break things (this is only if the AI freezes up for some reason)
         if (PhotonNetwork.IsMasterClient && Input.GetKeyDown(KeyCode.F12))
             photonView.RPC("UpdateCurrentPlayer", RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void InitializationComplete()
+    {
+        hasInitializedPlayers = true;
     }
 
     [PunRPC]

@@ -20,7 +20,7 @@ public class Inventory : MonoBehaviour
         player = GetComponent<AbstractPlayer>();
     }
 
-    private void Start()
+    public void InitializeList()
     {
         items = new List<Scriptable_Base>();
         for (int i = 0; i < maxInventorySize; i++)

@@ -79,6 +79,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         maxActionPoints = CurrentActionPoints = _maxActionPoints;
         PositionOffset = _positionOffset;
         PositionNode = startingNode;
+        Inventory.InitializeList();
 
         this.checkpoints = GameplayManager.Instance.playerDescriptors[playerIndex].checkpoints;
         
@@ -154,7 +155,6 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
     [PunRPC]
     public void FillActionPoints()
     {
-        print($"{Name} fills their points from {CurrentActionPoints}");
         CurrentActionPoints = maxActionPoints;
     }
 
@@ -224,7 +224,11 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         {
             foreach (GraphNode<GameObject> node in path)
             {
-                PositionNode = node.Data.GetComponent<MBGraphNode>();
+                if (photonView.IsMine)
+                {
+                    photonView.RPC("UpdatePositionNode", RpcTarget.All, node.Id);
+                }
+
                 Vector3 newWorldPosition = node.Data.transform.position + PositionOffset;
                 newWorldPosition = new Vector3(newWorldPosition.x, transform.position.y, newWorldPosition.z);
 
@@ -241,6 +245,12 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
                 }
             }
         }
+    }
+
+    [PunRPC]
+    public void UpdatePositionNode(string nodeId)
+    {
+        PositionNode = GameplayManager.Instance.gridGraph.graph[nodeId].Data.GetComponent<MBGraphNode>();
     }
 
     [PunRPC]

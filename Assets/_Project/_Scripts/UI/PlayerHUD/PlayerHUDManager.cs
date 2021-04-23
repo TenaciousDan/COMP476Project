@@ -13,13 +13,16 @@ public class PlayerHUDManager : MBSingleton<PlayerHUDManager>
     // Update is called once per frame
     void Update()
     {
-        foreach (var hud in huds)
+        if (GameplayManager.Instance.hasInitializedPlayers)
         {
-            bool show = GameplayManager.Instance.usingNetwork ? 
-                hud.player.photonView.IsMine && hud.player.Phase == AbstractPlayer.EPlayerPhase.Main : 
-                hud.player.Phase == AbstractPlayer.EPlayerPhase.Main;
-            
-            hud.gameObject.SetActive(show);
+            foreach (var hud in huds)
+            {
+                bool show = GameplayManager.Instance.usingNetwork ?
+                    hud.player.photonView.IsMine && hud.player.Phase == AbstractPlayer.EPlayerPhase.Main :
+                    hud.player.Phase == AbstractPlayer.EPlayerPhase.Main;
+
+                hud.gameObject.SetActive(show);
+            }
         }
     }
 

@@ -33,13 +33,16 @@ namespace Game.UI
         /// </summary>
         private void UpdateSharedHud()
         {
-            for (int i = 0; i < GameplayManager.Instance.Players.Count; i++)
+            if (GameplayManager.Instance.hasInitializedPlayers)
             {
-                var currentPlayer = GameplayManager.Instance.Players[i];
-                playerContainers[i].turnPointerObj.SetActive(currentPlayer.Phase == AbstractPlayer.EPlayerPhase.Main);
-                playerContainers[i].playerName.text = currentPlayer.Name;
-                UpdatePlayerItems(currentPlayer, i);
-                UpdatePlayerCheckpoints(currentPlayer, i);
+                for (int i = 0; i < GameplayManager.Instance.Players.Count; i++)
+                {
+                    var currentPlayer = GameplayManager.Instance.Players[i];
+                    playerContainers[i].turnPointerObj.SetActive(currentPlayer.Phase == AbstractPlayer.EPlayerPhase.Main);
+                    playerContainers[i].playerName.text = currentPlayer.Name;
+                    UpdatePlayerItems(currentPlayer, i);
+                    UpdatePlayerCheckpoints(currentPlayer, i);
+                }
             }
         }
 
