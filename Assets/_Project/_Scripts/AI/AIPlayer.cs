@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Tenacious.Collections;
 
+using Photon.Pun;
+
 namespace Game.AI
 {
     [RequireComponent(typeof(Pathfinding))]
@@ -65,6 +67,7 @@ namespace Game.AI
             isProcessingActions = false;
         }
 
+        [PunRPC]
         public override void InitializePlayer(float _maxActionPoints, Vector3 _positionOffset, string _startingNodeId, string name, int playerIndex)
         {
             base.InitializePlayer(_maxActionPoints, _positionOffset, _startingNodeId, name, playerIndex);
@@ -72,7 +75,7 @@ namespace Game.AI
             pathFinding.mbGraph = GameplayManager.Instance.gridGraph;
         }
 
-        private float MovementHeuristic(Transform start, Transform end)
+       private float MovementHeuristic(Transform start, Transform end)
         {
             // Manhattan distance
             float dx = Mathf.Abs(start.position.x - end.position.x);

@@ -45,7 +45,7 @@ public class PU_Base : MonoBehaviourPunCallbacks
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("HumanPlayer") || other.CompareTag("AIPlayer"))
         {
             powerUpScript.OnPowerUpGet(other.gameObject.GetComponent<AbstractPlayer>());
             Destroy(gameObject);

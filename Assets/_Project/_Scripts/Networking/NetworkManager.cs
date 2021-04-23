@@ -1,22 +1,20 @@
 using System;
 using System.Collections.Generic;
+using ExitGames.Client.Photon;
 using Game.AI;
 using Photon.Pun;
 using Photon.Realtime;
-using ExitGames.Client.Photon;
+using Tenacious.Collections;
 using Tenacious.Scenes;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
+    // Room Properties
     public const int MaxRoomSize = 4;
-    public int humanPlayerCount = 0;
     public int aiPlayerCount = 0;
     
-    public HumanPlayer[] humanPlayers;
-    public List<AIPlayer> aiPlayers = new List<AIPlayer>();
-
     private static NetworkManager instance;
     private static bool reinitializationPermitted = false;
     private static bool destroyed = false;
@@ -97,7 +95,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         RoomOptions newRoomOptions = new RoomOptions();
         newRoomOptions.MaxPlayers = Convert.ToByte(MaxRoomSize - aiPlayerCount);
         newRoomOptions.CustomRoomProperties = new Hashtable {{"aiPlayerCount", aiPlayerCount}};
-        
+
         PhotonNetwork.CreateRoom(roomName, newRoomOptions);
     }
 
@@ -172,63 +170,5 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         instance = null;
         destroyed = true;
     }
-    #endregion
-
-    #region GAMEPLAY
-
-    public void LoadedIntoGame()
-    {
-        photonView.RPC("UpdateHumanPlayerCount", RpcTarget.AllBuffered);
-    }
-    
-    [PunRPC]
-    public void UpdateHumanPlayerCount()
-    {
-        humanPlayerCount++;
-
-        // After all players are loaded in, set their networking parameters
-        if (humanPlayerCount == PhotonNetwork.PlayerList.Length)
-        {
-            SpawnHumanPlayer();
-
-            // Host will handle all AI Spawning
-            if (PhotonNetwork.IsMasterClient)
-            {
-                for (var i = 0; i < aiPlayerCount; i++)
-                {
-                    SpawnAIPlayer();
-                }
-            }
-            
-        }
-    }
-
-    public void SpawnHumanPlayer()
-    {
-        GameObject playerObj = PhotonNetwork.Instantiate("HumanPlayer", new Vector3(0,0,0), Quaternion.identity);
-        playerObj.transform.parent = GameplayManager.Instance.playersParentTransform;
-        playerObj.SetActive(true);
-        
-        HumanPlayer playerScript = playerObj.GetComponent<HumanPlayer>();
-
-        playerScript.photonView.RPC("InitializePlayerOnNetwork", RpcTarget.All, PhotonNetwork.LocalPlayer);
-    }
-
-    public void SpawnAIPlayer()
-    {
-        GameObject playerObj = PhotonNetwork.Instantiate("AIPlayer", new Vector3(0, 0, 0), Quaternion.identity);
-        playerObj.transform.parent = GameplayManager.Instance.playersParentTransform;
-        playerObj.SetActive(true);
-
-        AIPlayer playerScript = playerObj.GetComponent<AIPlayer>();
-
-        aiPlayers.Add(playerScript);
-    }
-    
-    public void InitializeHumanPlayer(HumanPlayer player, float _maxActionPoints, Vector3 _offset, string _startNodeId, string _name, int playerIndex)
-    {
-        player.photonView.RPC("InitializePlayer", RpcTarget.All, _maxActionPoints, _offset, _startNodeId, _name, playerIndex);
-    }
-
     #endregion
 }

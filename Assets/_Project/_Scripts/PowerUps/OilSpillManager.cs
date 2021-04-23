@@ -8,7 +8,7 @@ public class OilSpillManager : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("HumanPlayer") || other.CompareTag("AIPlayer"))
         {
             other.GetComponent<AbstractPlayer>().GetHit(numActionPointsToRemove);
             Destroy(gameObject);
