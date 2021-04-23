@@ -38,7 +38,7 @@ namespace Game.UI
                 for (int i = 0; i < GameplayManager.Instance.Players.Count; i++)
                 {
                     var currentPlayer = GameplayManager.Instance.Players[i];
-                    playerContainers[i].turnPointerObj.SetActive(currentPlayer.Phase == AbstractPlayer.EPlayerPhase.Main);
+                    playerContainers[i].turnPointerObj.SetActive(i == GameplayManager.Instance.currentPlayer);
                     playerContainers[i].playerName.text = currentPlayer.Name;
                     UpdatePlayerItems(currentPlayer, i);
                     UpdatePlayerCheckpoints(currentPlayer, i);

@@ -252,7 +252,6 @@ public class GameplayManager : MonoBehaviourPunCallbacks
             if (player.gameObject.CompareTag("HumanPlayer"))
             {
                 HumanPlayer humanPlayer = player.GetComponent<HumanPlayer>();
-                print(players.Count);
                 players[humanPlayer.ID - 1] = humanPlayer;
                 humanPlayer.InitializePlayer(maxActionPoints, playerDescriptors[humanPlayer.ID - 1].positionOffset, playerDescriptors[humanPlayer.ID - 1].startNode.nodeId, player.name, humanPlayer.ID);
                 index++;   
