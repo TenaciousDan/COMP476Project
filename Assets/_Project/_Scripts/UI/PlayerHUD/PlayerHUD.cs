@@ -307,7 +307,7 @@ namespace Game.UI
 
                 foreach (var hit in hits)
                 {
-                    if (hit.transform.tag.Equals("Player") && hit.transform.gameObject != player.gameObject)
+                    if ((hit.transform.tag.Equals("AIPlayer") || hit.transform.tag.Equals("HumanPlayer")) && hit.transform.gameObject != player.gameObject)
                     {
                         return hit.transform.gameObject;
                     }
