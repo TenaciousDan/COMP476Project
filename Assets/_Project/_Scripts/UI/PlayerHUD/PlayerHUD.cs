@@ -175,19 +175,23 @@ namespace Game.UI
 
                 if (node.Data.transform.position.x > startNode.transform.position.x && direction == Direction.Right)
                 {
-                    ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Right);
+                    if (GameplayManager.Instance.blockedOffNodes.Contains(mbNode) /*&& player.checkpoints <= 1*/)
+                        ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Right);
                 }
                 if (node.Data.transform.position.x < startNode.transform.position.x && direction == Direction.Left)
                 {
-                    ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Left);
+                    if (GameplayManager.Instance.blockedOffNodes.Contains(mbNode) /*&& player.checkpoints <= 1*/)
+                        ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Left);
                 }
                 if (node.Data.transform.position.z > startNode.transform.position.z && direction == Direction.Down)
                 {
-                    ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Down);
+                    if (GameplayManager.Instance.blockedOffNodes.Contains(mbNode) /*&& player.checkpoints <= 1*/)
+                        ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Down);
                 }
                 if (node.Data.transform.position.z < startNode.transform.position.z && direction == Direction.Up)
                 {
-                    ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Up);
+                    if (GameplayManager.Instance.blockedOffNodes.Contains(mbNode) /*&& player.checkpoints <= 1*/)
+                        ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Up);
                 }
             }
         }

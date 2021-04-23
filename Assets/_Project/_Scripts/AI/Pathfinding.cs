@@ -13,7 +13,7 @@ namespace Game.AI
 
         public delegate float Heuristic(Transform s, Transform e);
 
-        public List<GraphNode<GameObject>> FindPath(string startId, string goalId, Heuristic heuristic = null, bool isAdmissible = true)
+        public List<GraphNode<GameObject>> FindPath(string startId, string goalId, Heuristic heuristic = null, bool blockedOffNodesAreAllowed = false, bool isAdmissible = true)
         {
             if (mbGraph == null) return new List<GraphNode<GameObject>>();
 
@@ -72,8 +72,11 @@ namespace Game.AI
                     if (closedODict.Contains(n.Id))
                         continue;
 
+                    if (GameplayManager.Instance.blockedOffNodes.Contains(n.Data.GetComponent<MBGraphNode>()) && !blockedOffNodesAreAllowed)
+                        continue;
+
                     if (graph[n.Id].Data.GetComponentInChildren<OilSpillManager>() != null)
-                        cost += 2;
+                        cost += 2; // hard coded oil spill cost
 
                     float gNeighbor = gnDict[currentId] + cost;
                     if (!gnDict.ContainsKey(n.Id) || gNeighbor < gnDict[n.Id])

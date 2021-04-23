@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using Tenacious.Collections;
+using Tenacious.Audio;
 
 public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
 {
@@ -23,6 +24,8 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
     private float pointsDeficit = 0;
 
     public List<Checkpoint> checkpoints;
+
+    public bool gameIsOver;
 
     public int ID
     {
@@ -233,20 +236,38 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         }
     }
 
+    [PunRPC]
+    private void ChangeMusicTrack(string trackName)
+    {
+        AudioManager.Instance.PlayMusic(trackName);
+    }
+
+    private void CheckpointReached(Checkpoint cp)
+    {
+        if (cp.isGoal)
+        {
+            // This player has won the game
+            gameIsOver = true;
+            if (GameplayManager.Instance.usingNetwork)
+                photonView.RPC("ChangeMusicTrack", RpcTarget.All, "ReachedTheGoal");
+
+            transform.position = GameplayManager.Instance.goalPlatforms[0].position;
+            GameplayManager.Instance.cameraRig.target = transform;
+        }
+        
+        if (checkpoints.Contains(cp))
+            checkpoints.Remove(cp);
+
+        if (checkpoints.Count == 1 && GameplayManager.Instance.usingNetwork)
+            photonView.RPC("ChangeMusicTrack", RpcTarget.All, "VictoryIsWithinReach");
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         Checkpoint cp = other.GetComponent<Checkpoint>();
         if (cp != null)
         {
-            if (cp.isGoal)
-            {
-                // This player has won the game
-
-            }
-            else
-            {
-
-            }
+            CheckpointReached(cp);
         }
     }
 }

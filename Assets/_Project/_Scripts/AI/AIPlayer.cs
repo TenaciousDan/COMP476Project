@@ -330,7 +330,7 @@ namespace Game.AI
                     }
                 }
 
-                List<GraphNode<GameObject>> path = pathFinding.FindPath(PositionNode.nodeId, optimalCoverNode.nodeId, MovementHeuristic);
+                List<GraphNode<GameObject>> path = pathFinding.FindPath(PositionNode.nodeId, optimalCoverNode.nodeId, MovementHeuristic, checkpoints.Count <= 1);
 
                 if (path.Count > 0) path.RemoveAt(0);
                 if (path.Count == 0)
@@ -375,7 +375,7 @@ namespace Game.AI
                 // Find the closest PowerUp
                 foreach (var node in nodesWithItems)
                 {
-                    List<GraphNode<GameObject>> path = pathFinding.FindPath(PositionNode.nodeId, node.nodeId, MovementHeuristic);
+                    List<GraphNode<GameObject>> path = pathFinding.FindPath(PositionNode.nodeId, node.nodeId, MovementHeuristic, checkpoints.Count <= 1);
 
                     if (path.Count < shortestDistance)
                     {
@@ -409,7 +409,7 @@ namespace Game.AI
 
             List<GraphNode<GameObject>> path = new List<GraphNode<GameObject>>();
 
-            path = pathFinding.FindPath(PositionNode.nodeId, moveTargetNode.nodeId, MovementHeuristic);
+            path = pathFinding.FindPath(PositionNode.nodeId, moveTargetNode.nodeId, MovementHeuristic, checkpoints.Count <= 1);
             if (path.Count > 0) path.RemoveAt(0);
 
             if (path.Count == 0) return (int)BTNode.EState.Failure;
@@ -445,7 +445,7 @@ namespace Game.AI
 
             if (optimalGraphNode != null)
             {
-                List<GraphNode<GameObject>> path = pathFinding.FindPath(PositionNode.nodeId, optimalGraphNode.Id, MovementHeuristic);
+                List<GraphNode<GameObject>> path = pathFinding.FindPath(PositionNode.nodeId, optimalGraphNode.Id, MovementHeuristic, checkpoints.Count <= 1);
 
                 if (path.Count > 0) path.RemoveAt(0);
                 if (path.Count == 0)
@@ -453,7 +453,7 @@ namespace Game.AI
 
                 actionQueue.Enqueue(CRMove(path));
 
-                //print("MTBS: " + path.Count);
+                //print("MoveToBestSpot: " + path.Count);
                 //foreach (GraphNode<GameObject> gnode in path)
                 //{
                 //    print(gnode.Data.transform.localPosition);

@@ -24,6 +24,11 @@ public class GameplayManager : MonoBehaviourPunCallbacks
 
     [SerializeField] public MBGraph gridGraph;
 
+    public GameplayCameraRig cameraRig;
+    public List<Transform> goalPlatforms;
+
+    public List<MBGraphNode> blockedOffNodes;
+
     public Transform playersParentTransform;
     public List<PlayerDescriptor> playerDescriptors;
 
