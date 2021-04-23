@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,6 +35,10 @@ public class RocketManager : MonoBehaviour
         {
             collision.gameObject.GetComponent<AbstractPlayer>().GetHit(numActionPointsToRemove);
         }
-        Destroy(gameObject);
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.Destroy(gameObject);
+        }
     }
 }
