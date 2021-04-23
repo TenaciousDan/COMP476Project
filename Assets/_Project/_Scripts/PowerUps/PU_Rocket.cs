@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,12 +6,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PU_Rocket_Script", menuName = "ScriptableBase/PU_Rocket", order = 1)]
 public class PU_Rocket : Scriptable_Base
 {
-    [SerializeField]
-    private RocketManager rocketObject;
-
     public override void OnPowerUpUse(AbstractPlayer player, GameObject target)
     {
-        Debug.Log(player.name + " fires rocket at " + target.GetComponent<AbstractPlayer>().Name);
-        Instantiate(rocketObject, new Vector3(player.transform.position.x, player.transform.position.y + 4, player.transform.position.z), Quaternion.Euler(90, 0, 0)).GetComponent<RocketManager>().FireRocket(target);
+        PhotonNetwork.Instantiate("Rocket", new Vector3(player.transform.position.x, player.transform.position.y + 4, player.transform.position.z), Quaternion.Euler(90, 0, 0)).GetComponent<RocketManager>().FireRocket(target);
     }
 }

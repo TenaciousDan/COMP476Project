@@ -34,6 +34,7 @@ public class PU_Base : MonoBehaviourPunCallbacks
     {
         powerUpScript.PositionNode = positionNode;
         transform.position = new Vector3(positionNode.transform.position.x, transform.position.y, positionNode.transform.position.z);
+        transform.parent = positionNode.transform;
 
         if (powerUpScript is PU_Random && PhotonNetwork.IsMasterClient)
         {

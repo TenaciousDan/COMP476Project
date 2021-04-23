@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 5996906594586405939}
   - component: {fileID: 1746493608089389358}
   - component: {fileID: 1689584504629012867}
+  - component: {fileID: 5960385982758635871}
+  - component: {fileID: 4700650092691379511}
   m_Layer: 0
   m_Name: OilSpill
   m_TagString: Untagged
@@ -67,6 +69,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 429b3366cf89683419ef7eea489f23ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5960385982758635871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6040931490410568264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  observableSearch: 2
+  Synchronization: 3
+  OwnershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 4700650092691379511}
+  viewIdField: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &4700650092691379511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6040931490410568264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 1
+  m_UseLocal: 1
 --- !u!1001 &3348258740746192495
 PrefabInstance:
   m_ObjectHideFlags: 0

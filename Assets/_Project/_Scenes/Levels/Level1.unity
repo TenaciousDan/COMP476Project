@@ -41908,6 +41908,10 @@ PrefabInstance:
       propertyPath: checkpointName
       value: CP Goal
       objectReference: {fileID: 0}
+    - target: {fileID: 9097549743987617597, guid: b2607a26439a49c42892b13b15c7e62a, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 602ab887ed85c8b4a95e510e21e54f07, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2607a26439a49c42892b13b15c7e62a, type: 3}
 --- !u!4 &2109251785 stripped

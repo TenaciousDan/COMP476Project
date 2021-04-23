@@ -45,8 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36e7ce1dace921142b142528996e7e45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  humanPlayersInGame: 0
-  humanPlayers: []
+  aiPlayerCount: 0
   allowReinitialization: 0
   destroyOnLoad: 0
   networkPrefabPool: {fileID: 0}
@@ -87,3 +86,5 @@ MonoBehaviour:
   prefabs:
   - {fileID: 5966305015554868115, guid: 68fb856aaa301c7409568e1df9d5c71b, type: 3}
   - {fileID: 2175667321170030813, guid: 1d43910f799a0d646b26b087a495df89, type: 3}
+  - {fileID: 7245224072068226241, guid: 0221f8b6d4cf4bf4a90ec9dd2fa9b8db, type: 3}
+  - {fileID: 5960385982758635871, guid: 72a55357a992d1249b7b3b19efc78368, type: 3}
