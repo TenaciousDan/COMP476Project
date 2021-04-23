@@ -69,6 +69,8 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
     {
         cachedRoomList.Clear();
         
+        NetworkManager.Instance.aiPlayerCount = (int)PhotonNetwork.CurrentRoom.CustomProperties["aiPlayerCount"];
+
         // Change screen
         SetScreen(lobbyScreen);
 
