@@ -272,7 +272,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &84010250
 RectTransform:
   m_ObjectHideFlags: 0
@@ -618,10 +618,10 @@ RectTransform:
   m_Father: {fileID: 332905014}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 251.66669, y: -25}
-  m_SizeDelta: {x: 96.66667, y: 50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &468435074
 MonoBehaviour:
@@ -1551,10 +1551,10 @@ RectTransform:
   m_Father: {fileID: 332905014}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 48.333336, y: -25}
-  m_SizeDelta: {x: 96.66667, y: 50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1033325697
 MonoBehaviour:
@@ -2801,10 +2801,10 @@ RectTransform:
   m_Father: {fileID: 332905014}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 150, y: -25}
-  m_SizeDelta: {x: 96.66667, y: 50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1683687821
 MonoBehaviour:
@@ -2949,19 +2949,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4441299852793806253, guid: 5520d1cc8a01b0949abc00bfaf8e5da4, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4441299852793806253, guid: 5520d1cc8a01b0949abc00bfaf8e5da4, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4441299852793806253, guid: 5520d1cc8a01b0949abc00bfaf8e5da4, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4441299852793806253, guid: 5520d1cc8a01b0949abc00bfaf8e5da4, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4441299852793806253, guid: 5520d1cc8a01b0949abc00bfaf8e5da4, type: 3}
       propertyPath: m_SizeDelta.x
@@ -3001,11 +3001,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4441299852793806253, guid: 5520d1cc8a01b0949abc00bfaf8e5da4, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 323.61
+      value: -71
       objectReference: {fileID: 0}
     - target: {fileID: 4441299852793806253, guid: 5520d1cc8a01b0949abc00bfaf8e5da4, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 206.9
+      value: -18
       objectReference: {fileID: 0}
     - target: {fileID: 4441299852793806253, guid: 5520d1cc8a01b0949abc00bfaf8e5da4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3423,7 +3423,7 @@ MonoBehaviour:
   m_text: "\u200B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9b3b6d23aa9f05f43af4405965b6e008, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 8333121167516283332, guid: 9b3b6d23aa9f05f43af4405965b6e008, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3717,8 +3717,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameplayScene:
-    scenePath: Assets/_Project/Sandbox/UITest/UINetworkTest.unity
-    sceneAsset: {fileID: 102900000, guid: 0ad58e3a947f91a44acec3ddcf0f8545, type: 3}
+    scenePath: Assets/_Project/Sandbox/Level1AITest/Level1AITest.unity
+    sceneAsset: {fileID: 102900000, guid: 0bc19fe50894e0241899138bb39af1f7, type: 3}
   loginScreen: {fileID: 2081662085}
   joinOrCreateScreen: {fileID: 84010249}
   lobbyScreen: {fileID: 364252914}
@@ -4218,7 +4218,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2081662086
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4237,7 +4237,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 66, y: -31}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2092530222
@@ -4382,7 +4382,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4240007892062076077, guid: 4788a8ddaf4891b4e8edd9f862c1ed5e, type: 3}
       propertyPath: viewIdField
-      value: 1
+      value: 33
       objectReference: {fileID: 0}
     - target: {fileID: 4240007892062076078, guid: 4788a8ddaf4891b4e8edd9f862c1ed5e, type: 3}
       propertyPath: m_Name
