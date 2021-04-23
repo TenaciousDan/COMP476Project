@@ -229,7 +229,14 @@ public class GameplayManager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void InitializePlayers()
     {
+        // Set the Size of the List
+        foreach (Transform player in playersParentTransform)
+        {
+            Players.Add(null);
+        }
+        
         var index = 0;
+        var aiID = 1;
         
         // Initialize Players first since their id starts from index 0
         foreach (Transform player in playersParentTransform)
@@ -237,7 +244,8 @@ public class GameplayManager : MonoBehaviourPunCallbacks
             if (player.gameObject.CompareTag("HumanPlayer"))
             {
                 HumanPlayer humanPlayer = player.GetComponent<HumanPlayer>();
-                players.Add(humanPlayer);
+                print(players.Count);
+                players[humanPlayer.ID - 1] = humanPlayer;
                 humanPlayer.InitializePlayer(maxActionPoints, playerDescriptors[humanPlayer.ID - 1].positionOffset, playerDescriptors[humanPlayer.ID - 1].startNode.nodeId, player.name, humanPlayer.ID);
                 index++;   
             }
@@ -249,9 +257,10 @@ public class GameplayManager : MonoBehaviourPunCallbacks
             if (player.gameObject.CompareTag("AIPlayer"))
             {
                 AIPlayer aiPlayer = player.GetComponent<AIPlayer>();
-                aiPlayer.InitializePlayer(maxActionPoints, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode.nodeId, "AI " + index, index);
-                players.Add(aiPlayer);
+                aiPlayer.InitializePlayer(maxActionPoints, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode.nodeId, "AI " + aiID, index);
+                players[index] = aiPlayer;
                 index++;
+                aiID++;
             }
         }
         
