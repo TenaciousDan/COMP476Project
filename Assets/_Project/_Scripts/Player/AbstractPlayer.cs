@@ -212,7 +212,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
 
     public virtual void Move(List<GraphNode<GameObject>> path)
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (tag.Equals("HumanPlayer") || PhotonNetwork.IsMasterClient)
             StartCoroutine(CRMove(path));
     }
 
