@@ -47,6 +47,8 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
         SetScreen(joinOrCreateScreen);
         createRoomButton.interactable = true;
         joinRoomButton.interactable = true;
+
+        RefreshBtnClick();
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)

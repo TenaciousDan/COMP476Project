@@ -31,8 +31,10 @@ public class RocketManager : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.collider.tag == "Player")
+        print(collision.collider.name);
+        if(collision.collider.tag == "HumanPlayer" || collision.collider.tag == "AIPlayer")
         {
+            print("Hit player!");
             collision.gameObject.GetComponent<AbstractPlayer>().GetHit(numActionPointsToRemove);
         }
 

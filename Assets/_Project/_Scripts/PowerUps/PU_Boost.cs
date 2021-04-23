@@ -9,6 +9,9 @@ public class PU_Boost : Scriptable_Base
 
     public override void OnPowerUpUse(AbstractPlayer player, GameObject target = null)
     {
-        player.AddActionPoints(numExtraActionPoints, true);
+        if (player.photonView.IsMine)
+        {
+            player.photonView.RPC("AddActionPoints", Photon.Pun.RpcTarget.All, numExtraActionPoints, true);
+        }
     }
 }

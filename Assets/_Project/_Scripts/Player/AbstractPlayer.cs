@@ -100,10 +100,23 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
     [PunRPC]
     public void MainTurn()
     {
-        FillActionPoints();
-        RemoveActionPoints(pointsDeficit);
+        if (photonView.IsMine)
+        {
+            photonView.RPC("FillActionPoints", RpcTarget.All);
+            photonView.RPC("RemoveActionPoints", RpcTarget.All, pointsDeficit);
+            photonView.RPC("ResetPointsDeficit", RpcTarget.All);
+            photonView.RPC("DeactivateShield", RpcTarget.All);
+        }
+        //FillActionPoints();
+        //RemoveActionPoints(pointsDeficit);
+        //pointsDeficit = 0;
+        //DeactivateShield();
+    }
+
+    [PunRPC]
+    public void ResetPointsDeficit()
+    {
         pointsDeficit = 0;
-        DeactivateShield();
     }
 
     /// <summary>
@@ -155,6 +168,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         CurrentActionPoints = maxActionPoints;
     }
 
+    [PunRPC]
     public void AddActionPoints(float numActionPoints, bool exceedLimit = false)
     {
         CurrentActionPoints += numActionPoints;
@@ -162,7 +176,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         {
             CurrentActionPoints = maxActionPoints;
         }
-        print("Added action points. Player now has " + CurrentActionPoints + " action points.");
+        //print("Added action points. Player now has " + CurrentActionPoints + " action points.");
     }
 
     [PunRPC]
@@ -176,6 +190,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         //print("Removed " + numActionPoints + " action points. Player now has " + CurrentActionPoints + " action points.");
     }
 
+    [PunRPC]
     public void ActivateShield()
     {
         hasShield = true;
@@ -183,6 +198,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         //print("shield activated");
     }
 
+    [PunRPC]
     public void DeactivateShield()
     {
         hasShield = false;
@@ -194,17 +210,19 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
     {
         if (hasShield)
         {
-            hasShield = false;
+            photonView.RPC("DeactivateShield", RpcTarget.All, numActionPoints);
         }
         else
         {
-            AddPointsDeficit(numActionPoints);
+            photonView.RPC("AddPointsDeficit", RpcTarget.All, numActionPoints);
         }
     }
 
+    [PunRPC]
     public void AddPointsDeficit(float numActionPoints)
     {
         pointsDeficit += numActionPoints;
+        print(pointsDeficit);
     }
 
     public virtual void Move(List<GraphNode<GameObject>> path)
