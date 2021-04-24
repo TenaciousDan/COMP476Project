@@ -232,6 +232,7 @@ MonoBehaviour:
   shieldObject: {fileID: 3245071922284160273}
   checkpoints: []
   gameIsOver: 0
+  CurrentActionPoints: 0
   behaviorTree: {fileID: 5405298471439158274}
 --- !u!114 &6346006916840474583
 MonoBehaviour:

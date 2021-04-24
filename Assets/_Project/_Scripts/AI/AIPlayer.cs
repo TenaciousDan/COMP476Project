@@ -215,10 +215,15 @@ namespace Game.AI
         {
             //print("UseItem()");
 
-            // TODO: powerup/item class needs to expose a method to activate the effect of the powerup
-            //       it should take an AbstractPlayer as a parameter and modify that player's state accordingly
+            int missileIndex = Inventory.GetItemIndex("Rocket");
+            int oilSpillIndex = Inventory.GetItemIndex("OilSpill");
 
-            // Inventory.items[itemToUseIndex].ActivatePowerup(this);
+            if (Inventory.GetItemFromIndex(itemToUseIndex).powerUpName.Equals("Rocket"))
+                Inventory.UseItem(itemToUseIndex, playerAttackTarget.gameObject);
+            else if (Inventory.GetItemFromIndex(itemToUseIndex).powerUpName.Equals("OilSpill"))
+                Inventory.UseItem(itemToUseIndex, nodeToSpillOn.gameObject);
+            else
+                Inventory.UseItem(itemToUseIndex);
 
             return (int)BTNode.EState.Success;
         }
