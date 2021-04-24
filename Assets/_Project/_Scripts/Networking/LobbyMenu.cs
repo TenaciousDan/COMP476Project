@@ -29,6 +29,8 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
 
     private Dictionary<string, RoomInfo> cachedRoomList;
 
+    private bool isEnteringName = true;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -41,8 +43,13 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
         UpdateRoomListView();
     }
 
+    private void Update()
+    {
+        if (isEnteringName && Input.GetKeyUp(KeyCode.Return)) { LoginBtnClick(); }
+    }
+
     #region PUN CALLBACKS
-    
+
     public override void OnConnectedToMaster()
     {
         SetScreen(joinOrCreateScreen);
@@ -97,8 +104,9 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
     {
         var playerName = playerNameInputField.text;
 
-        if (!playerName.Equals(string.Empty))
+        if (!string.IsNullOrWhiteSpace(playerName))
         {
+            isEnteringName = false;
             PhotonNetwork.LocalPlayer.NickName = playerName;
             PhotonNetwork.ConnectUsingSettings();
         }
