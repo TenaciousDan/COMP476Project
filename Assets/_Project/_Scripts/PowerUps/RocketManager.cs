@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class RocketManager : MonoBehaviourPunCallbacks
 {
-    private float moveSpeed = 20;
+    [SerializeField]
+    private float moveSpeed = 40;
     private float rotationSpeed = 20;
     private float numActionPointsToRemove = 2;
 
