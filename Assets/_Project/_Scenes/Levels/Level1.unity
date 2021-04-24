@@ -20266,7 +20266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 412a70f77ee40974d84f3379f422a610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  copCarAnimators: []
+  copCarAnimator: {fileID: 935750079}
 --- !u!65 &895787916
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -41092,7 +41092,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 412a70f77ee40974d84f3379f422a610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  copCarAnimators: []
+  copCarAnimator: {fileID: 935750079}
 --- !u!65 &1608258514
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -44423,7 +44423,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 412a70f77ee40974d84f3379f422a610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  copCarAnimators: []
+  copCarAnimator: {fileID: 935750079}
 --- !u!65 &1829518273
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -50847,7 +50847,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 412a70f77ee40974d84f3379f422a610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  copCarAnimators: []
+  copCarAnimator: {fileID: 935750079}
 --- !u!54 &2117086305
 Rigidbody:
   m_ObjectHideFlags: 0
