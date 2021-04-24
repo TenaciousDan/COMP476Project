@@ -204,7 +204,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         //print("shield deactivated");
     }
 
-    public void GetHit(float numActionPoints)
+    public void GetHit(float numActionPoints, bool immediateHit = false)
     {
         if (hasShield)
         {
@@ -212,7 +212,14 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         }
         else
         {
-            photonView.RPC("AddPointsDeficit", RpcTarget.All, numActionPoints);
+            if (immediateHit)
+            {
+                RemoveActionPoints(numActionPoints);
+            }
+            else
+            {
+                photonView.RPC("AddPointsDeficit", RpcTarget.All, numActionPoints);
+            }
         }
     }
 
