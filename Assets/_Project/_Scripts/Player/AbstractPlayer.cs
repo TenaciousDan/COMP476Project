@@ -97,8 +97,6 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         // TODO: do standby phase things
         if (photonView.IsMine)
             photonView.RPC("MainTurn", RpcTarget.All);
-
-        Phase = EPlayerPhase.Main;
     }
 
     [PunRPC]
@@ -108,6 +106,8 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         RemoveActionPoints(pointsDeficit);
         pointsDeficit = 0;
         DeactivateShield();
+
+        Phase = EPlayerPhase.Main;
     }
 
     [PunRPC]
@@ -179,7 +179,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
     [PunRPC]
     public void RemoveActionPoints(float numActionPoints)
     {
-        print($"Removed {numActionPoints} for {Name}");
+        //print($"Removed {numActionPoints} for {Name}");
         CurrentActionPoints -= numActionPoints;
         if (CurrentActionPoints < 0)
         {
@@ -227,7 +227,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
     public void AddPointsDeficit(float numActionPoints)
     {
         pointsDeficit += numActionPoints;
-        print(pointsDeficit);
+        //print(pointsDeficit);
     }
 
     public virtual void Move(List<GraphNode<GameObject>> path)
@@ -292,7 +292,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
             GameplayManager.Instance.cameraRig.target = transform;
         }
 
-        print("cpoints contains cp :" + checkpoints.Contains(cp));
+        //print("cpoints contains cp :" + checkpoints.Contains(cp));
         if (checkpoints.Contains(cp))
             checkpoints.Remove(cp);
 

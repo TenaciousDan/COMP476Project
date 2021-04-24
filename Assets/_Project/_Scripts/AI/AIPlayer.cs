@@ -119,7 +119,7 @@ namespace Game.AI
 
         public int HasItem()
         {
-            //print("HasItem()");
+            print("HasItem()");
 
             if (Inventory.items.Count > 0)
                 return (int)BTNode.EState.Success;
@@ -129,7 +129,7 @@ namespace Game.AI
 
         public int ShouldUseItem()
         {
-            //print("ShouldUseItem()");
+            print("ShouldUseItem()");
 
             // TODO: foreach item in inventory,
             //       if any item would give the player any value
@@ -213,7 +213,7 @@ namespace Game.AI
 
         public int UseItem()
         {
-            //print("UseItem()");
+            print("UseItem()");
 
             int missileIndex = Inventory.GetItemIndex("Rocket");
             int oilSpillIndex = Inventory.GetItemIndex("OilSpill");
@@ -230,7 +230,7 @@ namespace Game.AI
 
         public int ShouldTakeCover()
         {
-            //print("ShouldTakeCover()");
+            print("ShouldTakeCover()");
 
             // foreach player in the game, check if they have ranged/attack items
             //       if they do, then get the item with the longest range and check if they can reach this player
@@ -282,7 +282,7 @@ namespace Game.AI
 
         public int MoveToCover()
         {
-            //print("MoveToCover()");
+            print("MoveToCover()");
 
             // foreach player in the playerAttackThreats list, check if they have ranged/attack items
             // if they do, then foreach spot that the player can reach choose the one that is safest
@@ -360,21 +360,22 @@ namespace Game.AI
         
         public int IsItemInRange()
         {
-            //print("IsItemInRange()");
+            print("IsItemInRange() :" + reachableNodeIds.Count);
 
             var nodesWithItems = new List<MBGraphNode>();
-            
+
             // Check all reachable nodes to see if it contains a PowerUp
             foreach (var nodeID in reachableNodeIds)
             {
                 var node = GameplayManager.Instance.gridGraph.graph[nodeID];
-                var hitColliders = Physics.OverlapSphere(node.Data.transform.position, 2.5f);
 
-                // Check all colliders and see if one of them is a PowerUp
-                foreach (var hitCollider in hitColliders)
+                // Check if node has an ItemBox on it
+                for (int i = 0; i < node.Data.transform.childCount; ++i)
                 {
-                    if (hitCollider.gameObject.CompareTag("PowerUp"))
+                    Transform child = node.Data.transform.GetChild(i);
+                    if (child.gameObject.CompareTag("PowerUp"))
                     {
+                        print("IsItemInRange() : found powerup");
                         nodesWithItems.Add(GameplayManager.Instance.gridGraph.graph[nodeID].Data.GetComponent<MBGraphNode>());
                     }
                 }
@@ -430,7 +431,7 @@ namespace Game.AI
 
         public int MoveToItem()
         {
-            //print("MoveToItem()");
+            print("MoveToItem()");
 
             List<GraphNode<GameObject>> path = new List<GraphNode<GameObject>>();
 
@@ -446,7 +447,7 @@ namespace Game.AI
 
         public int MoveToBestSpot()
         {
-            //print("MoveToBestSpot()");
+            print("MoveToBestSpot()");
             if (CurrentActionPoints <= 0) return (int)BTNode.EState.Failure;
             
             Checkpoint checkpointTarget = GetClosestCheckpoint();
@@ -492,7 +493,7 @@ namespace Game.AI
 
         public int EndTurn()
         {
-            // print("EndTurn()");
+            print("EndTurn()");
             Phase = EPlayerPhase.End;
 
             return (int)BTNode.EState.Success;
