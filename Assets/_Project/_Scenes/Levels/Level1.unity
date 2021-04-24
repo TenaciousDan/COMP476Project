@@ -2188,6 +2188,11 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &100754511 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 100754511, guid: c83b942c597df004d89195e07ec417a7, type: 3}
+  m_PrefabInstance: {fileID: 1273090660}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &104376206
 GameObject:
   m_ObjectHideFlags: 0
@@ -20561,6 +20566,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 412a70f77ee40974d84f3379f422a610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  copCarAnimators: []
 --- !u!65 &895787916
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -24724,6 +24730,11 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &1072032391 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1072032391, guid: c83b942c597df004d89195e07ec417a7, type: 3}
+  m_PrefabInstance: {fileID: 1273090660}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1075895884
 GameObject:
   m_ObjectHideFlags: 0
@@ -35534,6 +35545,11 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &1289861187 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1289861187, guid: c83b942c597df004d89195e07ec417a7, type: 3}
+  m_PrefabInstance: {fileID: 1273090660}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1292055826
 GameObject:
   m_ObjectHideFlags: 0
@@ -41404,6 +41420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 412a70f77ee40974d84f3379f422a610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  copCarAnimators: []
 --- !u!65 &1608258514
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -43332,11 +43349,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!4 &1717324115 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 314561063872007220, guid: 10240a42271594d4e8a5c8d2d3e370a6, type: 3}
-  m_PrefabInstance: {fileID: 1629172056}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1719846404
 GameObject:
   m_ObjectHideFlags: 0
@@ -44823,6 +44835,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 412a70f77ee40974d84f3379f422a610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  copCarAnimators: []
 --- !u!65 &1829518273
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -49470,11 +49483,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!4 &2027202836 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 314561063290099695, guid: 10240a42271594d4e8a5c8d2d3e370a6, type: 3}
-  m_PrefabInstance: {fileID: 1629172056}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2031571655
 GameObject:
   m_ObjectHideFlags: 0
@@ -50696,11 +50704,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!4 &2078654720 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 314561063160865782, guid: 10240a42271594d4e8a5c8d2d3e370a6, type: 3}
-  m_PrefabInstance: {fileID: 1629172056}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2080658814
 GameObject:
   m_ObjectHideFlags: 0
@@ -51451,6 +51454,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 412a70f77ee40974d84f3379f422a610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  copCarAnimators: []
 --- !u!1 &2120492586
 GameObject:
   m_ObjectHideFlags: 0
@@ -52308,15 +52312,15 @@ PrefabInstance:
     - target: {fileID: 48649055827547803, guid: ba760678b09b1b44fba657e1c5c86c1c, type: 3}
       propertyPath: goalPlatforms.Array.data[0]
       value: 
-      objectReference: {fileID: 2027202836}
+      objectReference: {fileID: 100754511}
     - target: {fileID: 48649055827547803, guid: ba760678b09b1b44fba657e1c5c86c1c, type: 3}
       propertyPath: goalPlatforms.Array.data[1]
       value: 
-      objectReference: {fileID: 1717324115}
+      objectReference: {fileID: 1289861187}
     - target: {fileID: 48649055827547803, guid: ba760678b09b1b44fba657e1c5c86c1c, type: 3}
       propertyPath: goalPlatforms.Array.data[2]
       value: 
-      objectReference: {fileID: 2078654720}
+      objectReference: {fileID: 1072032391}
     - target: {fileID: 48649055827547803, guid: ba760678b09b1b44fba657e1c5c86c1c, type: 3}
       propertyPath: blockedOffNodes.Array.data[0]
       value: 

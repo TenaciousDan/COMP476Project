@@ -296,12 +296,13 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
                 photonView.RPC("ChangeMusicTrack", RpcTarget.All, "ReachedTheGoal");
 
             transform.position = GameplayManager.Instance.goalPlatforms[0].position;
-            GameplayManager.Instance.cameraRig.target = transform;
         }
 
         //print("cpoints contains cp :" + checkpoints.Contains(cp));
         if (checkpoints.Contains(cp))
             checkpoints.Remove(cp);
+
+        cp.gameObject.SetActive(false);
 
         if (checkpoints.Count == 1 && GameplayManager.Instance.usingNetwork)
             photonView.RPC("ChangeMusicTrack", RpcTarget.All, "VictoryIsWithinReach");
