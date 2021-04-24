@@ -112,4 +112,9 @@ public class GameplayCameraRig : MonoBehaviour
             newZoom += zoom;
         }
     }
+
+    public void SetPosition(Vector3 position)
+    {
+        newPosition = position;
+    }
 }
