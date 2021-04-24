@@ -30,6 +30,19 @@ public class PU_Base : MonoBehaviourPunCallbacks
         randomScript.randomIndex = index;
     }
 
+    private void Awake()
+    {
+        RaycastHit hit = new RaycastHit();
+        if(Physics.SphereCast(transform.position, 3, Vector3.up, out hit))
+        {
+            print(hit.collider.tag);
+            if(hit.collider.tag == "Node")
+            {
+                print("node hit");
+            }
+        }
+    }
+
     private void Start()
     {
         powerUpScript.PositionNode = positionNode;
