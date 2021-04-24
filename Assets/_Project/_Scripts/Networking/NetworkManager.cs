@@ -118,9 +118,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void ChangeScene(string sceneName)
     {
-        SceneLoader.Instance.LoadScene(sceneName, SceneLoader.FADE_TRANSITION);
+        //SceneLoader.Instance.LoadScene(sceneName, SceneLoader.FADE_TRANSITION);
         // uncomment if the above line causes problems
-        //PhotonNetwork.LoadLevel(sceneName);
+        PhotonNetwork.LoadLevel(sceneName);
     }
 
     #region SINGLETON
