@@ -86,7 +86,10 @@ namespace Game.UI
                 }
             }
 
-            ToggleBtns(!GameplayManager.Instance.gameIsOver);
+            if (GameplayManager.Instance.gameIsOver)
+            {
+                ToggleBtns(false);
+            }
         }
 
         private void ShowCheckpointMarkers()
