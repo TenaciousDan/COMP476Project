@@ -17,7 +17,7 @@ public class RocketManager : MonoBehaviour
     private IEnumerator MoveRocket(GameObject target)
     {
         Vector3 targetPosition = target.transform.position;
-        targetPosition = new Vector3(targetPosition.x, targetPosition.y, targetPosition.z);
+        targetPosition = new Vector3(targetPosition.x, targetPosition.y + 1, targetPosition.z);
 
         Vector3 targetDirection = (target.transform.position) - transform.position;
         Quaternion toRotation = Quaternion.LookRotation(targetDirection);
@@ -31,10 +31,8 @@ public class RocketManager : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        print(collision.collider.name);
         if(collision.collider.tag == "HumanPlayer" || collision.collider.tag == "AIPlayer")
         {
-            print("Hit player!");
             collision.gameObject.GetComponent<AbstractPlayer>().GetHit(numActionPointsToRemove);
         }
 
