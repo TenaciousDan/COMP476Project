@@ -9,6 +9,7 @@ using Tenacious.Collections;
 using Game.UI;
 using Tenacious.Audio;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class GameplayManager : MonoBehaviourPunCallbacks
 {
@@ -197,7 +198,7 @@ public class GameplayManager : MonoBehaviourPunCallbacks
         // MAIN GAMEPLAY LOOP
         // ===================
         
-        if (finishedPregameSetup)
+        if (!gameIsOver && finishedPregameSetup)
         {
             if (currentPlayer < Players.Count)
             {
@@ -225,10 +226,26 @@ public class GameplayManager : MonoBehaviourPunCallbacks
                 }
             }
         }
+        
+        if (gameIsOver)
+        {
+            photonView.RPC("EndGame", RpcTarget.All);
+        }
 
         // **Emergency failsafe** Please avoid pressing this key during the demo as it may break things (this is only if the AI freezes up for some reason)
         if (PhotonNetwork.IsMasterClient && Input.GetKeyDown(KeyCode.F12))
             photonView.RPC("UpdateCurrentPlayer", RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void EndGame()
+    {
+        var finalPositions = players.OrderBy(x => x.checkpoints.Count);
+
+        for (int i = 0; i < 3; i++)
+        {
+            finalPositions.ElementAt(i).transform.position = goalPlatforms[i].position;
+        }
     }
 
     [PunRPC]
