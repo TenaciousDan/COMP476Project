@@ -1,6 +1,7 @@
 using UnityEngine;
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Game.AI;
 using Photon.Pun;
@@ -252,9 +253,12 @@ public class GameplayManager : MonoBehaviourPunCallbacks
             if (player.gameObject.CompareTag("HumanPlayer"))
             {
                 HumanPlayer humanPlayer = player.GetComponent<HumanPlayer>();
-                players[humanPlayer.ID - 1] = humanPlayer;
+                
+                var id = (int)NetworkManager.Instance.spawnIndices[player.name];
+
+                players[id] = humanPlayer;
                 humanPlayer.GetComponent<MeshFilter>().mesh = humanPlayer.VehicleSkins[index];
-                humanPlayer.InitializePlayer(maxActionPoints, playerDescriptors[humanPlayer.ID - 1].positionOffset, playerDescriptors[humanPlayer.ID - 1].startNode.nodeId, player.name, humanPlayer.ID);
+                humanPlayer.InitializePlayer(maxActionPoints, playerDescriptors[id].positionOffset, playerDescriptors[id].startNode.nodeId, player.name, id + 1);
                 index++;   
             }
         }

@@ -29,7 +29,7 @@ public class OilSpillManager : MonoBehaviourPunCallbacks
         {
             other.GetComponent<AbstractPlayer>().GetHit(numActionPointsToRemove, true);
             
-            if (PhotonNetwork.IsMasterClient)
+            if (photonView.IsMine)
             {
                 PhotonNetwork.Destroy(gameObject);
             }

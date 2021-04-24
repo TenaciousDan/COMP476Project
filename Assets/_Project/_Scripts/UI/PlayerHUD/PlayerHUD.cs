@@ -7,6 +7,7 @@ using Tenacious.Collections;
 using System.Linq;
 using System;
 using Photon.Pun;
+using UnityEngine.EventSystems;
 
 namespace Game.UI
 {
@@ -48,6 +49,20 @@ namespace Game.UI
             // Can only move if the button is clicked.
             if (moveBtnClicked)
             {
+                var pointerEventData = new PointerEventData(EventSystem.current) { position = Input.mousePosition };
+                var eventRaycastResult = new List<RaycastResult>();
+                EventSystem.current.RaycastAll(pointerEventData, eventRaycastResult);
+                //RaycastResult result = null;
+
+                foreach (var result in eventRaycastResult)
+                {
+                    if (result.gameObject.name.Equals("Button"))
+                    {
+                        //MoveBtnClick();
+                        return;
+                    }
+                }
+
                 ClickMove();
             }
             else if (rocketBtnClicked)
@@ -184,10 +199,14 @@ namespace Game.UI
                 RaycastHit[] hits;
                 hits = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition));
 
+                
+
                 foreach (var hit in hits)
                 {
                     if (hit.transform.name.Equals("GridSquare(Clone)"))
                     {
+                        
+
                         var node = hit.transform.parent.GetComponent<MBGraphNode>();
 
                         if(node != player.PositionNode)
@@ -353,6 +372,11 @@ namespace Game.UI
 
         public void EndTurnBtnClick()
         {
+            if (moveBtnClicked)
+            {
+                MoveBtnClick();
+            }
+
             GameplayManager.Instance.photonView.RPC("UpdateCurrentPlayer", RpcTarget.All);
             player.Phase = AbstractPlayer.EPlayerPhase.End; // GameplayManager ends turn instead?
         }
