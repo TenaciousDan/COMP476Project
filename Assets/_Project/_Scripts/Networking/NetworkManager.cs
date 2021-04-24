@@ -57,8 +57,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        networkPrefabPool = GetComponent<NetworkPrefabPool>();
-
         if(instance == null)
         {
             if (destroyed && !allowReinitialization)

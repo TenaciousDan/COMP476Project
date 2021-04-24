@@ -155,7 +155,7 @@ namespace Game.AI
                         // we are colliding with ourself
                         if (hit.transform == transform) continue;
 
-                        if (hit.collider.tag.Equals("aHumanPlayer") || hit.collider.tag.Equals("aAIPlayer"))
+                        if (hit.collider.tag.Equals("HumanPlayer") || hit.collider.tag.Equals("AIPlayer"))
                         {
                             AbstractPlayer potentialTarget = hit.collider.GetComponent<AbstractPlayer>();
 
