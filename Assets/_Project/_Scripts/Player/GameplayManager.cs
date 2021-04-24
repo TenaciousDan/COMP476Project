@@ -253,6 +253,7 @@ public class GameplayManager : MonoBehaviourPunCallbacks
             {
                 HumanPlayer humanPlayer = player.GetComponent<HumanPlayer>();
                 players[humanPlayer.ID - 1] = humanPlayer;
+                humanPlayer.GetComponent<MeshFilter>().mesh = humanPlayer.VehicleSkins[index];
                 humanPlayer.InitializePlayer(maxActionPoints, playerDescriptors[humanPlayer.ID - 1].positionOffset, playerDescriptors[humanPlayer.ID - 1].startNode.nodeId, player.name, humanPlayer.ID);
                 index++;   
             }
@@ -264,6 +265,7 @@ public class GameplayManager : MonoBehaviourPunCallbacks
             if (player.gameObject.CompareTag("AIPlayer"))
             {
                 AIPlayer aiPlayer = player.GetComponent<AIPlayer>();
+                aiPlayer.GetComponent<MeshFilter>().mesh = aiPlayer.VehicleSkins[index];
                 aiPlayer.InitializePlayer(maxActionPoints, playerDescriptors[index].positionOffset, playerDescriptors[index].startNode.nodeId, "AI " + aiID, index);
                 players[index] = aiPlayer;
                 index++;
