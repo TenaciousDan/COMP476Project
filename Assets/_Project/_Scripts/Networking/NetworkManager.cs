@@ -14,6 +14,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     // Room Properties
     public const int MaxRoomSize = 4;
     public int aiPlayerCount = 0;
+
+    public Hashtable spawnIndices;
     
     private static NetworkManager instance;
     private static bool reinitializationPermitted = false;
