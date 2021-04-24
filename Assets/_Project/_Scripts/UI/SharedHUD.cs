@@ -70,6 +70,11 @@ namespace Game.UI
                 playerContainers[i].playerContainer.SetActive(true);
             }
         }
+
+        public void NameBtnClick(int playerIndex)
+        {
+            GameplayManager.Instance.cameraRig.SetPosition(GameplayManager.Instance.players[playerIndex].transform.position);
+        }
     }
 
     /// <summary>
