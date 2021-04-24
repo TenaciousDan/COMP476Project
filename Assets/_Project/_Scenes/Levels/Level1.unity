@@ -20533,6 +20533,7 @@ GameObject:
   - component: {fileID: 895787914}
   - component: {fileID: 895787916}
   - component: {fileID: 895787915}
+  - component: {fileID: 895787917}
   m_Layer: 0
   m_Name: PoliceBlockade5
   m_TagString: Untagged
@@ -20580,6 +20581,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 10, y: 1, z: 25}
   m_Center: {x: -1.5, y: 0, z: 0}
+--- !u!54 &895787917
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 895787913}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &896384453
 GameObject:
   m_ObjectHideFlags: 0
@@ -21718,6 +21735,75 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &935750077
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 935750078}
+  - component: {fileID: 935750079}
+  - component: {fileID: 935750080}
+  m_Layer: 0
+  m_Name: AnimationMaster
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &935750078
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 935750077}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 5888126087149684857}
+  - {fileID: 5888126086957249858}
+  - {fileID: 5888126086704100943}
+  - {fileID: 5888126087140885106}
+  - {fileID: 5888126087936521156}
+  - {fileID: 5888126087592516204}
+  m_Father: {fileID: 5585295616591993010}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &935750079
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 935750077}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 283809604c0b2c84aaf54f5d04adc8d0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &935750080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 935750077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7bc163772075194594ba6886cdd23a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &938413592
 GameObject:
   m_ObjectHideFlags: 0
@@ -22584,56 +22670,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &968485689
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 968485691}
-  - component: {fileID: 968485690}
-  m_Layer: 0
-  m_Name: AnimationManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &968485690
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 968485689}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7bc163772075194594ba6886cdd23a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CopCars:
-  - {fileID: 1331428343}
-  - {fileID: 5890583713412542145}
-  - {fileID: 5890583713164471758}
-  - {fileID: 5890583711452600817}
-  - {fileID: 5890583712248195143}
-  - {fileID: 5890583711904317935}
---- !u!4 &968485691
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 968485689}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &971130668
 GameObject:
   m_ObjectHideFlags: 0
@@ -36376,25 +36412,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!95 &1331428343
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5890583711458481147}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 283809604c0b2c84aaf54f5d04adc8d0, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1333643419
 GameObject:
   m_ObjectHideFlags: 0
@@ -41387,6 +41404,7 @@ GameObject:
   - component: {fileID: 1608258512}
   - component: {fileID: 1608258514}
   - component: {fileID: 1608258513}
+  - component: {fileID: 1608258515}
   m_Layer: 0
   m_Name: PoliceBlockade6
   m_TagString: Untagged
@@ -41434,6 +41452,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 25, y: 1, z: 10}
   m_Center: {x: -1.5, y: 0, z: 0}
+--- !u!54 &1608258515
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608258511}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &1611097174
 GameObject:
   m_ObjectHideFlags: 0
@@ -44802,6 +44836,7 @@ GameObject:
   - component: {fileID: 1829518271}
   - component: {fileID: 1829518273}
   - component: {fileID: 1829518272}
+  - component: {fileID: 1829518274}
   m_Layer: 0
   m_Name: PoliceBlockade34
   m_TagString: Untagged
@@ -44849,6 +44884,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 25, y: 1, z: 25}
   m_Center: {x: -1.5, y: 0, z: 0}
+--- !u!54 &1829518274
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1829518270}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &1831670866
 GameObject:
   m_ObjectHideFlags: 0
@@ -51408,6 +51459,7 @@ GameObject:
   - component: {fileID: 2117086302}
   - component: {fileID: 2117086303}
   - component: {fileID: 2117086304}
+  - component: {fileID: 2117086305}
   m_Layer: 0
   m_Name: PoliceBlockade12
   m_TagString: Untagged
@@ -51455,6 +51507,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   copCarAnimators: []
+--- !u!54 &2117086305
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2117086301}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &2120492586
 GameObject:
   m_ObjectHideFlags: 0
@@ -52474,12 +52542,7 @@ Transform:
   - {fileID: 1829518271}
   - {fileID: 895787914}
   - {fileID: 1608258512}
-  - {fileID: 5888126087149684857}
-  - {fileID: 5888126086957249858}
-  - {fileID: 5888126086704100943}
-  - {fileID: 5888126087140885106}
-  - {fileID: 5888126087936521156}
-  - {fileID: 5888126087592516204}
+  - {fileID: 935750078}
   m_Father: {fileID: 963602782}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -52758,15 +52821,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5890583713164471757}
-  m_LocalRotation: {x: 0, y: 0.0012304425, z: 0, w: 0.9999993}
-  m_LocalPosition: {x: 95.9, y: 11.8, z: -65.3}
+  m_LocalRotation: {x: -0, y: 0.20414919, z: -0, w: 0.97893983}
+  m_LocalPosition: {x: 95.9, y: 0, z: -63.3}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 5887911469820442145}
   - {fileID: 5884237890214422767}
-  m_Father: {fileID: 5585295616591993010}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0.141, z: 0}
+  m_Father: {fileID: 935750078}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 23.559, z: 0}
 --- !u!4 &5888126086957249858
 Transform:
   m_ObjectHideFlags: 0
@@ -52780,8 +52843,8 @@ Transform:
   m_Children:
   - {fileID: 5887911470043313452}
   - {fileID: 5884237890537827298}
-  m_Father: {fileID: 5585295616591993010}
-  m_RootOrder: 5
+  m_Father: {fileID: 935750078}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: -124.4, z: 0}
 --- !u!4 &5888126087140885106
 Transform:
@@ -52790,15 +52853,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5890583711452600816}
-  m_LocalRotation: {x: 0, y: -0.015410728, z: 0, w: 0.99988127}
-  m_LocalPosition: {x: 104.7, y: 8.41, z: -70}
+  m_LocalRotation: {x: -0, y: -0.18686488, z: -0, w: 0.98238564}
+  m_LocalPosition: {x: 104.7, y: 0, z: -65.7}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 5887911469316784668}
   - {fileID: 5884237888569531602}
-  m_Father: {fileID: 5585295616591993010}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: -1.766, z: 0}
+  m_Father: {fileID: 935750078}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: -21.54, z: 0}
 --- !u!4 &5888126087149684857
 Transform:
   m_ObjectHideFlags: 0
@@ -52812,8 +52875,8 @@ Transform:
   m_Children:
   - {fileID: 5887911469297272855}
   - {fileID: 5884237888600544985}
-  m_Father: {fileID: 5585295616591993010}
-  m_RootOrder: 4
+  m_Father: {fileID: 935750078}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -60.2, z: 0}
 --- !u!4 &5888126087592516204
 Transform:
@@ -52822,14 +52885,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5890583711904317934}
-  m_LocalRotation: {x: 0, y: -0.24276856, z: 0, w: 0.97008425}
+  m_LocalRotation: {x: -0, y: -0.24276856, z: -0, w: 0.97008425}
   m_LocalPosition: {x: 65.1, y: 0, z: -162.2}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 5887911468661512706}
   - {fileID: 5884237889222673612}
-  m_Father: {fileID: 5585295616591993010}
-  m_RootOrder: 9
+  m_Father: {fileID: 935750078}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: -28.1, z: 0}
 --- !u!4 &5888126087936521156
 Transform:
@@ -52838,15 +52901,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5890583712248195142}
-  m_LocalRotation: {x: 0, y: -0.010384519, z: 0, w: 0.9999461}
-  m_LocalPosition: {x: 164.7, y: 13.2, z: -66}
+  m_LocalRotation: {x: -0, y: -0.24371415, z: -0, w: 0.96984714}
+  m_LocalPosition: {x: 164.7, y: 0, z: -66}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 5887911469039203242}
   - {fileID: 5884237889381870948}
-  m_Father: {fileID: 5585295616591993010}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: -1.19, z: 0}
+  m_Father: {fileID: 935750078}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: -28.212, z: 0}
 --- !u!1 &5889592667493503758
 GameObject:
   m_ObjectHideFlags: 0
@@ -53075,7 +53138,6 @@ GameObject:
   - component: {fileID: 5894318481601612368}
   - component: {fileID: 5902785526875983060}
   - component: {fileID: 5862876151569217286}
-  - component: {fileID: 5890583711452600817}
   m_Layer: 0
   m_Name: CopCar4
   m_TagString: Untagged
@@ -53083,25 +53145,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!95 &5890583711452600817
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5890583711452600816}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c7f154b372ac53f4ebda972eba7f8ac2, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &5890583711458481147
 GameObject:
   m_ObjectHideFlags: 0
@@ -53114,7 +53157,6 @@ GameObject:
   - component: {fileID: 5894318481605165147}
   - component: {fileID: 5902785526883698399}
   - component: {fileID: 5862876151589813517}
-  - component: {fileID: 1331428343}
   m_Layer: 0
   m_Name: CopCar1
   m_TagString: Untagged
@@ -53134,7 +53176,6 @@ GameObject:
   - component: {fileID: 5894318480982118990}
   - component: {fileID: 5902785527531525322}
   - component: {fileID: 5862876152023199512}
-  - component: {fileID: 5890583711904317935}
   m_Layer: 0
   m_Name: CopCar6
   m_TagString: Untagged
@@ -53142,25 +53183,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!95 &5890583711904317935
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5890583711904317934}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 530016e2a6d09614d839ce54de175ca4, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &5890583712248195142
 GameObject:
   m_ObjectHideFlags: 0
@@ -53173,7 +53195,6 @@ GameObject:
   - component: {fileID: 5894318480789257190}
   - component: {fileID: 5902785527137336674}
   - component: {fileID: 5862876152383702704}
-  - component: {fileID: 5890583712248195143}
   m_Layer: 0
   m_Name: CopCar5
   m_TagString: Untagged
@@ -53181,25 +53202,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!95 &5890583712248195143
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5890583712248195142}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 46cde2400815f7e4ab63b3cc4a86a29d, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &5890583713164471757
 GameObject:
   m_ObjectHideFlags: 0
@@ -53212,7 +53214,6 @@ GameObject:
   - component: {fileID: 5894318480092135021}
   - component: {fileID: 5902785528520620265}
   - component: {fileID: 5862876153281200955}
-  - component: {fileID: 5890583713164471758}
   m_Layer: 0
   m_Name: CopCar3
   m_TagString: Untagged
@@ -53220,25 +53221,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!95 &5890583713164471758
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5890583713164471757}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ddc80c26849757b41a373e93e13e08be, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &5890583713412542144
 GameObject:
   m_ObjectHideFlags: 0
@@ -53251,7 +53233,6 @@ GameObject:
   - component: {fileID: 5894318479801072992}
   - component: {fileID: 5902785528300895204}
   - component: {fileID: 5862876153527009334}
-  - component: {fileID: 5890583713412542145}
   m_Layer: 0
   m_Name: CopCar2
   m_TagString: Untagged
@@ -53259,25 +53240,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!95 &5890583713412542145
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5890583713412542144}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: df04e043d423e7b4d95501664b672fb3, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!33 &5894318479801072992
 MeshFilter:
   m_ObjectHideFlags: 0
