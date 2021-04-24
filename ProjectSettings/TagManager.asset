@@ -7,6 +7,9 @@ TagManager:
   - Ground
   - PowerUp
   - GridSquare
+  - HumanPlayer
+  - AIPlayer
+  - Node
   layers:
   - Default
   - TransparentFX

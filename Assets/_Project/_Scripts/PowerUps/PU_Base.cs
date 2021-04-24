@@ -9,9 +9,6 @@ public class PU_Base : MonoBehaviourPunCallbacks
 {
     public Scriptable_Base powerUpScript;
 
-    [SerializeField]
-    private MBGraphNode positionNode;
-
     //private void Awake()
     //{
     //    if (powerUpScript is PU_Random && PhotonNetwork.IsMasterClient)
@@ -29,12 +26,23 @@ public class PU_Base : MonoBehaviourPunCallbacks
         randomScript.randomIndex = index;
     }
 
+    private void Awake()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1.5f);
+        foreach (var hitCollider in hitColliders)
+        {
+            if(hitCollider.tag == "Node")
+            {
+                MBGraphNode positionNode = hitCollider.gameObject.GetComponent<MBGraphNode>();
+                powerUpScript.PositionNode = positionNode;
+                transform.position = new Vector3(positionNode.transform.position.x, transform.position.y, positionNode.transform.position.z);
+                transform.parent = positionNode.transform;
+            }
+        }
+    }
+
     private void Start()
     {
-        powerUpScript.PositionNode = positionNode;
-        transform.position = new Vector3(positionNode.transform.position.x, transform.position.y, positionNode.transform.position.z);
-        transform.parent = positionNode.transform;
-
         if (powerUpScript is PU_Random && PhotonNetwork.IsMasterClient)
         {
             var randomScript = (PU_Random)powerUpScript;
