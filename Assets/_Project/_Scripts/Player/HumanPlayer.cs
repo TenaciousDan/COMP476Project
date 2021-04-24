@@ -52,7 +52,7 @@ public class HumanPlayer : AbstractPlayer
     {
         photonPlayer = player;
         ID = player.ActorNumber;
-        gameObject.name = "P" + ID;
+        gameObject.name = player.NickName;
 
         // Only track local physics
         if (!photonView.IsMine)
