@@ -73,6 +73,7 @@ namespace Game.UI
 
         public void NameBtnClick(int playerIndex)
         {
+            GameplayManager.Instance.cameraRig.SetPosition(GameplayManager.Instance.players[playerIndex].transform.position);
         }
     }
 
