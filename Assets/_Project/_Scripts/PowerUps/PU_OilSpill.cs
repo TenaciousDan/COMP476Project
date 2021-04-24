@@ -8,8 +8,10 @@ public class PU_OilSpill : Scriptable_Base
 {
     public override void OnPowerUpUse(AbstractPlayer player, GameObject target = null)
     {
+        player.State = AbstractPlayer.EPlayerState.Busy;
         OilSpillManager oilSpill = PhotonNetwork.Instantiate("OilSpill", new Vector3(target.transform.position.x, 0.1f, target.transform.position.z), Quaternion.identity).GetComponent<OilSpillManager>();
         oilSpill.parent = target.GetComponent<Tenacious.Collections.MBGraphNode>().nodeId;
         oilSpill.parentSet = true;
+        player.State = AbstractPlayer.EPlayerState.Waiting;
     }
 }

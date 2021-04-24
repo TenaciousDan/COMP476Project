@@ -9,7 +9,9 @@ public class PU_Shield : Scriptable_Base
     {
         if (player.photonView.IsMine)
         {
+            player.State = AbstractPlayer.EPlayerState.Busy;
             player.photonView.RPC("ActivateShield", Photon.Pun.RpcTarget.All);
+            player.State = AbstractPlayer.EPlayerState.Waiting;
         }
     }
 }
