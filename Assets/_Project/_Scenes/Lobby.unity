@@ -4196,8 +4196,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameplayScene:
-    scenePath: 
-    sceneAsset: {fileID: 0}
+    scenePath: Assets/_Project/_Scenes/Levels/Level1.unity
+    sceneAsset: {fileID: 102900000, guid: d2a4a1f5b23441746ae4908d38b3cd3b, type: 3}
   loginScreen: {fileID: 2081662085}
   joinOrCreateScreen: {fileID: 84010249}
   lobbyScreen: {fileID: 364252914}
