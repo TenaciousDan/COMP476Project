@@ -153,7 +153,6 @@ MonoBehaviour:
   - {fileID: 4300000, guid: 5415c097506e8da42886699d81a1bd71, type: 3}
   - {fileID: 4300000, guid: b261b046fd1e0a544acda40a7304add5, type: 3}
   checkpoints: []
-  gameIsOver: 0
   CurrentActionPoints: 0
   hudParent: {fileID: 3226824879726454784, guid: 3a10080c8917feb4e9c57a59384b627a, type: 3}
   hud: {fileID: 450685282, guid: dbd8db4bcbd496d4e89f5cf8567c51bb, type: 3}
