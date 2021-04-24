@@ -253,6 +253,8 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
                 Vector3 targetDirection = (node.Data.transform.position + PositionOffset) - transform.position;
                 while (transform.position != newWorldPosition)
                 {
+                    if (GameplayManager.Instance.gameIsOver) break;
+
                     transform.position = Vector3.MoveTowards(transform.position, newWorldPosition, moveSpeed * Time.deltaTime);
 
                     Quaternion newRotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(targetDirection), rotationSpeed * Time.deltaTime);
@@ -283,6 +285,8 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         {
             // This player has won the game
             GameplayManager.Instance.gameIsOver = true;
+            GameplayManager.Instance.photonView.RPC("SetGameOver", RpcTarget.All, true);
+
             if (GameplayManager.Instance.usingNetwork)
                 photonView.RPC("ChangeMusicTrack", RpcTarget.All, "ReachedTheGoal");
 

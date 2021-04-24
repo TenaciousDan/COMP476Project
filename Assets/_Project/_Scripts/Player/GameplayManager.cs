@@ -300,6 +300,12 @@ public class GameplayManager : MonoBehaviourPunCallbacks
         currentPlayer = 0;
     }
 
+    [PunRPC]
+    public void SetGameOver(bool isOver)
+    {
+        gameIsOver = isOver;
+    }
+
     #region SINGLETON
     private static GameplayManager CreateInstance(GameObject game_object)
     {
