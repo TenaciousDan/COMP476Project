@@ -284,6 +284,12 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         AudioManager.Instance.PlayMusic(trackName);
     }
 
+    [PunRPC]
+    public void PlaySoundTrack(string trackName)
+    {
+        AudioManager.Instance.PlaySound(trackName);
+    }
+
     private void CheckpointReached(Checkpoint cp)
     {
         if (cp.isGoal)
@@ -298,15 +304,17 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
             transform.position = GameplayManager.Instance.goalPlatforms[0].position;
         }
 
-        //print("cpoints contains cp :" + checkpoints.Contains(cp));
         if (checkpoints.Contains(cp))
         {
             checkpoints.Remove(cp);
-            cp.transform.GetChild(0).gameObject.SetActive(false);
-            cp.transform.GetChild(1).gameObject.SetActive(false);
-        }
 
-        cp.gameObject.SetActive(false);
+            if (tag.Equals("HumanPlayer"))
+            {
+                photonView.RPC("PlaySoundTrack", RpcTarget.All, "checkpoint");
+                cp.transform.GetChild(0).gameObject.SetActive(false);
+                cp.transform.GetChild(1).gameObject.SetActive(false);
+            }
+        }
 
         if (checkpoints.Count == 1 && GameplayManager.Instance.usingNetwork)
             photonView.RPC("ChangeMusicTrack", RpcTarget.All, "VictoryIsWithinReach");
