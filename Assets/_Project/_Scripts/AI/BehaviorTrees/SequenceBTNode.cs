@@ -22,8 +22,9 @@ namespace Game.AI
         {
             bool isAnyNodeRunning = false;
 
-            foreach (BTNode node in nodes)
+            for (int i = 0; i < nodes.Count; ++i)
             {
+                BTNode node = nodes[i];
                 switch (node.Evaluate())
                 {
                     case EState.Running:

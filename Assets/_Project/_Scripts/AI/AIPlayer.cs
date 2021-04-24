@@ -95,7 +95,6 @@ namespace Game.AI
          ***********************************/
 
         private int itemToUseIndex = -1;
-        private bool shouldTakeCover;
         private AbstractPlayer playerAttackTarget;
         private List<AbstractPlayer> playerAttackThreats = new List<AbstractPlayer>();
         private List<string> reachableNodeIds = new List<string>();
@@ -109,7 +108,6 @@ namespace Game.AI
         private void ResetBehaviorTreeProperties()
         {
             itemToUseIndex = -1;
-            shouldTakeCover = false;
             playerAttackTarget = null;
             playerAttackThreats.Clear();
             reachableNodeIds.Clear();
@@ -119,9 +117,9 @@ namespace Game.AI
 
         public int HasItem()
         {
-            print("HasItem()");
+            //print("HasItem()");
 
-            if (Inventory.items.Count > 0)
+            if (Inventory.currentItemCount > 0)
                 return (int)BTNode.EState.Success;
             else
                 return (int)BTNode.EState.Failure;
@@ -129,7 +127,7 @@ namespace Game.AI
 
         public int ShouldUseItem()
         {
-            print("ShouldUseItem()");
+            //print("ShouldUseItem()");
 
             // TODO: foreach item in inventory,
             //       if any item would give the player any value
@@ -157,14 +155,17 @@ namespace Game.AI
                         // we are colliding with ourself
                         if (hit.transform == transform) continue;
 
-                        if (hit.collider.tag.Equals("Player"))
+                        if (hit.collider.tag.Equals("aHumanPlayer") || hit.collider.tag.Equals("aAIPlayer"))
                         {
                             AbstractPlayer potentialTarget = hit.collider.GetComponent<AbstractPlayer>();
 
-                            // TODO: check if potentialTarget is in equal or higher place standing. If not, then do not waste the missile on them.
+                            // check if potentialTarget is in equal or higher place standing. If not, then do not waste the missile on them.
+                            if (potentialTarget.checkpoints.Count <= checkpoints.Count)
+                            {
+                                playerAttackTarget = potentialTarget;
+                                itemToUseIndex = missileIndex;
+                            }
 
-                            playerAttackTarget = potentialTarget;
-                            itemToUseIndex = missileIndex;
                             break;
                         }
                     }
@@ -213,10 +214,7 @@ namespace Game.AI
 
         public int UseItem()
         {
-            print("UseItem()");
-
-            int missileIndex = Inventory.GetItemIndex("Rocket");
-            int oilSpillIndex = Inventory.GetItemIndex("OilSpill");
+            //print("UseItem()");
 
             if (Inventory.GetItemFromIndex(itemToUseIndex).powerUpName.Equals("Rocket"))
                 Inventory.UseItem(itemToUseIndex, playerAttackTarget.gameObject);
@@ -230,7 +228,7 @@ namespace Game.AI
 
         public int ShouldTakeCover()
         {
-            print("ShouldTakeCover()");
+            //print("ShouldTakeCover()");
 
             // foreach player in the game, check if they have ranged/attack items
             //       if they do, then get the item with the longest range and check if they can reach this player
@@ -241,6 +239,12 @@ namespace Game.AI
             //       else if no one can reach us with an attack
             //           return failure
 
+            if (shieldObject.activeSelf)
+            {
+                return (int)BTNode.EState.Failure;
+            }
+
+            bool shouldTakeCover = false;
             foreach (AbstractPlayer p in GameplayManager.Instance.Players)
             {
                 int pOilSpillIndex = p.Inventory.GetItemIndex("Oil Spill");
@@ -274,7 +278,7 @@ namespace Game.AI
                 }
             }
 
-            if (playerAttackThreats.Count > 0)
+            if (shouldTakeCover)
                 return (int)BTNode.EState.Success;
             else
                 return (int)BTNode.EState.Failure;
@@ -282,7 +286,7 @@ namespace Game.AI
 
         public int MoveToCover()
         {
-            print("MoveToCover()");
+            //print("MoveToCover()");
 
             // foreach player in the playerAttackThreats list, check if they have ranged/attack items
             // if they do, then foreach spot that the player can reach choose the one that is safest
@@ -300,19 +304,34 @@ namespace Game.AI
                     {
                         MBGraphNode node = coverNodes[i];
 
-                        // if we don't hit something, then there is no cover at this node and so, we remove it from the cover list
-                        RaycastHit[] hits = Physics.RaycastAll(player.transform.position + (Vector3.up * 0.5f), node.transform.position - player.transform.position);
-                        Debug.DrawRay(player.transform.position, node.transform.position - player.transform.position, Color.red, 10000);
                         bool coverAvailable = false;
-                        foreach (RaycastHit hit in hits)
-                        {
-                            // ignore ourselves
-                            if (hit.collider.transform == transform)
-                                continue;
 
-                            //print(node.transform.localPosition);
+                        // check for guaranteed shield
+                        PU_Base item = node.transform.GetComponentInChildren<PU_Base>();
+                        if (item != null && item.powerUpScript is PU_Shield)
+                        {
                             coverAvailable = true;
+                            coverNodes.Clear();
+                            coverNodes.Add(node);
                             break;
+                        }
+
+                        if (!coverAvailable)
+                        {
+                            // if we don't hit something, then there is no cover at this node and so, we remove it from the cover list
+                            RaycastHit[] hits = Physics.RaycastAll(player.transform.position + (Vector3.up * 0.5f), node.transform.position - player.transform.position);
+                            //Debug.DrawRay(player.transform.position, node.transform.position - player.transform.position, Color.red, 10000);
+
+                            foreach (RaycastHit hit in hits)
+                            {
+                                // ignore ourselves
+                                if (hit.collider.transform == transform)
+                                    continue;
+
+                                //print(node.transform.localPosition);
+                                coverAvailable = true;
+                                break;
+                            }
                         }
 
                         if (!coverAvailable)
@@ -360,7 +379,7 @@ namespace Game.AI
         
         public int IsItemInRange()
         {
-            print("IsItemInRange() :" + reachableNodeIds.Count);
+            //print("IsItemInRange()");
 
             var nodesWithItems = new List<MBGraphNode>();
 
@@ -375,7 +394,6 @@ namespace Game.AI
                     Transform child = node.Data.transform.GetChild(i);
                     if (child.gameObject.CompareTag("PowerUp"))
                     {
-                        print("IsItemInRange() : found powerup");
                         nodesWithItems.Add(GameplayManager.Instance.gridGraph.graph[nodeID].Data.GetComponent<MBGraphNode>());
                     }
                 }
@@ -431,7 +449,7 @@ namespace Game.AI
 
         public int MoveToItem()
         {
-            print("MoveToItem()");
+            //print("MoveToItem()");
 
             List<GraphNode<GameObject>> path = new List<GraphNode<GameObject>>();
 
@@ -447,7 +465,7 @@ namespace Game.AI
 
         public int MoveToBestSpot()
         {
-            print("MoveToBestSpot()");
+            //print("MoveToBestSpot()");
             if (CurrentActionPoints <= 0) return (int)BTNode.EState.Failure;
             
             Checkpoint checkpointTarget = GetClosestCheckpoint();
@@ -493,7 +511,7 @@ namespace Game.AI
 
         public int EndTurn()
         {
-            print("EndTurn()");
+            //print("EndTurn()");
             Phase = EPlayerPhase.End;
 
             return (int)BTNode.EState.Success;

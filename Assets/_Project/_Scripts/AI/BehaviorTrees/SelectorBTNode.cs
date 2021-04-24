@@ -20,8 +20,9 @@ namespace Game.AI
 
         public override EState Evaluate()
         {
-            foreach (BTNode node in nodes)
+            for (int i = 0; i < nodes.Count; ++i)
             {
+                BTNode node = nodes[i];
                 switch (node.Evaluate())
                 {
                     case EState.Running:

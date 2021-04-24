@@ -14743,7 +14743,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9065655637417024528, guid: 1b88ddf49eed01f449a35f302bf46fc9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -4.3
       objectReference: {fileID: 0}
     - target: {fileID: 9065655637417024528, guid: 1b88ddf49eed01f449a35f302bf46fc9, type: 3}
       propertyPath: m_LocalPosition.y
@@ -14751,7 +14751,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9065655637417024528, guid: 1b88ddf49eed01f449a35f302bf46fc9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 34.1
       objectReference: {fileID: 0}
     - target: {fileID: 9065655637417024528, guid: 1b88ddf49eed01f449a35f302bf46fc9, type: 3}
       propertyPath: m_LocalRotation.w
@@ -41369,7 +41369,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3241493426835701651, guid: 36ef5e69cb7fdc946b6b4813dbcb37e5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 14.8
       objectReference: {fileID: 0}
     - target: {fileID: 3241493426835701651, guid: 36ef5e69cb7fdc946b6b4813dbcb37e5, type: 3}
       propertyPath: m_LocalPosition.y
@@ -41377,7 +41377,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3241493426835701651, guid: 36ef5e69cb7fdc946b6b4813dbcb37e5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -14.89
       objectReference: {fileID: 0}
     - target: {fileID: 3241493426835701651, guid: 36ef5e69cb7fdc946b6b4813dbcb37e5, type: 3}
       propertyPath: m_LocalRotation.w
@@ -41412,13 +41412,17 @@ PrefabInstance:
       value: Rocket
       objectReference: {fileID: 0}
     - target: {fileID: 3241493426835701740, guid: 36ef5e69cb7fdc946b6b4813dbcb37e5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3241493426835701740, guid: 36ef5e69cb7fdc946b6b4813dbcb37e5, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7346253058779869639, guid: 36ef5e69cb7fdc946b6b4813dbcb37e5, type: 3}
       propertyPath: positionNode
       value: 
-      objectReference: {fileID: 832424573}
+      objectReference: {fileID: 895338916}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 36ef5e69cb7fdc946b6b4813dbcb37e5, type: 3}
 --- !u!4 &2076070358 stripped
