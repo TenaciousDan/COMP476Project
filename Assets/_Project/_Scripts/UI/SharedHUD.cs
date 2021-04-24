@@ -59,21 +59,8 @@ namespace Game.UI
 
         private void UpdatePlayerCheckpoints(AbstractPlayer player, int playerIndex)
         {
-            // TODO: Add feature when checkpoints are implemented.
+            playerContainers[playerIndex].checkpoints.text = $"x{player.checkpoints.Count}";
         }
-
-        /// <summary>
-        /// Call to initialize the shared player UI components.
-        /// </summary>
-        //[PunRPC]
-        //public void Initialize()
-        //{
-        //    for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
-        //    {
-        //        playerContainers[i].playerContainer.SetActive(true);
-        //        // TODO - Configure the elements of the player's UI.
-        //    }
-        //}
 
         [PunRPC]
         public void Initialize()
@@ -81,18 +68,6 @@ namespace Game.UI
             for (int i = 0; i < GameplayManager.Instance.Players.Count; i++)
             {
                 playerContainers[i].playerContainer.SetActive(true);
-            }
-        }
-
-        /// <summary>
-        /// Call whenever a player updates something during their turn.
-        /// </summary>
-        [PunRPC]
-        public void UpdateUI()
-        {
-            foreach (var player in players)
-            {
-                // Update each component of the UI.
             }
         }
     }

@@ -41,15 +41,13 @@ namespace Game.UI
         {
             UpdateAP();
             UpdateItems(player.Phase == AbstractPlayer.EPlayerPhase.Main);
-            ToggleMoveBtn(player.CurrentActionPoints != 0);
 
             ShowCheckpointMarkers();
             RepositionCheckpointPointers();
 
-            //if (player.State == AbstractPlayer.EPlayerState.Busy)
-            //{
             ToggleBtns(player.State != AbstractPlayer.EPlayerState.Busy);
-            //}
+
+            ToggleMoveBtn(player.CurrentActionPoints != 0);
 
             // Can only move if the button is clicked.
             if (moveBtnClicked)
