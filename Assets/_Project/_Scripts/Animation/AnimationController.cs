@@ -4,13 +4,6 @@ using UnityEngine;
 
 public class AnimationController : MonoBehaviour
 {
-    [SerializeField] private List<Animator> CopCars;
-
-    public void TriggerAllCopAnimations()
-    {
-        foreach(Animator anim in CopCars)
-        {
-            anim.SetBool("CanLeave", true);
-        }
-    }
+    public void LiftAllCopCars() => GetComponent<Animator>().SetBool("CanLeave", true);
+    public void LandAllCopCars() => GetComponent<Animator>().SetBool("CanLeave", false);
 }
