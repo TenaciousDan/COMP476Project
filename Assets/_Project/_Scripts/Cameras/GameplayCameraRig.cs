@@ -1,5 +1,7 @@
 using UnityEngine;
 
+using Tenacious.Scenes;
+
 public class GameplayCameraRig : MonoBehaviour
 {
     public float moveSpeed = 50;
@@ -16,6 +18,8 @@ public class GameplayCameraRig : MonoBehaviour
 
     [SerializeField] private Vector3 cameraEndGamePosition;
     [SerializeField] private Vector3 cameraEndGameRotationEuler;
+    [SerializeField, Min(0)] private float endGameTransitionTime = 5;
+    private float endTransitionTimer;
 
     private bool IsMouseOverGameWindow 
     { 
@@ -28,6 +32,7 @@ public class GameplayCameraRig : MonoBehaviour
         newRotation = transform.rotation;
         rigCamera.transform.rotation = Quaternion.LookRotation(transform.position - rigCamera.transform.position);
         newZoom = rigCamera.transform.localPosition;
+        endTransitionTimer = endGameTransitionTime;
     }
 
     private void Update()
@@ -48,6 +53,14 @@ public class GameplayCameraRig : MonoBehaviour
 
             HandleRotationInput();
             HandleZoomInput();
+        }
+        else
+        {
+            endTransitionTimer -= Time.deltaTime;
+            if (endTransitionTimer <= 0)
+            {
+                SceneLoader.Instance.LoadScene("Credits", SceneLoader.RANDOM_TRANSITION);
+            }
         }
     }
 
