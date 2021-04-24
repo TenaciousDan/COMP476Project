@@ -70,6 +70,10 @@ namespace Game.UI
                 playerContainers[i].playerContainer.SetActive(true);
             }
         }
+
+        public void NameBtnClick(int playerIndex)
+        {
+        }
     }
 
     /// <summary>
