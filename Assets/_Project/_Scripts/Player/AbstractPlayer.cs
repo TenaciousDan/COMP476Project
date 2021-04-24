@@ -20,7 +20,8 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
     public Mesh[] VehicleSkins = new Mesh[4];
     
     private float maxActionPoints;
-    private float moveSpeed = 10;
+    [SerializeField]
+    private float moveSpeed = 20;
     private float rotationSpeed = 10;
     private bool hasShield = false;
     private float costPerMovement = 1;
@@ -94,11 +95,11 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
 
         // TODO: do standby phase things
         if (photonView.IsMine)
-            photonView.RPC("MainTurn", RpcTarget.All);
+            photonView.RPC("Standby", RpcTarget.All);
     }
 
     [PunRPC]
-    public void MainTurn()
+    public void Standby()
     {
         FillActionPoints();
         RemoveActionPoints(pointsDeficit);

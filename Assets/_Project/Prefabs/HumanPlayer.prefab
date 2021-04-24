@@ -152,6 +152,7 @@ MonoBehaviour:
   - {fileID: 4300000, guid: 14c65abfd4a635a4bacab55363a9cbba, type: 3}
   - {fileID: 4300000, guid: 5415c097506e8da42886699d81a1bd71, type: 3}
   - {fileID: 4300000, guid: b261b046fd1e0a544acda40a7304add5, type: 3}
+  moveSpeed: 20
   checkpoints: []
   CurrentActionPoints: 0
   hudParent: {fileID: 3226824879726454784, guid: 3a10080c8917feb4e9c57a59384b627a, type: 3}

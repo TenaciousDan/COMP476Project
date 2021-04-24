@@ -133,6 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a510770d5edfac4dbf90a0a1d806c70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 40
 --- !u!136 &5050397926611431622
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -219,15 +220,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3072271968376514767, guid: 100f9f44c6062134eb226139a8adfb61, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.01
+      value: 0.04
       objectReference: {fileID: 0}
     - target: {fileID: 3072271968376514767, guid: 100f9f44c6062134eb226139a8adfb61, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.01
+      value: 0.04
       objectReference: {fileID: 0}
     - target: {fileID: 3072271968376514767, guid: 100f9f44c6062134eb226139a8adfb61, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.01
+      value: 0.04
       objectReference: {fileID: 0}
     - target: {fileID: 3072271968376514767, guid: 100f9f44c6062134eb226139a8adfb61, type: 3}
       propertyPath: m_LocalPosition.x
