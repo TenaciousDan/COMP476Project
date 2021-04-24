@@ -10,6 +10,8 @@ public class RocketManager : MonoBehaviourPunCallbacks
     private float rotationSpeed = 20;
     private float numActionPointsToRemove = 2;
 
+    [SerializeField] private GameObject explosionPrefab;
+
     public void FireRocket(AbstractPlayer player, GameObject target)
     {
         StartCoroutine(MoveRocket(player, target));
@@ -44,5 +46,7 @@ public class RocketManager : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.Destroy(gameObject);
         }
+
+        PhotonNetwork.Instantiate(explosionPrefab.name, transform.position, Quaternion.identity);
     }
 }

@@ -133,7 +133,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a510770d5edfac4dbf90a0a1d806c70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 40
+  moveSpeed: 30
+  explosionPrefab: {fileID: 100002, guid: 91b54e0843a29574189dc6e629527e76, type: 3}
 --- !u!136 &5050397926611431622
 CapsuleCollider:
   m_ObjectHideFlags: 0
