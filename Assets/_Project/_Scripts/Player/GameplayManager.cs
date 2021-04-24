@@ -258,7 +258,7 @@ public class GameplayManager : MonoBehaviourPunCallbacks
 
                 players[id] = humanPlayer;
                 humanPlayer.GetComponent<MeshFilter>().mesh = humanPlayer.VehicleSkins[index];
-                humanPlayer.InitializePlayer(maxActionPoints, playerDescriptors[id].positionOffset, playerDescriptors[id].startNode.nodeId, player.name, id + 1);
+                humanPlayer.InitializePlayer(maxActionPoints, playerDescriptors[id].positionOffset, playerDescriptors[id].startNode.nodeId, player.name, id);
                 index++;   
             }
         }
