@@ -236,7 +236,6 @@ MonoBehaviour:
   - {fileID: 4300000, guid: 5415c097506e8da42886699d81a1bd71, type: 3}
   - {fileID: 4300000, guid: b261b046fd1e0a544acda40a7304add5, type: 3}
   checkpoints: []
-  gameIsOver: 0
   CurrentActionPoints: 0
   behaviorTree: {fileID: 5405298471439158274}
 --- !u!114 &6346006916840474583

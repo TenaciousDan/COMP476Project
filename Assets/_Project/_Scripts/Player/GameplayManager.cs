@@ -41,6 +41,8 @@ public class GameplayManager : MonoBehaviourPunCallbacks
     public int totalPlayersInGame = 0;
     public bool hasInitializedPlayers = false;
 
+    public bool gameIsOver;
+
     private bool isCRTurnUpdateRunning;
     
     // Network bools that ensure order is followed when starting game
@@ -257,7 +259,7 @@ public class GameplayManager : MonoBehaviourPunCallbacks
                 var id = (int)NetworkManager.Instance.spawnIndices[player.name];
 
                 players[id] = humanPlayer;
-                humanPlayer.GetComponent<MeshFilter>().mesh = humanPlayer.VehicleSkins[index];
+                humanPlayer.GetComponent<MeshFilter>().mesh = humanPlayer.VehicleSkins[id];
                 humanPlayer.InitializePlayer(maxActionPoints, playerDescriptors[id].positionOffset, playerDescriptors[id].startNode.nodeId, player.name, id);
                 index++;   
             }
@@ -296,6 +298,12 @@ public class GameplayManager : MonoBehaviourPunCallbacks
     private void ResetCurrentPlayer()
     {
         currentPlayer = 0;
+    }
+
+    [PunRPC]
+    public void SetGameOver(bool isOver)
+    {
+        gameIsOver = isOver;
     }
 
     #region SINGLETON

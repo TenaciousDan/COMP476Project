@@ -218,7 +218,7 @@ namespace Game.AI
 
             if (Inventory.GetItemFromIndex(itemToUseIndex).powerUpName.Equals("Rocket"))
                 Inventory.UseItem(itemToUseIndex, playerAttackTarget.gameObject);
-            else if (Inventory.GetItemFromIndex(itemToUseIndex).powerUpName.Equals("OilSpill"))
+            else if (Inventory.GetItemFromIndex(itemToUseIndex).powerUpName.Equals("Oil Spill"))
                 Inventory.UseItem(itemToUseIndex, nodeToSpillOn.gameObject);
             else
                 Inventory.UseItem(itemToUseIndex);

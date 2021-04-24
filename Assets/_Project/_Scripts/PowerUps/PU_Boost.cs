@@ -11,7 +11,9 @@ public class PU_Boost : Scriptable_Base
     {
         if (player.photonView.IsMine)
         {
+            player.State = AbstractPlayer.EPlayerState.Busy;
             player.photonView.RPC("AddActionPoints", Photon.Pun.RpcTarget.All, (float)numExtraActionPoints, false);
+            player.State = AbstractPlayer.EPlayerState.Waiting;
         }
     }
 }

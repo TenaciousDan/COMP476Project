@@ -1,5 +1,7 @@
 using UnityEngine;
 
+using Tenacious.Scenes;
+
 public class GameplayCameraRig : MonoBehaviour
 {
     public float moveSpeed = 50;
@@ -14,6 +16,11 @@ public class GameplayCameraRig : MonoBehaviour
     private Quaternion newRotation;
     private Vector3 newZoom;
 
+    [SerializeField] private Vector3 cameraEndGamePosition;
+    [SerializeField] private Vector3 cameraEndGameRotationEuler;
+    [SerializeField, Min(0)] private float endGameTransitionTime = 5;
+    private float endTransitionTimer;
+
     private bool IsMouseOverGameWindow 
     { 
         get { return !(0 > Input.mousePosition.x || 0 > Input.mousePosition.y || Screen.width < Input.mousePosition.x || Screen.height < Input.mousePosition.y); } 
@@ -25,31 +32,52 @@ public class GameplayCameraRig : MonoBehaviour
         newRotation = transform.rotation;
         rigCamera.transform.rotation = Quaternion.LookRotation(transform.position - rigCamera.transform.position);
         newZoom = rigCamera.transform.localPosition;
+        endTransitionTimer = endGameTransitionTime;
     }
 
     private void Update()
     {
-        if (target != null)
+        if (!GameplayManager.Instance.gameIsOver)
         {
-            if (!Mathf.Approximately(Input.GetAxisRaw("Vertical"), 0) || !Mathf.Approximately(Input.GetAxisRaw("Horizontal"), 0))
-                target = null;
+            if (target != null)
+            {
+                if (!Mathf.Approximately(Input.GetAxisRaw("Vertical"), 0) || !Mathf.Approximately(Input.GetAxisRaw("Horizontal"), 0))
+                    target = null;
+                else
+                    newPosition = target.transform.position;
+            }
             else
-                newPosition = target.transform.position;
+            {
+                HandleTranslationInput();
+            }
+
+            HandleRotationInput();
+            HandleZoomInput();
         }
         else
         {
-            HandleTranslationInput();
+            endTransitionTimer -= Time.deltaTime;
+            if (endTransitionTimer <= 0)
+            {
+                SceneLoader.Instance.LoadScene("Credits", SceneLoader.RANDOM_TRANSITION);
+            }
         }
-
-        HandleRotationInput();
-        HandleZoomInput();
     }
 
     private void LateUpdate()
     {
-        transform.position = Vector3.Lerp(transform.position, newPosition, smoothing * Time.deltaTime);
-        transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, smoothing * Time.deltaTime);
-        rigCamera.transform.localPosition = Vector3.Lerp(rigCamera.transform.localPosition, newZoom, smoothing * Time.deltaTime);
+        if (!GameplayManager.Instance.gameIsOver)
+        {
+            transform.position = Vector3.Lerp(transform.position, newPosition, smoothing * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, smoothing * Time.deltaTime);
+            rigCamera.transform.localPosition = Vector3.Lerp(rigCamera.transform.localPosition, newZoom, smoothing * Time.deltaTime);
+            rigCamera.transform.rotation = Quaternion.LookRotation(transform.position - rigCamera.transform.position);
+        }
+        else
+        {
+            rigCamera.transform.position = Vector3.Lerp(rigCamera.transform.position, cameraEndGamePosition, smoothing * Time.deltaTime);
+            rigCamera.transform.rotation = Quaternion.Lerp(rigCamera.transform.rotation, Quaternion.Euler(cameraEndGameRotationEuler), smoothing * Time.deltaTime);
+        }
     }
 
     private void HandleTranslationInput()

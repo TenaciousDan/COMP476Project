@@ -40,11 +40,13 @@ namespace Game.UI
         private void Update()
         {
             UpdateAP();
-            UpdateItems(player.Phase == AbstractPlayer.EPlayerPhase.Main);
-            ToggleMoveBtn(player.CurrentActionPoints != 0);
-
             ShowCheckpointMarkers();
             RepositionCheckpointPointers();
+
+            ToggleBtns(player.State != AbstractPlayer.EPlayerState.Busy);
+
+            ToggleMoveBtn(player.CurrentActionPoints != 0);
+            UpdateItems(player.Phase == AbstractPlayer.EPlayerPhase.Main);
 
             // Can only move if the button is clicked.
             if (moveBtnClicked)
@@ -214,6 +216,7 @@ namespace Game.UI
                             MoveBtnClick(); // Reset the button
                             var graphNodes = node.mbGraph.graph.Nodes().Where(x => x.Id == node.nodeId);
                             player.CostPerMovement = Vector3.Distance(player.PositionNode.transform.position, graphNodes.First().Data.transform.position) / distanceBetweenNodes; // Really dumb hack but it works...
+                            player.State = AbstractPlayer.EPlayerState.Busy;
                             player.Move(graphNodes.ToList());
                         }
                     }
