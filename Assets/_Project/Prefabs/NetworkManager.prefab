@@ -48,7 +48,7 @@ MonoBehaviour:
   aiPlayerCount: 0
   allowReinitialization: 0
   destroyOnLoad: 0
-  networkPrefabPool: {fileID: 0}
+  networkPrefabPool: {fileID: 4240007892062076074}
 --- !u!114 &4240007892062076077
 MonoBehaviour:
   m_ObjectHideFlags: 0
