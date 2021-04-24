@@ -6,6 +6,7 @@ using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
 using Tenacious.Scenes;
+using ExitGames.Client.Photon;
 
 public class LobbyMenu : MonoBehaviourPunCallbacks
 {
@@ -192,11 +193,19 @@ public class LobbyMenu : MonoBehaviourPunCallbacks
     {
         playerListText.text = string.Empty;
 
+        // [HACK] Update Everyone's Network Manager Whenever New Player Joins Lobby to Set Spawn Points
+        Hashtable newSpawnIndices = new Hashtable();
+        var index = 0;
+        
         // Display all the players currently in the lobby
         foreach (Player player in PhotonNetwork.PlayerList)
         {
+            newSpawnIndices.Add(player.NickName, index);
             playerListText.text += player.IsMasterClient ? $"[Host] {player.NickName}\n" : $"{player.NickName}\n";
+            index++;
         }
+
+        NetworkManager.Instance.spawnIndices = newSpawnIndices;
         
         // Display all AI players if any
         foreach (int ai in Enumerable.Range(1, NetworkManager.Instance.aiPlayerCount))
