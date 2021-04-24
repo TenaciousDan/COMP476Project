@@ -16,6 +16,9 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
     [SerializeField]
     protected GameObject shieldObject;
 
+    [SerializeField]
+    public Mesh[] VehicleSkins = new Mesh[4];
+    
     private float maxActionPoints;
     private float moveSpeed = 10;
     private float rotationSpeed = 10;
