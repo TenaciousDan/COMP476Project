@@ -264,6 +264,11 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
                     yield return null;
                 }
             }
+
+            if (tag.Equals("HumanPlayer"))
+            {
+                State = EPlayerState.Waiting;
+            }
         }
     }
 

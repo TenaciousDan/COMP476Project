@@ -46,6 +46,11 @@ namespace Game.UI
             ShowCheckpointMarkers();
             RepositionCheckpointPointers();
 
+            //if (player.State == AbstractPlayer.EPlayerState.Busy)
+            //{
+            ToggleBtns(player.State != AbstractPlayer.EPlayerState.Busy);
+            //}
+
             // Can only move if the button is clicked.
             if (moveBtnClicked)
             {
@@ -214,6 +219,7 @@ namespace Game.UI
                             MoveBtnClick(); // Reset the button
                             var graphNodes = node.mbGraph.graph.Nodes().Where(x => x.Id == node.nodeId);
                             player.CostPerMovement = Vector3.Distance(player.PositionNode.transform.position, graphNodes.First().Data.transform.position) / distanceBetweenNodes; // Really dumb hack but it works...
+                            player.State = AbstractPlayer.EPlayerState.Busy;
                             player.Move(graphNodes.ToList());
                         }
                     }
