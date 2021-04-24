@@ -51,6 +51,8 @@ MonoBehaviour:
   smoothing: 5
   rigCamera: {fileID: 5174228198714366055}
   target: {fileID: 0}
+  cameraEndGamePosition: {x: 100, y: 64, z: -108}
+  cameraEndGameRotationEuler: {x: 25, y: 130, z: 0}
 --- !u!1 &5174228198714366073
 GameObject:
   m_ObjectHideFlags: 0
