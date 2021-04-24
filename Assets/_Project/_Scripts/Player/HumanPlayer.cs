@@ -51,8 +51,7 @@ public class HumanPlayer : AbstractPlayer
     public void InitializePlayerOnNetwork(Player player)
     {
         photonPlayer = player;
-        ID = player.ActorNumber;
-        gameObject.name = "P" + ID;
+        gameObject.name = player.NickName;
 
         // Only track local physics
         if (!photonView.IsMine)
