@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RocketManager : MonoBehaviour
+public class RocketManager : MonoBehaviourPunCallbacks
 {
     private float moveSpeed = 20;
     private float rotationSpeed = 20;
@@ -36,7 +36,7 @@ public class RocketManager : MonoBehaviour
             collision.gameObject.GetComponent<AbstractPlayer>().GetHit(numActionPointsToRemove);
         }
 
-        if (PhotonNetwork.IsMasterClient)
+        if (photonView.IsMine)
         {
             PhotonNetwork.Destroy(gameObject);
         }
