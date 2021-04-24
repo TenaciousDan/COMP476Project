@@ -7,8 +7,7 @@ using UnityEngine.UI;
 
 public class PU_Base : MonoBehaviourPunCallbacks
 {
-    [SerializeField]
-    private Scriptable_Base powerUpScript;
+    public Scriptable_Base powerUpScript;
 
     //private void Awake()
     //{

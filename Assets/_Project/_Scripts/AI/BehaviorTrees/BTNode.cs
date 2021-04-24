@@ -12,5 +12,7 @@ namespace Game.AI
         public EState State { get; protected set; }
 
         public abstract EState Evaluate();
+
+        public float order;
     }
 }

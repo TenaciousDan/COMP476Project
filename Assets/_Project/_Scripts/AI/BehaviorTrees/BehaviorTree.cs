@@ -51,13 +51,13 @@ namespace Game.AI
                 else
                 {
                     if ("Selector".Equals(nodeData.nodeType))
-                        nodeDict.Add(nodeData.id, new SelectorBTNode());
+                        nodeDict.Add(nodeData.id, new SelectorBTNode() { order = nodeData.position.y });
                     else if ("Sequence".Equals(nodeData.nodeType))
-                        nodeDict.Add(nodeData.id, new SequenceBTNode());
+                        nodeDict.Add(nodeData.id, new SequenceBTNode() { order = nodeData.position.y });
                     else if ("Inverter".Equals(nodeData.nodeType))
-                        nodeDict.Add(nodeData.id, new InverterBTNode());
+                        nodeDict.Add(nodeData.id, new InverterBTNode() { order = nodeData.position.y });
                     else if ("Action".Equals(nodeData.nodeType) && actionDict.ContainsKey(nodeData.title))
-                        nodeDict.Add(nodeData.id, new ActionBTNode(() => { return (BTNode.EState) actionDict[nodeData.title].Invoke(); }));
+                        nodeDict.Add(nodeData.id, new ActionBTNode(() => { return (BTNode.EState) actionDict[nodeData.title].Invoke(); }) { order = nodeData.position.y });
                 }
             }
 
@@ -68,7 +68,10 @@ namespace Game.AI
                     if (nodeDict[edgeData.fromId] is SelectorBTNode)
                     {
                         if (nodeDict.ContainsKey(edgeData.toId))
+                        {
+
                             ((SelectorBTNode)nodeDict[edgeData.fromId]).Nodes.Add(nodeDict[edgeData.toId]);
+                        }
                     }
                     else if (nodeDict[edgeData.fromId] is SequenceBTNode)
                     {
@@ -80,6 +83,25 @@ namespace Game.AI
                         if (nodeDict.ContainsKey(edgeData.toId))
                             ((InverterBTNode)nodeDict[edgeData.fromId]).Node = nodeDict[edgeData.toId];
                     }
+                }
+            }
+
+            // sort children based on position (quick fix)
+            foreach (string key in nodeDict.Keys)
+            {
+                if (nodeDict[key] is SelectorBTNode)
+                {
+                    ((SelectorBTNode)nodeDict[key]).Nodes.Sort((n1, n2) =>
+                    {
+                        return n1.order.CompareTo(n2.order);
+                    });
+                }
+                else if (rootNode is SequenceBTNode)
+                {
+                    ((SequenceBTNode)nodeDict[key]).Nodes.Sort((n1, n2) =>
+                    {
+                        return n1.order.CompareTo(n2.order);
+                    });
                 }
             }
 
