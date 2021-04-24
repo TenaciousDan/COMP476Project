@@ -300,7 +300,11 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
 
         //print("cpoints contains cp :" + checkpoints.Contains(cp));
         if (checkpoints.Contains(cp))
+        {
             checkpoints.Remove(cp);
+            cp.transform.GetChild(0).gameObject.SetActive(false);
+            cp.transform.GetChild(1).gameObject.SetActive(false);
+        }
 
         cp.gameObject.SetActive(false);
 
