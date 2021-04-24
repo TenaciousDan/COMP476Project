@@ -28,8 +28,6 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
 
     public List<Checkpoint> checkpoints;
 
-    public bool gameIsOver;
-
     public int ID
     {
         get; protected set;
@@ -284,7 +282,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         if (cp.isGoal)
         {
             // This player has won the game
-            gameIsOver = true;
+            GameplayManager.Instance.gameIsOver = true;
             if (GameplayManager.Instance.usingNetwork)
                 photonView.RPC("ChangeMusicTrack", RpcTarget.All, "ReachedTheGoal");
 

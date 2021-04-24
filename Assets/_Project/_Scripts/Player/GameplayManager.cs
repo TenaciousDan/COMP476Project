@@ -41,6 +41,8 @@ public class GameplayManager : MonoBehaviourPunCallbacks
     public int totalPlayersInGame = 0;
     public bool hasInitializedPlayers = false;
 
+    public bool gameIsOver;
+
     private bool isCRTurnUpdateRunning;
     
     // Network bools that ensure order is followed when starting game
