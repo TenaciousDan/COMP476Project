@@ -259,7 +259,7 @@ public class GameplayManager : MonoBehaviourPunCallbacks
                 var id = (int)NetworkManager.Instance.spawnIndices[player.name];
 
                 players[id] = humanPlayer;
-                humanPlayer.GetComponent<MeshFilter>().mesh = humanPlayer.VehicleSkins[index];
+                humanPlayer.GetComponent<MeshFilter>().mesh = humanPlayer.VehicleSkins[id];
                 humanPlayer.InitializePlayer(maxActionPoints, playerDescriptors[id].positionOffset, playerDescriptors[id].startNode.nodeId, player.name, id);
                 index++;   
             }
