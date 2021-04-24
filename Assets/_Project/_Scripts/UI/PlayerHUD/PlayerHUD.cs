@@ -85,6 +85,8 @@ namespace Game.UI
                     oilSpillBtnClicked = false;
                 }
             }
+
+            ToggleBtns(!GameplayManager.Instance.gameIsOver);
         }
 
         private void ShowCheckpointMarkers()
