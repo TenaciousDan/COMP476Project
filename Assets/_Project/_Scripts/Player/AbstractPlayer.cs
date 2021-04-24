@@ -176,6 +176,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
     [PunRPC]
     public void RemoveActionPoints(float numActionPoints)
     {
+        print($"Removed {numActionPoints} for {Name}");
         CurrentActionPoints -= numActionPoints;
         if (CurrentActionPoints < 0)
         {
@@ -204,7 +205,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
     {
         if (hasShield)
         {
-            photonView.RPC("DeactivateShield", RpcTarget.All, numActionPoints);
+            photonView.RPC("DeactivateShield", RpcTarget.All);
         }
         else
         {

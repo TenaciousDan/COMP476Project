@@ -11,7 +11,7 @@ public class PU_Boost : Scriptable_Base
     {
         if (player.photonView.IsMine)
         {
-            player.photonView.RPC("AddActionPoints", Photon.Pun.RpcTarget.All, numExtraActionPoints, true);
+            player.photonView.RPC("AddActionPoints", Photon.Pun.RpcTarget.All, (float)numExtraActionPoints, false);
         }
     }
 }
