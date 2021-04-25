@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -60,7 +61,10 @@ public class Inventory : MonoBehaviour
             //print($"Used {items[itemIndex].name}");
             items[itemIndex].OnPowerUpUse(player, target);
             //RemoveItem(itemIndex);
-            player.photonView.RPC("RemoveItemFromInventory", Photon.Pun.RpcTarget.All, itemIndex);
+            if (PhotonNetwork.IsMasterClient)
+            {
+                player.photonView.RPC("RemoveItemFromInventory", RpcTarget.All, itemIndex);
+            }
         }
     }
 
