@@ -13,7 +13,7 @@ public class PoliceBlockade : MonoBehaviourPun
         AbstractPlayer player = other.GetComponent<AbstractPlayer>();
         if (player != null)
         {
-            if (GameplayManager.Instance.Players[GameplayManager.Instance.currentPlayer] == player)
+            if (GameplayManager.Instance.Players[GameplayManager.Instance.currentPlayer] == player && player.checkpoints.Count <= 1)
             {
                 photonView.RPC("LetMePass", RpcTarget.All, true);
             }
