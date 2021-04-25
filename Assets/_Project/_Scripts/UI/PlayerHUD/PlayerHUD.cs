@@ -17,6 +17,7 @@ namespace Game.UI
         public List<Image> itemImages;
         public ProgressBar actionPoints;
         public HumanPlayer player;
+        private Dictionary<Direction, List<MBGraphNode>> tiles = new Dictionary<Direction, List<MBGraphNode>>();
 
         [SerializeField] private Sprite cpPointerSprite;
         [SerializeField] private Sprite cpInRangeSprite;
@@ -28,6 +29,14 @@ namespace Game.UI
         private bool moveBtnClicked = false;
         private bool rocketBtnClicked = false;
         private bool oilSpillBtnClicked = false;
+
+        private void Start()
+        {
+            foreach (var direction in (Direction[])Enum.GetValues(typeof(Direction)))
+            {
+                tiles.Add(direction, null);
+            }
+        }
 
         private enum Direction
         {
@@ -206,21 +215,29 @@ namespace Game.UI
                 RaycastHit[] hits;
                 hits = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition));
 
-                
-
                 foreach (var hit in hits)
                 {
                     if (hit.transform.name.Equals("GridSquare(Clone)"))
                     {
-                        
-
                         var node = hit.transform.parent.GetComponent<MBGraphNode>();
 
                         if(node != player.PositionNode)
                         {
                             MoveBtnClick(); // Reset the button
+
                             var graphNodes = node.mbGraph.graph.Nodes().Where(x => x.Id == node.nodeId);
-                            player.CostPerMovement = Vector3.Distance(player.PositionNode.transform.position, graphNodes.First().Data.transform.position) / distanceBetweenNodes; // Really dumb hack but it works...
+
+                            int index = 0;
+
+                            foreach (KeyValuePair<Direction, List<MBGraphNode>> entry in tiles)
+                            {
+                                index = entry.Value.IndexOf(graphNodes.First().Data.GetComponent<MBGraphNode>());
+
+                                if (index != -1)
+                                    break;
+                            }
+
+                            player.CostPerMovement = index + 1;/*Vector3.Distance(player.PositionNode.transform.position, graphNodes.First().Data.transform.position) / distanceBetweenNodes; // Really dumb hack but it works...*/
                             player.State = AbstractPlayer.EPlayerState.Busy;
                             player.Move(graphNodes.ToList());
                         }
@@ -233,12 +250,15 @@ namespace Game.UI
         {
             foreach (var direction in (Direction[])Enum.GetValues(typeof(Direction)))
             {
-                ShowMovementTiles(!moveBtnClicked, player.PositionNode, (int)player.CurrentActionPoints + 1, direction);
+                var directionTiles = new List<MBGraphNode>();
+                ShowMovementTiles(!moveBtnClicked, player.PositionNode, (int)player.CurrentActionPoints + 1, direction, directionTiles);
+                tiles[direction] = directionTiles;
             }
 
             moveBtnClicked = !moveBtnClicked;
         }
-        
+
+
         /// <summary>
         /// Show the available neighbors to travel to.
         /// </summary>
@@ -246,7 +266,7 @@ namespace Game.UI
         /// <param name="startNode"></param> Which node to start from.
         /// <param name="times"></param> Number of levels to find the neighbors.
         /// <param name="direction"></param> Which direction the neighbors are in.
-        private void ShowMovementTiles(bool show, MBGraphNode startNode, int times, Direction direction)
+        private void ShowMovementTiles(bool show, MBGraphNode startNode, int times, Direction direction, List<MBGraphNode> directionTiles)
         {
             if (times <= 0)
                 return;
@@ -255,7 +275,7 @@ namespace Game.UI
             {
                 if (startNode.transform.GetChild(i).tag.Equals("GridSquare"))
                     startNode.transform.GetChild(i).gameObject.SetActive(show);
-            }    
+            }
 
             var nodeNeighbors = startNode.mbGraph.graph.Neighbors(startNode.nodeId);
             foreach (var node in nodeNeighbors)
@@ -271,22 +291,34 @@ namespace Game.UI
                 if (node.Data.transform.position.x > startNode.transform.position.x && direction == Direction.Right)
                 {
                     if (doIt)
-                        ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Right);
+                    {
+                        directionTiles.Add(mbNode);
+                        ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Right, directionTiles);
+                    }
                 }
                 if (node.Data.transform.position.x < startNode.transform.position.x && direction == Direction.Left)
                 {
                     if (doIt)
-                        ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Left);
+                    {
+                        directionTiles.Add(mbNode);
+                        ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Left, directionTiles);
+                    }
                 }
                 if (node.Data.transform.position.z > startNode.transform.position.z && direction == Direction.Down)
                 {
                     if (doIt)
-                        ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Down);
+                    {
+                        directionTiles.Add(mbNode);
+                        ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Down, directionTiles);
+                    }
                 }
                 if (node.Data.transform.position.z < startNode.transform.position.z && direction == Direction.Up)
                 {
                     if (doIt)
-                        ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Up);
+                    {
+                        directionTiles.Add(mbNode);
+                        ShowMovementTiles(show, mbNode, times - 1 - extraValue, Direction.Up, directionTiles);
+                    }
                 }
             }
         }
