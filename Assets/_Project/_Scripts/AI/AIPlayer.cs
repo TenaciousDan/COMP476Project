@@ -43,7 +43,7 @@ namespace Game.AI
             }
         }
 
-        private void EnqueueAction(IEnumerator action)
+        public void EnqueueAction(IEnumerator action)
         {
             actionQueue.Enqueue(action);
         }
