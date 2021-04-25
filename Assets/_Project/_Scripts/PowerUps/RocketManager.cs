@@ -42,6 +42,7 @@ public class RocketManager : MonoBehaviourPunCallbacks
 
     private void OnCollisionEnter(Collision collision)
     {
+        print("there's a collision");
         if(collision.collider.tag == "HumanPlayer" || collision.collider.tag == "AIPlayer")
         {
             collision.gameObject.GetComponent<AbstractPlayer>().GetHit(numActionPointsToRemove);
@@ -53,6 +54,7 @@ public class RocketManager : MonoBehaviourPunCallbacks
             PhotonNetwork.Destroy(gameObject);
         }
 
-        PhotonNetwork.Instantiate(explosionPrefab.name, transform.position, Quaternion.identity);
+        if(collision.collider.gameObject != gameObject)
+            PhotonNetwork.Instantiate(explosionPrefab.name, transform.position, Quaternion.identity);
     }
 }
