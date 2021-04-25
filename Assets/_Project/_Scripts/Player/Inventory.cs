@@ -61,11 +61,11 @@ public class Inventory : MonoBehaviour
         {
             print($"{player.Name} used {items[itemIndex].name}");
             items[itemIndex].OnPowerUpUse(player, target);
-            RemoveItem(itemIndex);
-            //if (PhotonNetwork.IsMasterClient)
-            //{
-            //    player.photonView.RPC("RemoveItemFromInventory", RpcTarget.All, itemIndex);
-            //}
+            //RemoveItem(itemIndex);
+            if (PhotonNetwork.IsMasterClient)
+            {
+                player.photonView.RPC("RemoveItemFromInventory", RpcTarget.All, itemIndex);
+            }
         }
     }
 
