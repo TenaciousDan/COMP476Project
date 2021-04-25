@@ -35,7 +35,7 @@ namespace Game.AI
             if (!isProcessingActions)
             {
                 ResetBehaviorTreeProperties();
-                GetAllReachableNodes(PositionNode.nodeId, (int)CurrentActionPoints);
+                GetAllReachableNodes(PositionNode.nodeId, (int)CurrentActionPoints + 1);
                 behaviorTree.Evaluate();
 
                 // Process actions
@@ -212,9 +212,9 @@ namespace Game.AI
             return itemToUseIndex >= 0 ? (int)BTNode.EState.Success : (int)BTNode.EState.Failure;
         }
 
-        public int UseItem()
+        private IEnumerator CRUseItem()
         {
-            //print("UseItem()");
+            yield return new WaitForSeconds(1);
 
             if (Inventory.GetItemFromIndex(itemToUseIndex).powerUpName.Equals("Rocket"))
                 Inventory.UseItem(itemToUseIndex, playerAttackTarget.gameObject);
@@ -222,6 +222,13 @@ namespace Game.AI
                 Inventory.UseItem(itemToUseIndex, nodeToSpillOn.gameObject);
             else
                 Inventory.UseItem(itemToUseIndex);
+        }
+
+        public int UseItem()
+        {
+            //print("UseItem()");
+
+            EnqueueAction(CRUseItem());
 
             return (int)BTNode.EState.Success;
         }
@@ -376,7 +383,7 @@ namespace Game.AI
             else
                 return (int)BTNode.EState.Failure;
         }
-        
+
         public int IsItemInRange()
         {
             //print("IsItemInRange()");
@@ -404,7 +411,7 @@ namespace Game.AI
             {
                 var shortestDistance = int.MaxValue;
                 var closestNode = nodesWithItems[0];
-                
+
                 // Find the closest PowerUp
                 foreach (var node in nodesWithItems)
                 {
@@ -467,7 +474,7 @@ namespace Game.AI
         {
             //print("MoveToBestSpot()");
             if (CurrentActionPoints <= 0) return (int)BTNode.EState.Failure;
-            
+
             Checkpoint checkpointTarget = GetClosestCheckpoint();
             MBGraphNode checkpointNode = checkpointTarget == null ? null : checkpointTarget.node;
             if (checkpointNode == null)
@@ -509,10 +516,18 @@ namespace Game.AI
                 return (int)BTNode.EState.Failure; // <- we cannot move anymore
         }
 
+        private IEnumerator CREndTurn()
+        {
+            yield return new WaitForSeconds(1);
+
+            Phase = EPlayerPhase.End;
+        }
+
         public int EndTurn()
         {
             //print("EndTurn()");
-            Phase = EPlayerPhase.End;
+
+            actionQueue.Enqueue(CREndTurn());
 
             return (int)BTNode.EState.Success;
         }
@@ -524,10 +539,10 @@ namespace Game.AI
             {
                 return;
             }
-            
+
             var neighbors = GameplayManager.Instance.gridGraph.graph.Neighbors(positionNodeID);
             reachableNodeIds.Add(positionNodeID);
-            
+
             foreach (var node in neighbors)
             {
                 if (!reachableNodeIds.Contains(node.Id))
