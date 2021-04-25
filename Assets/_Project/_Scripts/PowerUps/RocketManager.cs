@@ -19,7 +19,6 @@ public class RocketManager : MonoBehaviourPunCallbacks
 
     private IEnumerator MoveRocket(AbstractPlayer player, GameObject target)
     {
-        player.State = AbstractPlayer.EPlayerState.Busy;
         Vector3 targetPosition = target.transform.position;
         targetPosition = new Vector3(targetPosition.x, targetPosition.y + 1, targetPosition.z);
 
