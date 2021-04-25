@@ -45,7 +45,6 @@ public class RocketManager : MonoBehaviourPunCallbacks
         if(collision.collider.tag == "HumanPlayer" || collision.collider.tag == "AIPlayer")
         {
             collision.gameObject.GetComponent<AbstractPlayer>().GetHit(numActionPointsToRemove);
-            GameplayManager.Instance.Players[GameplayManager.Instance.currentPlayer].State = AbstractPlayer.EPlayerState.Waiting;
         }
 
         if (photonView.IsMine)
@@ -53,6 +52,10 @@ public class RocketManager : MonoBehaviourPunCallbacks
             PhotonNetwork.Destroy(gameObject);
         }
 
-        PhotonNetwork.Instantiate(explosionPrefab.name, transform.position, Quaternion.identity);
+        if (collision.collider.transform != GameplayManager.Instance.Players[GameplayManager.Instance.currentPlayer].transform)
+        {
+            PhotonNetwork.Instantiate(explosionPrefab.name, transform.position, Quaternion.identity);
+            GameplayManager.Instance.Players[GameplayManager.Instance.currentPlayer].State = AbstractPlayer.EPlayerState.Waiting;
+        }
     }
 }

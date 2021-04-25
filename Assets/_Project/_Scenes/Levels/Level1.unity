@@ -52020,27 +52020,27 @@ PrefabInstance:
     - target: {fileID: 48649055827547803, guid: ba760678b09b1b44fba657e1c5c86c1c, type: 3}
       propertyPath: blockedOffNodes.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1690806999}
     - target: {fileID: 48649055827547803, guid: ba760678b09b1b44fba657e1c5c86c1c, type: 3}
       propertyPath: blockedOffNodes.Array.data[1]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 909768654}
     - target: {fileID: 48649055827547803, guid: ba760678b09b1b44fba657e1c5c86c1c, type: 3}
       propertyPath: blockedOffNodes.Array.data[2]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1845869410}
     - target: {fileID: 48649055827547803, guid: ba760678b09b1b44fba657e1c5c86c1c, type: 3}
       propertyPath: blockedOffNodes.Array.data[3]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1323735317}
     - target: {fileID: 48649055827547803, guid: ba760678b09b1b44fba657e1c5c86c1c, type: 3}
       propertyPath: blockedOffNodes.Array.data[4]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1250093832}
     - target: {fileID: 48649055827547803, guid: ba760678b09b1b44fba657e1c5c86c1c, type: 3}
       propertyPath: blockedOffNodes.Array.data[5]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 613303983}
     - target: {fileID: 48649055827547803, guid: ba760678b09b1b44fba657e1c5c86c1c, type: 3}
       propertyPath: playerDescriptors.Array.data[0].startNode
       value: 

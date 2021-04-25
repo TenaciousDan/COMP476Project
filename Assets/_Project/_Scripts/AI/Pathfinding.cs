@@ -76,7 +76,7 @@ namespace Game.AI
                         continue;
 
                     if (graph[n.Id].Data.GetComponentInChildren<OilSpillManager>() != null)
-                        cost += 2; // hard coded oil spill cost
+                        cost += 4; // hard coded oil spill cost
 
                     float gNeighbor = gnDict[currentId] + cost;
                     if (!gnDict.ContainsKey(n.Id) || gNeighbor < gnDict[n.Id])
