@@ -21,10 +21,9 @@ public class PU_Base : MonoBehaviourPunCallbacks
     //}
 
     [PunRPC]
-    private void SelectRandomItem()
+    private void SelectRandomItem(int index)
     {
-        var randomScript = (PU_Random)powerUpScript;
-        randomIndex = Random.Range(0, randomScript.powerUps.Count);
+        randomIndex = index;
     }
 
     private void Awake()
@@ -46,7 +45,9 @@ public class PU_Base : MonoBehaviourPunCallbacks
     {
         if (powerUpScript is PU_Random && PhotonNetwork.IsMasterClient)
         {
-            photonView.RPC("SelectRandomItem", RpcTarget.All);
+            var randomScript = (PU_Random)powerUpScript;
+            randomIndex = Random.Range(0, randomScript.powerUps.Count);
+            photonView.RPC("SelectRandomItem", RpcTarget.All, randomIndex);
         }
     }
 
