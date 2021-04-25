@@ -79,7 +79,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         PositionNode = startingNode;
         Inventory.InitializeList();
 
-        this.checkpoints = GameplayManager.Instance.playerDescriptors[playerIndex].checkpoints;
+        checkpoints = GameplayManager.Instance.playerDescriptors[playerIndex].checkpoints;
         
         Vector3 newWorldPosition = startingNode.transform.position + _positionOffset;
         transform.position = new Vector3(newWorldPosition.x, transform.position.y, newWorldPosition.z);
@@ -311,8 +311,11 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
             if (tag.Equals("HumanPlayer"))
             {
                 photonView.RPC("PlaySoundTrack", RpcTarget.All, "checkpoint");
-                cp.transform.GetChild(0).gameObject.SetActive(false);
-                cp.transform.GetChild(1).gameObject.SetActive(false);
+                if (photonView.IsMine)
+                {
+                    cp.transform.GetChild(0).gameObject.SetActive(false);
+                    cp.transform.GetChild(1).gameObject.SetActive(false);
+                }
             }
         }
 

@@ -509,10 +509,18 @@ namespace Game.AI
                 return (int)BTNode.EState.Failure; // <- we cannot move anymore
         }
 
+        private IEnumerator CREndTurn()
+        {
+            yield return new WaitForSeconds(1);
+
+            Phase = EPlayerPhase.End;
+        }
+
         public int EndTurn()
         {
             //print("EndTurn()");
-            Phase = EPlayerPhase.End;
+
+            actionQueue.Enqueue(CREndTurn());
 
             return (int)BTNode.EState.Success;
         }

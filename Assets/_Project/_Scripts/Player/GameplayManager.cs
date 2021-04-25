@@ -38,6 +38,8 @@ public class GameplayManager : MonoBehaviourPunCallbacks
 
     public List<AbstractPlayer> Players { get => players; }
 
+    public Transform checkpointsParent;
+
     public int currentPlayer = 0;
     public int totalPlayersInGame = 0;
     public bool hasInitializedPlayers = false;
