@@ -123,7 +123,7 @@ namespace Game.AI
                 return (int)BTNode.EState.Success;
             else
                 return (int)BTNode.EState.Failure;
-        }
+        } 
 
         public int ShouldUseItem()
         {
