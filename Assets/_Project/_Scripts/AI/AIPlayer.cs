@@ -120,7 +120,7 @@ namespace Game.AI
             //print("HasItem()");
 
             if (Inventory.currentItemCount > 0)
-                return (int)BTNode.EState.Success;
+                return (int)BTNode.EState.Success; 
             else
                 return (int)BTNode.EState.Failure;
         }
