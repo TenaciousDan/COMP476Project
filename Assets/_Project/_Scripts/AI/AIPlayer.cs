@@ -35,7 +35,7 @@ namespace Game.AI
             if (!isProcessingActions)
             {
                 ResetBehaviorTreeProperties();
-                GetAllReachableNodes(PositionNode.nodeId, (int)CurrentActionPoints);
+                GetAllReachableNodes(PositionNode.nodeId, (int)CurrentActionPoints+1);
                 behaviorTree.Evaluate();
 
                 // Process actions
