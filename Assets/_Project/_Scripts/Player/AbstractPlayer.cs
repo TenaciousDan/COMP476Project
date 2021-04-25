@@ -155,7 +155,6 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
     public void RemoveItemFromInventory(int index)
     {
         Inventory.RemoveItem(index);
-        print($"Count: {Inventory.currentItemCount}");
     }
 
     [PunRPC]

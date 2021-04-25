@@ -44,7 +44,8 @@ public class Inventory : MonoBehaviour
         {
             currentItemCount++;
         }
-        
+
+        print($"{player.Name} picked up {newItem}");
         items[availableSlotIndex] = newItem;
     }
 
@@ -58,13 +59,13 @@ public class Inventory : MonoBehaviour
     {
         if (items[itemIndex] != null)
         {
-            //print($"Used {items[itemIndex].name}");
+            print($"{player.Name} used {items[itemIndex].name}");
             items[itemIndex].OnPowerUpUse(player, target);
-            //RemoveItem(itemIndex);
-            if (PhotonNetwork.IsMasterClient)
-            {
-                player.photonView.RPC("RemoveItemFromInventory", RpcTarget.All, itemIndex);
-            }
+            RemoveItem(itemIndex);
+            //if (PhotonNetwork.IsMasterClient)
+            //{
+            //    player.photonView.RPC("RemoveItemFromInventory", RpcTarget.All, itemIndex);
+            //}
         }
     }
 
