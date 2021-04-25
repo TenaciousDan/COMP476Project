@@ -212,24 +212,16 @@ namespace Game.AI
             return itemToUseIndex >= 0 ? (int)BTNode.EState.Success : (int)BTNode.EState.Failure;
         }
 
-        private IEnumerator CRUseItem(int index)
-        {
-            yield return new WaitForSeconds(1);
-
-            if (Inventory.GetItemFromIndex(index).powerUpName.Equals("Rocket"))
-                Inventory.UseItem(index, playerAttackTarget.gameObject);
-            else if (Inventory.GetItemFromIndex(index).powerUpName.Equals("Oil Spill"))
-                Inventory.UseItem(index, nodeToSpillOn.gameObject);
-            else
-                Inventory.UseItem(index);
-        }
-
         public int UseItem()
         {
             //print("UseItem()");
 
-            if (itemToUseIndex >= 0)
-                EnqueueAction(CRUseItem(itemToUseIndex));
+            if (Inventory.GetItemFromIndex(itemToUseIndex).powerUpName.Equals("Rocket"))
+                Inventory.UseItem(itemToUseIndex, playerAttackTarget.gameObject);
+            else if (Inventory.GetItemFromIndex(itemToUseIndex).powerUpName.Equals("Oil Spill"))
+                Inventory.UseItem(itemToUseIndex, nodeToSpillOn.gameObject);
+            else
+                Inventory.UseItem(itemToUseIndex);
 
             return (int)BTNode.EState.Success;
         }
