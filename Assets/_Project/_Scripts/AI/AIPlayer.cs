@@ -176,18 +176,22 @@ namespace Game.AI
                 // check if player is in sight for foreign missiles
                 foreach (AbstractPlayer p in GameplayManager.Instance.Players)
                 {
-                    RaycastHit[] hits = Physics.RaycastAll(transform.position + (Vector3.up * 0.5f), transform.position - p.transform.position);
-                    foreach (RaycastHit hit in hits)
+                    if (p.Inventory.GetItemIndex("Rocket") != -1)
                     {
-                        // the ray has hit us
-                        if (hit.transform == transform)
+                        RaycastHit[] hits = Physics.RaycastAll(p.transform.position + (Vector3.up * 0.5f), transform.position - p.transform.position);
+                        Debug.DrawRay(p.transform.position, transform.position - p.transform.position, Color.red, 10000);
+                        foreach (RaycastHit hit in hits)
                         {
-                            itemToUseIndex = shieldIndex;
+                            // the ray has hit us
+                            if (hit.transform == transform)
+                            {
+                                itemToUseIndex = shieldIndex;
+                            }
                         }
+
+                        // itemToUseIndex = shieldIndex;
                     }
                 }
-
-                itemToUseIndex = shieldIndex;
             }
             else if (oilSpillIndex != -1)
             {
@@ -200,12 +204,46 @@ namespace Game.AI
                     potentialOilTargets.Add(graphNode.Data);
                 }
 
-                // If there 1 or less nodes that don't have an oil spill on them then don't place the oil spill or else we would be trapping ourselves
-                if (potentialOilTargets.Count > 1)
+                Checkpoint checkpointTarget = GetClosestCheckpoint();
+                MBGraphNode checkpointNode = checkpointTarget == null ? null : checkpointTarget.node;
+
+                GraphNode<GameObject> optimalGraphNode = reachableNodeIds.Count > 0 ? GameplayManager.Instance.gridGraph.graph[reachableNodeIds[0]] : null;
+                float dist = Mathf.Infinity;
+                foreach (string nodeId in reachableNodeIds)
                 {
-                    // select the first potential oil target
-                    nodeToSpillOn = potentialOilTargets[0];
-                    itemToUseIndex = oilSpillIndex;
+                    GraphNode<GameObject> gNode = GameplayManager.Instance.gridGraph.graph[nodeId];
+                    float tempDist = (gNode.Data.transform.position - checkpointNode.transform.position).magnitude;
+                    if (tempDist < dist)
+                    {
+                        optimalGraphNode = gNode;
+                        dist = tempDist;
+                    }
+                }
+
+                if (optimalGraphNode != null)
+                {
+                    List<GraphNode<GameObject>> path = pathFinding.FindPath(PositionNode.nodeId, optimalGraphNode.Id, MovementHeuristic, checkpoints.Count <= 1);
+
+                    if (path.Count > 0) path.RemoveAt(0);
+                    if (path.Count == 0)
+                        return (int)BTNode.EState.Failure;
+
+
+                    // If there 1 or less nodes that don't have an oil spill on them then don't place the oil spill or else we would be trapping ourselves
+                    if (potentialOilTargets.Count > 1)
+                    {
+                        // select the first potential oil target
+                        nodeToSpillOn = potentialOilTargets[0];
+                        foreach (GameObject ot in potentialOilTargets)
+                        {
+                            if (!path.Contains(GameplayManager.Instance.gridGraph.graph[ot.GetComponent<MBGraphNode>().nodeId]))
+                            {
+                                nodeToSpillOn = ot;
+                                itemToUseIndex = oilSpillIndex;
+                                break;
+                            }
+                        }
+                    }
                 }
             }
 

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 904893618173799453}
   - component: {fileID: 934029676117069053}
   - component: {fileID: 924243527570199205}
-  - component: {fileID: 895038621424241393}
   m_Layer: 0
   m_Name: SM_Env_Road_YellowLines_02_SF
   m_TagString: Untagged
@@ -82,16 +81,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &895038621424241393
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 902202499392445035}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 5, y: 0.03913545, z: 5}
-  m_Center: {x: -2.5, y: -0.019567724, z: -2.5}
