@@ -54,7 +54,7 @@ public class RocketManager : MonoBehaviourPunCallbacks
             PhotonNetwork.Destroy(gameObject);
         }
 
-        if(collision.collider.gameObject != gameObject)
+        if(!collision.collider.gameObject != gameObject)
             PhotonNetwork.Instantiate(explosionPrefab.name, transform.position, Quaternion.identity);
     }
 }
