@@ -16,7 +16,7 @@ public class Scriptable_Base : ScriptableObject
     [SerializeField]
     public Sprite inventoryImage;
 
-    public virtual void OnPowerUpGet(AbstractPlayer player)
+    public virtual void OnPowerUpGet(AbstractPlayer player, int randomIndex = -1)
     {
         player.Inventory.AddItem(this);
     }

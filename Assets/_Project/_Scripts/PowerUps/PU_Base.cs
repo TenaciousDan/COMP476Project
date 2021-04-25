@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class PU_Base : MonoBehaviourPunCallbacks
 {
     public Scriptable_Base powerUpScript;
+    private int randomIndex = -1;
 
     //private void Awake()
     //{
@@ -20,10 +21,10 @@ public class PU_Base : MonoBehaviourPunCallbacks
     //}
 
     [PunRPC]
-    private void SelectRandomItem(int index)
+    private void SelectRandomItem()
     {
         var randomScript = (PU_Random)powerUpScript;
-        randomScript.randomIndex = index;
+        randomIndex = Random.Range(0, randomScript.powerUps.Count);
     }
 
     private void Awake()
@@ -45,9 +46,7 @@ public class PU_Base : MonoBehaviourPunCallbacks
     {
         if (powerUpScript is PU_Random && PhotonNetwork.IsMasterClient)
         {
-            var randomScript = (PU_Random)powerUpScript;
-            int index = Random.Range(0, randomScript.powerUps.Count);
-            photonView.RPC("SelectRandomItem", RpcTarget.All, index);
+            photonView.RPC("SelectRandomItem", RpcTarget.All);
         }
     }
 
@@ -55,7 +54,7 @@ public class PU_Base : MonoBehaviourPunCallbacks
     {
         if (other.CompareTag("HumanPlayer") || other.CompareTag("AIPlayer"))
         {
-            powerUpScript.OnPowerUpGet(other.gameObject.GetComponent<AbstractPlayer>());
+            powerUpScript.OnPowerUpGet(other.gameObject.GetComponent<AbstractPlayer>(), randomIndex);
             Destroy(gameObject);
         }
     }
