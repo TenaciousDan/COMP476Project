@@ -14,7 +14,14 @@ public class RocketManager : MonoBehaviourPunCallbacks
 
     public void FireRocket(AbstractPlayer player, GameObject target)
     {
-        StartCoroutine(MoveRocket(player, target));
+        if (player is Game.AI.AIPlayer)
+        {
+            ((Game.AI.AIPlayer)player).EnqueueAction(MoveRocket(player, target));
+        }
+        else
+        {
+            StartCoroutine(MoveRocket(player, target));
+        }
     }
 
     private IEnumerator MoveRocket(AbstractPlayer player, GameObject target)
@@ -25,7 +32,7 @@ public class RocketManager : MonoBehaviourPunCallbacks
         Vector3 targetDirection = (target.transform.position) - transform.position;
         Quaternion toRotation = Quaternion.LookRotation(targetDirection);
         transform.rotation = toRotation;
-        while (transform.position != targetPosition)
+        while (this != null && transform.position != targetPosition)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
             yield return null;
