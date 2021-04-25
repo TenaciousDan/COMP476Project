@@ -20233,6 +20233,7 @@ GameObject:
   - component: {fileID: 895787916}
   - component: {fileID: 895787915}
   - component: {fileID: 895787917}
+  - component: {fileID: 895787918}
   m_Layer: 0
   m_Name: PoliceBlockade5
   m_TagString: Untagged
@@ -20266,7 +20267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 412a70f77ee40974d84f3379f422a610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  copCarAnimators: []
+  copCarAnimator: {fileID: 935750079}
 --- !u!65 &895787916
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20296,6 +20297,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &895787918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 895787913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  observableSearch: 2
+  Synchronization: 3
+  OwnershipTransfer: 0
+  ObservedComponents: []
+  viewIdField: 20
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &896384453
 GameObject:
   m_ObjectHideFlags: 0
@@ -41059,6 +41082,7 @@ GameObject:
   - component: {fileID: 1608258514}
   - component: {fileID: 1608258513}
   - component: {fileID: 1608258515}
+  - component: {fileID: 1608258516}
   m_Layer: 0
   m_Name: PoliceBlockade6
   m_TagString: Untagged
@@ -41092,7 +41116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 412a70f77ee40974d84f3379f422a610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  copCarAnimators: []
+  copCarAnimator: {fileID: 935750079}
 --- !u!65 &1608258514
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -41122,6 +41146,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &1608258516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608258511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  observableSearch: 2
+  Synchronization: 3
+  OwnershipTransfer: 0
+  ObservedComponents: []
+  viewIdField: 19
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1611097174
 GameObject:
   m_ObjectHideFlags: 0
@@ -44390,6 +44436,7 @@ GameObject:
   - component: {fileID: 1829518273}
   - component: {fileID: 1829518272}
   - component: {fileID: 1829518274}
+  - component: {fileID: 1829518275}
   m_Layer: 0
   m_Name: PoliceBlockade34
   m_TagString: Untagged
@@ -44423,7 +44470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 412a70f77ee40974d84f3379f422a610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  copCarAnimators: []
+  copCarAnimator: {fileID: 935750079}
 --- !u!65 &1829518273
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -44453,6 +44500,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &1829518275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1829518270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  observableSearch: 2
+  Synchronization: 3
+  OwnershipTransfer: 0
+  ObservedComponents: []
+  viewIdField: 17
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1831670866
 GameObject:
   m_ObjectHideFlags: 0
@@ -50801,6 +50870,7 @@ GameObject:
   - component: {fileID: 2117086303}
   - component: {fileID: 2117086304}
   - component: {fileID: 2117086305}
+  - component: {fileID: 2117086306}
   m_Layer: 0
   m_Name: PoliceBlockade12
   m_TagString: Untagged
@@ -50847,7 +50917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 412a70f77ee40974d84f3379f422a610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  copCarAnimators: []
+  copCarAnimator: {fileID: 935750079}
 --- !u!54 &2117086305
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -50864,6 +50934,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &2117086306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2117086301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  observableSearch: 2
+  Synchronization: 3
+  OwnershipTransfer: 0
+  ObservedComponents: []
+  viewIdField: 18
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &2120492586
 GameObject:
   m_ObjectHideFlags: 0

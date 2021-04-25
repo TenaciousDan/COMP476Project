@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class PoliceBlockade : MonoBehaviourPun
 {
-    [SerializeField] private List<Animator> copCarAnimators = new List<Animator>();
+    [SerializeField] private Animator copCarAnimator;
 
     private void OnTriggerStay(Collider other)
     {
@@ -32,9 +32,6 @@ public class PoliceBlockade : MonoBehaviourPun
     [PunRPC]
     private void LetMePass(bool pass)
     {
-        foreach (Animator animator in copCarAnimators)
-        {
-            animator.SetBool("CanLeave", pass);
-        }
+        copCarAnimator.SetBool("CanLeave", pass);
     }
 }
