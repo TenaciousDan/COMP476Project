@@ -104,7 +104,10 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         RemoveActionPoints(pointsDeficit);
         pointsDeficit = 0;
         if (GameplayManager.Instance.Players[GameplayManager.Instance.currentPlayer].transform == transform)
+        {
+            print("Stanby");
             DeactivateShield();
+        }
 
         Phase = EPlayerPhase.Main;
     }
@@ -207,6 +210,7 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
     {
         if (hasShield)
         {
+            print("GetHit");
             photonView.RPC("DeactivateShield", RpcTarget.All);
         }
         else
