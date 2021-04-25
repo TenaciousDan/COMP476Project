@@ -93,19 +93,21 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         Phase = EPlayerPhase.Standby;
 
         // TODO: do standby phase things
-        if (photonView.IsMine)
-            photonView.RPC("Standby", RpcTarget.All);
+        photonView.RPC("Standby", RpcTarget.All);
     }
 
     [PunRPC]
     public void Standby()
     {
-        FillActionPoints();
-        RemoveActionPoints(pointsDeficit);
-        pointsDeficit = 0;
-        DeactivateShield();
+        if (photonView.IsMine)
+        {
+            FillActionPoints();
+            RemoveActionPoints(pointsDeficit);
+            pointsDeficit = 0;
+            DeactivateShield();
 
-        Phase = EPlayerPhase.Main;
+            Phase = EPlayerPhase.Main;
+        }
     }
 
     [PunRPC]
