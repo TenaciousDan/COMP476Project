@@ -16,11 +16,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public int aiPlayerCount = 0;
 
     public Hashtable spawnIndices;
-    
+
     private static NetworkManager instance;
     private static bool reinitializationPermitted = false;
     private static bool destroyed = false;
     private static object mutex = new object();
+
+    public static bool IsInitialized { get; protected set; }
 
     [Tooltip("Allow this object to be re-initialized after being destroyed.")]
     [SerializeField] private bool allowReinitialization = false;
@@ -74,7 +76,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         {
             // an instance already exists and this is a duplicate
             Destroy(this.gameObject);
-            destroyed = false; // the "true" instance has not yet been destroyed
+            destroyed = false;
             return;
         }
 
@@ -141,6 +143,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                 instance = game_object.GetComponent<NetworkManager>();
             }
 
+            IsInitialized = true;
+
             return instance;
         }
     }
@@ -169,6 +173,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         instance = null;
         destroyed = true;
+
+        IsInitialized = false;
     }
     #endregion
 }

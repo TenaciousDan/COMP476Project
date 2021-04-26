@@ -17,6 +17,8 @@ namespace Tenacious
         private static object mutex = new object();
         private static T instance;
 
+        public static bool IsInitialized { get; protected set; }
+
         [Tooltip("Allow this object to be re-initialized after being destroyed.")]
         [SerializeField] private bool allowReinitialization = false;
         [Tooltip("Destroy this object when a new scene is loaded.")]
@@ -67,6 +69,8 @@ namespace Tenacious
                     instance = game_object.GetComponent<T>();
                 }
 
+                IsInitialized = true;
+
                 return instance;
             }
         }
@@ -109,6 +113,7 @@ namespace Tenacious
         {
             instance = null;
             destroyed = true;
+            IsInitialized = false;
         }
 
         public bool DestroyOnLoad
