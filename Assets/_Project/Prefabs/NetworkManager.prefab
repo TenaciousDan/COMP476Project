@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aiPlayerCount: 0
-  allowReinitialization: 0
+  allowReinitialization: 1
   destroyOnLoad: 0
   networkPrefabPool: {fileID: 4240007892062076074}
 --- !u!114 &4240007892062076077
