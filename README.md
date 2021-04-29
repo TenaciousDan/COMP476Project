@@ -10,6 +10,7 @@ In Unity, navigate to `Window > Package Manager`. In the Package Manager window,
 
 1. **Universal RP**
     - After installing the *Universal RP* package, navigate to `Edit > Project Settings...`. In the *Project Settings* window click on `Graphics` in the left hand menu and change the `Scriptable Render Pipeline Settings` property to the one of the three located at `Assets/URP/UniversalRP-{QUALITY}`. Of course, you could just keep the default URP settings asset if you want.
+	- If you see pink assets in the editor you'll want to go to Edit > Render Pipeline > Universal Render Pipeline > Upgrade Project Materials to URP
 
 2. **Shader Graph**
 

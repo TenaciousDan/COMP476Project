@@ -295,6 +295,19 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         AudioManager.Instance.PlaySound(trackName);
     }
 
+    [PunRPC]
+    public void RemoveCheckpoint(string cpName)
+    {
+        for (int i = 0; i < checkpoints.Count; ++i)
+        {
+            if (checkpoints[i].checkpointName.Equals(cpName))
+            {
+                checkpoints.RemoveAt(i);
+                break;
+            }
+        }    
+    }
+
     private void CheckpointReached(Checkpoint cp)
     {
         if (cp.isGoal)
@@ -312,12 +325,13 @@ public abstract class AbstractPlayer : MonoBehaviourPunCallbacks
         if (checkpoints.Contains(cp))
         {
             checkpoints.Remove(cp);
+            photonView.RPC("RemoveCheckpoint", RpcTarget.All, cp.checkpointName);
 
             if (tag.Equals("HumanPlayer"))
             {
-                photonView.RPC("PlaySoundTrack", RpcTarget.All, "checkpoint");
                 if (photonView.IsMine)
                 {
+                    photonView.RPC("PlaySoundTrack", RpcTarget.All, "checkpoint");
                     cp.transform.GetChild(0).gameObject.SetActive(false);
                     cp.transform.GetChild(1).gameObject.SetActive(false);
                 }

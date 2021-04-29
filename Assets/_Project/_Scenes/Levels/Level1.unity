@@ -51970,6 +51970,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 48649055827547803, guid: ba760678b09b1b44fba657e1c5c86c1c, type: 3}
+      propertyPath: goalNode
+      value: 
+      objectReference: {fileID: 1043614080}
+    - target: {fileID: 48649055827547803, guid: ba760678b09b1b44fba657e1c5c86c1c, type: 3}
       propertyPath: cameraRig
       value: 
       objectReference: {fileID: 364738212}

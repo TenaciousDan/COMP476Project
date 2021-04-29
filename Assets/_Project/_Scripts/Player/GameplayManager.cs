@@ -38,6 +38,7 @@ public class GameplayManager : MonoBehaviourPunCallbacks
 
     public List<AbstractPlayer> Players { get => players; }
 
+    public MBGraphNode goalNode;
     public Transform checkpointsParent;
 
     public int currentPlayer = 0;
@@ -204,20 +205,27 @@ public class GameplayManager : MonoBehaviourPunCallbacks
         {
             if (currentPlayer < Players.Count)
             {
-                if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.Standby || Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.None)
-                    Players[currentPlayer].StandbyPhaseUpdate();
-                else if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.Main)
-                    Players[currentPlayer].MainPhaseUpdate();
-                else if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.End)
-                    Players[currentPlayer].EndPhaseUpdate();
-                else if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.PassTurn)
+                if (Players[currentPlayer] != null)
                 {
-                    Players[currentPlayer].Phase = AbstractPlayer.EPlayerPhase.None;
-                    // Update Turn Order (ONLY FOR AI) - Turn updates for Human Players on End Turn Press
-                    if (PhotonNetwork.IsMasterClient && Players[currentPlayer].CompareTag("AIPlayer"))
+                    if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.Standby || Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.None)
+                        Players[currentPlayer].StandbyPhaseUpdate();
+                    else if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.Main)
+                        Players[currentPlayer].MainPhaseUpdate();
+                    else if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.End)
+                        Players[currentPlayer].EndPhaseUpdate();
+                    else if (Players[currentPlayer].Phase == AbstractPlayer.EPlayerPhase.PassTurn)
                     {
-                        photonView.RPC("UpdateCurrentPlayer", RpcTarget.All);
+                        Players[currentPlayer].Phase = AbstractPlayer.EPlayerPhase.None;
+                        // Update Turn Order (ONLY FOR AI) - Turn updates for Human Players on End Turn Press
+                        if (PhotonNetwork.IsMasterClient && Players[currentPlayer].CompareTag("AIPlayer"))
+                        {
+                            photonView.RPC("UpdateCurrentPlayer", RpcTarget.All);
+                        }
                     }
+                }
+                else
+                {
+                    ++currentPlayer;
                 }
             }
             else
@@ -235,18 +243,18 @@ public class GameplayManager : MonoBehaviourPunCallbacks
         }
 
         // **Emergency failsafe** Please avoid pressing this key during the demo as it may break things (this is only if the AI freezes up for some reason)
-        if (PhotonNetwork.IsMasterClient && Input.GetKeyDown(KeyCode.F12))
-            photonView.RPC("UpdateCurrentPlayer", RpcTarget.All);
+        //if (PhotonNetwork.IsMasterClient && Input.GetKeyDown(KeyCode.F12))
+            //photonView.RPC("UpdateCurrentPlayer", RpcTarget.All);
     }
 
     [PunRPC]
     private void EndGame()
     {
-        var finalPositions = players.OrderBy(x => x.checkpoints.Count);
+        var top3PlayersOrderedByCP = players.OrderBy(x => x.checkpoints.Count);
 
         for (int i = 0; i < 3; i++)
         {
-            finalPositions.ElementAt(i).transform.position = goalPlatforms[i].position;
+            top3PlayersOrderedByCP.ElementAt(i).transform.position = goalPlatforms[i].position;
         }
     }
 
